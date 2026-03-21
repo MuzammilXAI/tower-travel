@@ -1,0 +1,676 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reviews – Tower Travel Premium</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+    backdrop-filter: blur(4px);
+  }
+
+  .overlay {
+    background: rgba(0, 0, 0, 0.6);
+    min-height: 100vh;
+    width: 100%;
+    padding-bottom: 50px;
+  }
+
+  /* ================= HEADER - MATCHING INDEX.HTML ================= */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    background: rgba(0,0,0,0.85);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    flex-wrap: nowrap;
+    gap: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .header::-webkit-scrollbar {
+    display: none;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 3px solid #ffd54f;
+    box-shadow: 0 0 12px rgba(255,213,79,0.6);
+    transition: all 0.3s ease;
+    background: #1a1a2e;
+  }
+
+  .logo-img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255,213,79,0.9);
+    border-color: #ffcc00;
+  }
+
+  .logo-text {
+    color: #ffcc00;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 12px rgba(255,204,0,0.5);
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .nav-links li {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 14px;
+    display: inline-block;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+
+  .nav-links li a:hover {
+    background: #ffcc00;
+    color: #1e3c72;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,204,0,0.4);
+  }
+
+  /* User Section */
+  .user-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,215,0,0.15);
+    padding: 5px 12px;
+    border-radius: 40px;
+    backdrop-filter: blur(5px);
+    flex-shrink: 0;
+  }
+
+  .welcome-text {
+    color: #ffd54f;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .logout-link {
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    padding: 5px 12px;
+    border-radius: 30px;
+    color: white !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    white-space: nowrap;
+  }
+
+  .logout-link:hover {
+    background: #ffcc00;
+    color: #1e3c72 !important;
+    transform: translateY(-1px);
+  }
+
+  .login-link {
+    background: linear-gradient(135deg, #1976d2, #0d47a1);
+    padding: 6px 18px;
+    border-radius: 30px;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+  }
+
+  .login-link:hover {
+    background: #ffcc00;
+    color: #1e3c72 !important;
+    transform: translateY(-1px);
+  }
+
+  /* REVIEWS SECTION */
+  .reviews-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+  }
+
+  .section-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+
+  .section-header p {
+    font-size: 1rem;
+    color: #ffd54f;
+  }
+
+  /* AVERAGE RATING CARD */
+  .rating-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .rating-number {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #ffd54f;
+    text-shadow: 0 0 10px rgba(255,213,79,0.3);
+  }
+
+  .rating-stars {
+    font-size: 1.5rem;
+    color: #ffca28;
+    margin: 10px 0;
+  }
+
+  .rating-total {
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  /* REVIEW FORM */
+  .review-form {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .review-form h3 {
+    color: #d32f2f;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #ffd54f;
+    box-shadow: 0 0 5px rgba(255,213,79,0.5);
+  }
+
+  /* STAR RATING */
+  .star-rating {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .star {
+    font-size: 28px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .star:hover,
+  .star.active {
+    color: #ffca28;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #1976d2, #42a5f5);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .submit-btn:hover {
+    background: linear-gradient(135deg, #1565c0, #1e88e5);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(25,118,210,0.3);
+  }
+
+  /* REVIEW CARDS */
+  .reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .review-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+  }
+
+  .review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .reviewer-name {
+    font-weight: 600;
+    color: #d32f2f;
+    font-size: 1.1rem;
+  }
+
+  .review-type {
+    background: #ffd54f;
+    color: #333;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .review-stars {
+    color: #ffca28;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .review-text {
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .review-date {
+    color: #999;
+    font-size: 0.8rem;
+  }
+
+  .no-reviews {
+    text-align: center;
+    padding: 50px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    color: #666;
+  }
+
+  /* MESSAGES */
+  .messages {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+
+  .alert {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+
+  .alert-success {
+    background: rgba(76, 175, 80, 0.2);
+    border: 1px solid #4caf50;
+    color: #4caf50;
+  }
+
+  .alert-error {
+    background: rgba(244, 67, 54, 0.2);
+    border: 1px solid #f44336;
+    color: #f44336;
+  }
+
+  .alert-info {
+    background: rgba(33, 150, 243, 0.2);
+    border: 1px solid #2196f3;
+    color: #2196f3;
+  }
+
+  .close-alert {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1200px) {
+    .header {
+      padding: 8px 20px;
+      gap: 15px;
+    }
+    .nav-links li a {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+    .logo-text {
+      font-size: 18px;
+    }
+    .logo-img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .header {
+      overflow-x: auto;
+      justify-content: flex-start;
+    }
+    .logo-area {
+      flex-shrink: 0;
+    }
+    .nav-links {
+      flex-shrink: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links li a {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+    .logo-text {
+      font-size: 16px;
+    }
+    .logo-img {
+      width: 42px;
+      height: 42px;
+    }
+    .welcome-text {
+      font-size: 11px;
+    }
+    .logout-link, .login-link {
+      font-size: 11px !important;
+      padding: 4px 10px;
+    }
+    .section-header h1 {
+      font-size: 2rem;
+    }
+    .review-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links li a {
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+    .logo-text {
+      font-size: 14px;
+    }
+    .logo-img {
+      width: 38px;
+      height: 38px;
+    }
+    .rating-number {
+      font-size: 3rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="overlay">
+
+  <!-- HEADER - MATCHING INDEX.HTML (NO AI MODULE) -->
+  <header class="header">
+    <div class="logo-area">
+      <img src="{% static '9.avif' %}" class="logo-img" alt="Logo">
+      <span class="logo-text">TOWER TRAVEL TOURISM</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'destination' %}">Destination</a></li>
+      <li><a href="{% url 'hotel' %}">Hotel</a></li>
+      <li><a href="{% url 'flight' %}">Flight</a></li>
+      <li><a href="{% url 'package' %}">Package</a></li>
+      <li><a href="{% url 'reviews' %}">Reviews</a></li>
+      <li><a href="{% url 'admin_page' %}">Admin</a></li>
+      <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+
+      {% if user.is_authenticated %}
+        <li class="user-info">
+          <span class="welcome-text"><i class="fas fa-user"></i> {{ user.username }}</span>
+          <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+        </li>
+      {% else %}
+        <li><a href="{% url 'login' %}" class="login-link">Login</a></li>
+      {% endif %}
+    </ul>
+  </header>
+
+  <!-- MESSAGES -->
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        <span class="close-alert" onclick="this.parentElement.style.display='none'">&times;</span>
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- REVIEWS SECTION -->
+  <div class="reviews-section">
+    <div class="section-header">
+      <h1>⭐ Traveler Reviews</h1>
+      <p>Read what our customers say about their experiences</p>
+    </div>
+
+    <!-- AVERAGE RATING CARD -->
+    <div class="rating-card">
+      <div class="rating-number">{{ avg_rating|floatformat:1 }}</div>
+      <div class="rating-stars">
+        {% for i in "12345"|make_list %}
+          {% if forloop.counter <= avg_rating %}★{% else %}☆{% endif %}
+        {% endfor %}
+      </div>
+      <div class="rating-total">Based on {{ review_count }} review{{ review_count|pluralize }}</div>
+    </div>
+
+    <!-- REVIEW FORM -->
+    <div class="review-form">
+      <h3>Share Your Experience</h3>
+      <form method="POST" action="{% url 'reviews' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label>Review Type</label>
+          <select name="review_type" required>
+            <option value="">Select Type</option>
+            <option value="Destination">Destination</option>
+            <option value="Hotel">Hotel</option>
+            <option value="Flight">Flight</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" name="name" value="{{ user.get_full_name|default:user.username }}" required>
+        </div>
+
+        <div class="form-group">
+          <label>Your Review</label>
+          <textarea name="text" rows="4" placeholder="Write your review here..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Rating</label>
+          <div class="star-rating" id="star-rating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+          </div>
+          <input type="hidden" name="rating" id="selected-rating" value="0">
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Review</button>
+      </form>
+    </div>
+
+    <!-- REVIEWS LIST -->
+    <div class="reviews-list">
+      <h3 style="color: white; margin-bottom: 15px;">Recent Reviews</h3>
+
+      {% for review in reviews %}
+      <div class="review-card">
+        <div class="review-header">
+          <span class="reviewer-name">{{ review.name }}</span>
+          <span class="review-type">{{ review.review_type }}</span>
+        </div>
+        <div class="review-stars">
+          {% for i in "12345"|make_list %}
+            {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+          {% endfor %}
+        </div>
+        <p class="review-text">{{ review.text }}</p>
+        <div class="review-date">Posted on {{ review.created_at|date:"F j, Y" }}</div>
+      </div>
+      {% empty %}
+      <div class="no-reviews">
+        <p>No reviews yet. Be the first to share your experience!</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Star rating functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const stars = document.querySelectorAll('.star');
+  const ratingInput = document.getElementById('selected-rating');
+
+  stars.forEach(star => {
+    star.addEventListener('click', function() {
+      const value = this.dataset.value;
+      ratingInput.value = value;
+
+      // Update active stars
+      stars.forEach(s => {
+        if (s.dataset.value <= value) {
+          s.classList.add('active');
+        } else {
+          s.classList.remove('active');
+        }
+      });
+    });
+
+    star.addEventListener('mouseover', function() {
+      const value = this.dataset.value;
+      stars.forEach(s => {
+        if (s.dataset.value <= value) {
+          s.style.color = '#ffca28';
+        } else {
+          s.style.color = '#ccc';
+        }
+      });
+    });
+
+    star.addEventListener('mouseout', function() {
+      const selectedValue = ratingInput.value;
+      stars.forEach(s => {
+        if (selectedValue && s.dataset.value <= selectedValue) {
+          s.style.color = '#ffca28';
+        } else {
+          s.style.color = '#ccc';
+        }
+      });
+    });
+  });
+});
+
+// Close alert messages
+function closeAlert(element) {
+  element.parentElement.style.display = 'none';
+}
+</script>
+
+</body>
+</html>

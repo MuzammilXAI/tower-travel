@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Flight - Tower Travel Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .edit-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <h2>✈️ Edit Flight</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Airline</label>
+                    <select name="airline" required>
+                        <option value="emirates" {% if flight.airline == 'emirates' %}selected{% endif %}>Emirates</option>
+                        <option value="qatar" {% if flight.airline == 'qatar' %}selected{% endif %}>Qatar Airways</option>
+                        <option value="turkish" {% if flight.airline == 'turkish' %}selected{% endif %}>Turkish Airlines</option>
+                        <option value="pia" {% if flight.airline == 'pia' %}selected{% endif %}>PIA</option>
+                        <option value="etihad" {% if flight.airline == 'etihad' %}selected{% endif %}>Etihad Airways</option>
+                        <option value="air_france" {% if flight.airline == 'air_france' %}selected{% endif %}>Air France</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Flight Number</label>
+                    <input type="text" name="flight_number" value="{{ flight.flight_number }}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>From City</label>
+                    <input type="text" name="from_city" value="{{ flight.from_city }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>To City</label>
+                    <input type="text" name="to_city" value="{{ flight.to_city }}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Departure Date</label>
+                    <input type="date" name="departure_date" value="{{ flight.departure_date|date:'Y-m-d' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Departure Time</label>
+                    <input type="time" name="departure_time" value="{{ flight.departure_time|time:'H:i' }}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Arrival Time</label>
+                    <input type="time" name="arrival_time" value="{{ flight.arrival_time|time:'H:i' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Duration</label>
+                    <input type="text" name="duration" value="{{ flight.duration }}" placeholder="e.g., 7h 45m" required>
+                </div>
+            </div>
+
+            <div class="form-row-4">
+                <div class="form-group">
+                    <label>Price ($)</label>
+                    <input type="number" name="price" step="0.01" value="{{ flight.price }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Price Category</label>
+                    <select name="price_category" required>
+                        <option value="low" {% if flight.price_category == 'low' %}selected{% endif %}>Low</option>
+                        <option value="medium" {% if flight.price_category == 'medium' %}selected{% endif %}>Medium</option>
+                        <option value="high" {% if flight.price_category == 'high' %}selected{% endif %}>High</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Available Seats</label>
+                    <input type="number" name="available_seats" value="{{ flight.available_seats }}" required>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" name="is_active" id="is_active" {% if flight.is_active %}checked{% endif %}>
+                    <label for="is_active">Active</label>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">Update Flight</button>
+                <a href="{% url 'admin_page' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

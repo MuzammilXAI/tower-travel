@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tower Travel - Flight Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* RESET */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+      min-height: 100vh;
+    }
+    .overlay { background: rgba(0,0,0,0.6); min-height: 100vh; width: 100%; padding-bottom: 50px; }
+
+    /* HEADER */
+    .header {
+      width: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 45px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo-area { display: flex; align-items: center; gap: 12px; }
+    .logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #ffd54f; box-shadow: 0 0 12px #ffd54f; }
+    .logo-text { font-size: 26px; color: #ffd54f; font-weight: bold; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,213,79,0.6); }
+
+    /* NAVBAR */
+    .nav-links { list-style: none; display: flex; gap: 28px; align-items: center; }
+    .nav-links li a {
+      text-decoration: none; color: white; font-size: 17px; font-weight: 500;
+      position: relative; padding: 8px 15px; border-radius: 8px; transition: all 0.3s ease;
+    }
+    .nav-links li a:hover {
+      color: #ffd54f; text-shadow: 0 0 12px #ffd54f;
+      background: rgba(255, 215, 0, 0.15);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    /* User Module - Single Compact Card */
+    .user-module {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #d32f2f, #b71c1c);
+      border-radius: 30px;
+      padding: 5px 15px 5px 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .user-module:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4);
+      background: linear-gradient(135deg, #e53935, #c62828);
+    }
+    .welcome-name {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .logout-icon {
+      color: white;
+      font-size: 14px;
+      text-decoration: none;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .logout-icon:hover {
+      background: rgba(0, 0, 0, 0.5);
+      color: #ffd54f;
+    }
+    .login-btn {
+      background: linear-gradient(90deg, #1976d2, #42a5f5);
+      color: white !important;
+      padding: 8px 22px !important;
+      border-radius: 25px !important;
+      white-space: nowrap;
+    }
+    .login-btn:hover {
+      background: linear-gradient(90deg, #1565c0, #1e88e5);
+    }
+
+    /* MODULE HEADER */
+    .module-header { text-align: center; padding: 40px 20px 20px; color: white; text-shadow: 0 0 10px rgba(0,0,0,0.7);}
+    .module-header h1 { font-size: 2.2rem; margin-bottom: 8px; }
+    .module-header p { font-size: 1rem; color: #ffd54f; }
+
+    /* FILTERS */
+    .filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin: 25px 10px; }
+    .filters input, .filters select {
+      padding: 12px 15px; border: none; border-radius: 8px; font-size: 15px; outline: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s;
+    }
+    .filters input:focus, .filters select:focus { box-shadow: 0 0 10px #ffd54f; }
+
+    /* FLIGHTS GRID */
+    .flights { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 20px; max-width: 1200px; margin: 0 auto 50px; }
+    .flight-card {
+      background: rgba(255,255,255,0.95); border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      overflow: hidden; transition: all 0.3s ease-in-out; position: relative;
+    }
+    .flight-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.25); }
+    .flight-content { padding: 20px; }
+    .flight-content h3 { margin-bottom: 8px; color: #1565c0; font-size: 1.2rem; }
+    .flight-content p { margin: 5px 0; font-size: 0.95rem; color: #333; }
+
+    /* BOOK + CANCEL BUTTONS */
+    .book-btn {
+      background: linear-gradient(90deg, #1976d2, #42a5f5); color: white; padding: 10px 18px; border: none;
+      border-radius: 8px; margin-top: 12px; cursor: pointer; font-weight: 500; transition: all 0.3s;
+    }
+    .book-btn:hover { background: linear-gradient(90deg, #1565c0, #1e88e5); transform: scale(1.05); }
+
+    .cancel-btn {
+      background: linear-gradient(90deg, #d32f2f, #f44336); color: white; padding: 10px 18px; border: none;
+      border-radius: 8px; margin-top: 12px; cursor: pointer; font-weight: 500; transition: all 0.3s;
+    }
+    .cancel-btn:hover { background: linear-gradient(90deg, #b71c1c, #d32f2f); transform: scale(1.05); }
+
+    /* POPUP TICKET */
+    .popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); justify-content: center; align-items: center; z-index: 999; }
+    .popup-content { background: #fff; padding: 30px 25px; border-radius: 15px; width: 95%; max-width: 420px; text-align: center; animation: fadeIn 0.35s ease-in-out; box-shadow: 0 15px 35px rgba(0,0,0,0.2);}
+    @keyframes fadeIn { from {opacity: 0; transform: scale(0.9);} to {opacity: 1; transform: scale(1);} }
+
+    .ticket { text-align: left; border: 2px dashed #1976d2; padding: 18px; border-radius: 10px; margin-top: 15px; font-size: 0.95rem; color: #444; background: #f9f9f9; }
+    .close-popup { margin-top: 20px; background: linear-gradient(90deg, #1e3c72, #2a5298); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.3s; }
+    .close-popup:hover { background: linear-gradient(90deg, #1565c0, #1976d2); transform: scale(1.05); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) { .nav-links { flex-wrap: wrap; gap: 10px; } }
+    @media (max-width: 500px) { .filters input, .filters select { flex: 1 1 100%; } }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="logo-area">
+        <img src="{% static '9.avif' %}" class="logo-img" alt="Tower Travel Logo">
+        <span class="logo-text">TOWER TRAVEL TOURISM</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'destination' %}">Destination</a></li>
+        <li><a href="{% url 'hotel' %}">Hotel</a></li>
+        <li><a href="{% url 'flight' %}">Flight</a></li>
+        <li><a href="{% url 'package' %}">Package</a></li>
+        <li><a href="{% url 'reviews' %}">Reviews</a></li>
+        <li><a href="{% url 'admin_page' %}">Admin</a></li>
+        <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+
+        {% if user.is_authenticated %}
+        <li>
+          <div class="user-module">
+            <span class="welcome-name">Welcome {{ user.username }}</span>
+            <a href="{% url 'logout' %}" class="logout-icon">Logout</a>
+          </div>
+        </li>
+        {% else %}
+        <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+        {% endif %}
+      </ul>
+    </header>
+
+    <!-- MODULE HEADER -->
+    <div class="module-header">
+      <h1>✈️ Flight Booking</h1>
+      <p>Search, compare, and book your perfect flight!</p>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <input type="text" id="from" placeholder="From..." />
+      <input type="text" id="to" placeholder="To..." />
+      <input type="date" id="date" />
+      <select id="price">
+        <option value="">All Prices</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+
+    <!-- FLIGHT LIST -->
+    <div class="flights" id="flight-list"></div>
+
+    <!-- POPUP TICKET -->
+    <div class="popup" id="popup">
+      <div class="popup-content">
+        <h2>🎟️ Flight Ticket</h2>
+        <div class="ticket" id="ticket-details"></div>
+        <button class="close-popup" onclick="closePopup()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const flights = [
+      { airline: "Emirates", from: "Dubai", to: "London", date: "2025-11-10", price: "high", cost: 850, duration: "7h 45m", departure: "08:30 AM", arrival: "03:15 PM" },
+      { airline: "Qatar Airways", from: "Doha", to: "Paris", date: "2025-11-10", price: "high", cost: 780, duration: "6h 55m", departure: "10:00 AM", arrival: "04:55 PM" },
+      { airline: "Turkish Airlines", from: "Istanbul", to: "New York", date: "2025-11-11", price: "medium", cost: 620, duration: "9h 30m", departure: "09:45 AM", arrival: "06:15 PM" },
+      { airline: "PIA", from: "Karachi", to: "Dubai", date: "2025-11-12", price: "low", cost: 220, duration: "2h 20m", departure: "06:00 AM", arrival: "08:20 AM" },
+      { airline: "Etihad Airways", from: "Abu Dhabi", to: "Tokyo", date: "2025-11-15", price: "high", cost: 950, duration: "10h 45m", departure: "01:00 AM", arrival: "03:45 PM" },
+      { airline: "Air France", from: "Paris", to: "Rome", date: "2025-11-14", price: "low", cost: 180, duration: "2h 10m", departure: "11:30 AM", arrival: "01:40 PM" },
+      { airline: "British Airways", from: "London", to: "New York", date: "2025-11-13", price: "high", cost: 890, duration: "8h 00m", departure: "09:00 AM", arrival: "05:00 PM" },
+      { airline: "Singapore Airlines", from: "Singapore", to: "Sydney", date: "2025-11-14", price: "medium", cost: 560, duration: "7h 15m", departure: "07:45 AM", arrival: "03:00 PM" },
+      { airline: "Lufthansa", from: "Berlin", to: "Toronto", date: "2025-11-12", price: "medium", cost: 640, duration: "8h 25m", departure: "08:15 AM", arrival: "03:40 PM" },
+      { airline: "Delta Airlines", from: "New York", to: "Los Angeles", date: "2025-11-16", price: "high", cost: 720, duration: "6h 15m", departure: "07:00 AM", arrival: "01:15 PM" },
+      { airline: "KLM", from: "Amsterdam", to: "Dubai", date: "2025-11-17", price: "medium", cost: 610, duration: "6h 45m", departure: "06:30 AM", arrival: "01:15 PM" },
+      { airline: "ANA", from: "Tokyo", to: "San Francisco", date: "2025-11-18", price: "high", cost: 980, duration: "9h 50m", departure: "10:00 AM", arrival: "07:50 AM" },
+      { airline: "Spirit Airlines", from: "Miami", to: "Orlando", date: "2025-11-19", price: "low", cost: 95, duration: "1h 05m", departure: "02:00 PM", arrival: "03:05 PM" }
+    ];
+
+    const flightList = document.getElementById("flight-list");
+    const fromInput = document.getElementById("from");
+    const toInput = document.getElementById("to");
+    const dateInput = document.getElementById("date");
+    const priceInput = document.getElementById("price");
+    const popup = document.getElementById("popup");
+    const ticketDetails = document.getElementById("ticket-details");
+
+    function displayFlights(data) {
+      flightList.innerHTML = data.map(f => `
+        <div class="flight-card">
+          <div class="flight-content">
+            <h3>${f.airline}</h3>
+            <p><strong>From:</strong> ${f.from} → <strong>To:</strong> ${f.to}</p>
+            <p><strong>Date:</strong> ${f.date}</p>
+            <p><strong>Departure:</strong> ${f.departure} | <strong>Arrival:</strong> ${f.arrival}</p>
+            <p><strong>Duration:</strong> ${f.duration}</p>
+            <p><strong>Price:</strong> $${f.cost} (${f.price.toUpperCase()})</p>
+            <button class="book-btn" onclick="bookFlight('${f.airline}', '${f.from}', '${f.to}', '${f.date}', ${f.cost})">Book Now</button>
+            <button class="cancel-btn" onclick="cancelFlight('${f.airline}', '${f.from}', '${f.to}', '${f.date}', ${f.cost})">Cancel Booking</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterFlights() {
+      const from = fromInput.value.toLowerCase();
+      const to = toInput.value.toLowerCase();
+      const date = dateInput.value;
+      const price = priceInput.value;
+
+      const filtered = flights.filter(f =>
+        (from === "" || f.from.toLowerCase().includes(from)) &&
+        (to === "" || f.to.toLowerCase().includes(to)) &&
+        (date === "" || f.date === date) &&
+        (price === "" || f.price === price)
+      );
+      displayFlights(filtered);
+    }
+
+    function bookFlight(airline, from, to, date, cost) {
+      ticketDetails.innerHTML = `
+        <p><strong>Airline:</strong> ${airline}</p>
+        <p><strong>From:</strong> ${from}</p>
+        <p><strong>To:</strong> ${to}</p>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Price:</strong> $${cost}</p>
+        <p><strong>Status:</strong> ✅ Booking Confirmed</p>
+        <p><em>Ticket No:</em> FL-${Math.floor(Math.random()*1000000)}</p>
+      `;
+      popup.style.display = "flex";
+    }
+
+    function cancelFlight(airline, from, to, date, cost) {
+      ticketDetails.innerHTML = `
+        <p><strong>Airline:</strong> ${airline}</p>
+        <p><strong>From:</strong> ${from}</p>
+        <p><strong>To:</strong> ${to}</p>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Price:</strong> $${cost}</p>
+        <p><strong>Status:</strong> ❌ Booking Cancelled</p>
+        <p><em>Ticket No:</em> FL-${Math.floor(Math.random()*1000000)}</p>
+      `;
+      popup.style.display = "flex";
+    }
+
+    function closePopup() { popup.style.display = "none"; }
+
+    [fromInput, toInput, dateInput, priceInput].forEach(el => el.addEventListener("input", filterFlights));
+
+    displayFlights(flights);
+  </script>
+</body>
+</html>

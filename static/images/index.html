@@ -1,0 +1,889 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tower Travel Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+body {
+    background: linear-gradient(135deg, #ffb347, #ffcc33);
+    scroll-behavior: smooth;
+}
+
+/* ================= NAVBAR ================= */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    background: rgba(0,0,0,0.6);
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Logo section */
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.logo-img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.logo-text {
+    color: #ffcc00;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+/* Navbar Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.nav-link a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: 0.3s;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.nav-link a:hover {
+    background: #ffcc00;
+    color: black;
+    transform: scale(1.02);
+}
+
+/* AI Button Special */
+.ai-link a {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    color: white !important;
+    font-weight: 600;
+}
+
+.ai-link a:hover {
+    background: linear-gradient(135deg, #ff8e53, #ff6b6b);
+    transform: scale(1.02);
+}
+
+/* User Section */
+.user-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,215,0,0.2);
+    padding: 4px 12px;
+    border-radius: 25px;
+}
+
+.welcome-text {
+    color: #ffd54f;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.logout-link {
+    background: #ff4444;
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: white !important;
+    font-size: 12px !important;
+}
+
+.logout-link:hover {
+    background: #ff0000;
+}
+
+/* ================= BANNER ================= */
+.banar {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')
+                no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding-top: 80px;
+}
+
+.banar h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+    animation: fadeInDown 1s ease forwards;
+}
+
+.banar p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 8px rgba(0,0,0,0.5);
+}
+
+/* Explore Button */
+.banar .btn {
+    padding: 12px 30px;
+    background: #ff7700;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.banar .btn:hover {
+    background: #ffcc00;
+    color: black;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #ffcc00;
+}
+
+/* Animation */
+@keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= AI MODAL STYLES ================= */
+.ai-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.ai-modal-content {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    border-radius: 20px;
+    width: 95%;
+    max-width: 1200px;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.ai-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(255,215,0,0.3);
+}
+
+.ai-modal-header h2 {
+    color: #ffd54f;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close-ai-modal {
+    background: #ff4444;
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.close-ai-modal:hover {
+    background: #ff0000;
+    transform: scale(1.1);
+}
+
+.ai-tabs {
+    display: flex;
+    gap: 5px;
+    padding: 12px 25px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(255,215,0,0.2);
+}
+
+.ai-tab {
+    padding: 8px 20px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.ai-tab.active {
+    background: #ffd54f;
+    color: #1e3c72;
+}
+
+.ai-tab:hover:not(.active) {
+    background: rgba(255,215,0,0.3);
+}
+
+.ai-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+/* Recommendation Section */
+.recommendation-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.recommendation-header {
+    color: #ffd54f;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.recommendation-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.recommendation-filters select,
+.recommendation-filters input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.9);
+    font-size: 13px;
+    min-width: 130px;
+}
+
+.recommendation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.recommend-card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid rgba(255,215,0,0.3);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.recommend-card:hover {
+    transform: translateY(-3px);
+    border-color: #ffd54f;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.recommend-card h4 {
+    color: #ffd54f;
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+.recommend-card p {
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+.recommend-card .price {
+    color: #ffd54f;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.weather-info {
+    background: rgba(0,0,0,0.3);
+    border-radius: 6px;
+    padding: 5px;
+    margin-top: 6px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Chatbot Section */
+.chatbot-section {
+    flex: 1;
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 280px;
+}
+
+.chatbot-header {
+    padding: 12px;
+    background: rgba(255,215,0,0.2);
+    border-radius: 12px 12px 0 0;
+    color: #ffd54f;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 280px;
+    max-height: 400px;
+}
+
+.message {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.message.user {
+    background: linear-gradient(135deg, #ffd54f, #ffb300);
+    color: #1e3c72;
+    align-self: flex-end;
+    border-radius: 12px 12px 5px 12px;
+}
+
+.message.bot {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    align-self: flex-start;
+    border-radius: 12px 12px 12px 5px;
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 10px;
+    gap: 8px;
+    border-top: 1px solid rgba(255,215,0,0.2);
+}
+
+.chat-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.9);
+    font-size: 12px;
+}
+
+.chat-send {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #ffd54f, #ffb300);
+    border: none;
+    border-radius: 20px;
+    color: #1e3c72;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 12px;
+}
+
+.quick-buttons {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 8px 10px;
+    border-top: 1px solid rgba(255,215,0,0.2);
+}
+
+.quick-btn {
+    background: rgba(255,215,0,0.2);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: #ffd54f;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.quick-btn:hover {
+    background: #ffd54f;
+    color: #1e3c72;
+}
+
+.typing-indicator {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    width: fit-content;
+    margin: 5px;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background: #ffd54f;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px 15px;
+    }
+    .nav-links {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 5px;
+    }
+    .nav-link a {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    .ai-modal-content {
+        width: 98%;
+        height: 90vh;
+    }
+    .ai-content {
+        flex-direction: column;
+    }
+    .chatbot-section {
+        min-height: 280px;
+    }
+    .banar h1 {
+        font-size: 32px;
+    }
+    .banar p {
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="header">
+    <div class="logo-area">
+        <img src="{% static '9.avif' %}" class="logo-img" alt="Tower Travel Tourism Logo">
+        <span class="logo-text">TOWER TRAVEL</span>
+    </div>
+
+    <ul class="nav-links">
+        <li class="nav-link"><a href="{% url 'index' %}">Home</a></li>
+        <li class="nav-link"><a href="{% url 'destination' %}">Destinations</a></li>
+        <li class="nav-link"><a href="{% url 'hotel' %}">Hotels</a></li>
+        <li class="nav-link"><a href="{% url 'flight' %}">Flights</a></li>
+        <li class="nav-link"><a href="{% url 'package' %}">Packages</a></li>
+        <li class="nav-link"><a href="{% url 'reviews' %}">Reviews</a></li>
+        <li class="nav-link"><a href="{% url 'admin_page' %}">Admin</a></li>
+        <li class="nav-link ai-link"><a href="#" onclick="openAIModal(); return false;"><i class="fas fa-robot"></i> AI</a></li>
+
+        {% if user.is_authenticated %}
+            <li class="nav-link user-info">
+                <span class="welcome-text"><i class="fas fa-user"></i> {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+            </li>
+        {% else %}
+            <li class="nav-link"><a href="{% url 'login' %}" class="login-link">Login</a></li>
+        {% endif %}
+    </ul>
+</header>
+
+<!-- ================= BANNER ================= -->
+<section class="banar">
+    <h1>Explore the Beauty of Greece</h1>
+    <p>Best travel packages curated just for you</p>
+    <a href="{% url 'destination' %}" class="btn">Explore Now</a>
+</section>
+
+<!-- ================= AI MODAL ================= -->
+<div id="aiModal" class="ai-modal">
+    <div class="ai-modal-content">
+        <div class="ai-modal-header">
+            <h2><i class="fas fa-robot"></i> AI Travel Assistant</h2>
+            <button class="close-ai-modal" onclick="closeAIModal()">&times;</button>
+        </div>
+        <div class="ai-tabs">
+            <button class="ai-tab active" onclick="switchAITab('recommendations')">🎯 Recommendations</button>
+            <button class="ai-tab" onclick="switchAITab('chatbot')">💬 Travel Chatbot</button>
+        </div>
+        <div class="ai-content">
+            <!-- Recommendations Tab -->
+            <div id="recommendationsTab" class="recommendation-section">
+                <div class="recommendation-header">
+                    <i class="fas fa-magic"></i> Personalized Recommendations
+                </div>
+                <div class="recommendation-filters">
+                    <select id="recType" onchange="getRecommendations()">
+                        <option value="all">All</option>
+                        <option value="destination">Destinations</option>
+                        <option value="hotel">Hotels</option>
+                        <option value="flight">Flights</option>
+                        <option value="package">Packages</option>
+                    </select>
+                    <select id="recBudget" onchange="getRecommendations()">
+                        <option value="">Any Budget</option>
+                        <option value="low">Low Budget</option>
+                        <option value="medium">Medium Budget</option>
+                        <option value="high">High Budget</option>
+                    </select>
+                    <input type="text" id="recSearch" placeholder="Search..." onkeyup="getRecommendations()">
+                </div>
+                <div id="recommendationsGrid" class="recommendation-grid">
+                    <div style="text-align: center; color: white; padding: 40px;">Loading recommendations...</div>
+                </div>
+            </div>
+
+            <!-- Chatbot Tab -->
+            <div id="chatbotTab" class="chatbot-section" style="display: none;">
+                <div class="chatbot-header">
+                    <i class="fas fa-comment-dots"></i> Travel Assistant
+                    <span style="font-size: 11px;">Ask me anything!</span>
+                </div>
+                <div id="chatMessages" class="chat-messages">
+                    <div class="message bot">
+                        👋 Hi! I'm your AI Travel Assistant. I can help you find the best destinations, hotels, flights, and packages based on your budget and preferences. Ask me anything!
+                    </div>
+                </div>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="sendQuickMessage('Find cheap destinations')">🏖️ Cheap Destinations</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Best hotels under $200')">🏨 Hotels under $200</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Flights with weather info')">✈️ Flights + Weather</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Family packages')">👨‍👩‍👧 Family Packages</button>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button class="chat-send" onclick="sendMessage()">Send</button>
+                </div>
+                <div id="typingIndicator" class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ================= AI MODAL FUNCTIONS =================
+function openAIModal() {
+    document.getElementById('aiModal').style.display = 'flex';
+    getRecommendations();
+}
+
+function closeAIModal() {
+    document.getElementById('aiModal').style.display = 'none';
+}
+
+function switchAITab(tab) {
+    const recommendationsTab = document.getElementById('recommendationsTab');
+    const chatbotTab = document.getElementById('chatbotTab');
+    const tabs = document.querySelectorAll('.ai-tab');
+
+    if (tab === 'recommendations') {
+        recommendationsTab.style.display = 'flex';
+        chatbotTab.style.display = 'none';
+        tabs[0].classList.add('active');
+        tabs[1].classList.remove('active');
+    } else {
+        recommendationsTab.style.display = 'none';
+        chatbotTab.style.display = 'flex';
+        tabs[0].classList.remove('active');
+        tabs[1].classList.add('active');
+    }
+}
+
+// ================= RECOMMENDATION SYSTEM =================
+function getRecommendations() {
+    const type = document.getElementById('recType').value;
+    const budget = document.getElementById('recBudget').value;
+    const search = document.getElementById('recSearch').value;
+
+    const grid = document.getElementById('recommendationsGrid');
+    grid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">Loading recommendations...</div>';
+
+    setTimeout(() => {
+        const recommendations = generateRecommendations(type, budget, search);
+        displayRecommendations(recommendations);
+    }, 500);
+}
+
+function generateRecommendations(type, budget, search) {
+    // Sample data - In production, fetch from Django backend
+    const allItems = {
+        destinations: [
+            { name: "Beach Paradise", country: "Maldives", category: "beach", budget: "high", price: 350, rating: 4.8, weather: "Sunny, 28°C", bestTime: "Nov-Apr" },
+            { name: "Mountain Escape", country: "Switzerland", category: "mountain", budget: "medium", price: 200, rating: 4.7, weather: "Cool, 15°C", bestTime: "Jun-Sep" },
+            { name: "City Lights", country: "USA", category: "city", budget: "low", price: 150, rating: 4.6, weather: "Moderate, 22°C", bestTime: "Apr-Oct" },
+            { name: "Tokyo Adventure", country: "Japan", category: "city", budget: "high", price: 280, rating: 4.9, weather: "Mild, 20°C", bestTime: "Mar-May, Sep-Nov" },
+            { name: "Dubai Luxury", country: "UAE", category: "city", budget: "high", price: 320, rating: 4.9, weather: "Hot, 32°C", bestTime: "Nov-Mar" },
+            { name: "Paris Romance", country: "France", category: "city", budget: "high", price: 280, rating: 4.8, weather: "Mild, 18°C", bestTime: "Apr-Oct" }
+        ],
+        hotels: [
+            { name: "Grand Paris Hotel", location: "Paris", rating: 5, price: 350, budget: "high", amenities: "Pool, Spa, WiFi" },
+            { name: "Dubai Comfort Inn", location: "Dubai", rating: 4, price: 180, budget: "medium", amenities: "WiFi, Gym" },
+            { name: "NYC Budget Stay", location: "New York", rating: 3, price: 120, budget: "low", amenities: "WiFi, Breakfast" },
+            { name: "Swiss Alpine Lodge", location: "Switzerland", rating: 5, price: 280, budget: "high", amenities: "Spa, Mountain View" }
+        ],
+        flights: [
+            { airline: "Emirates", from: "Dubai", to: "London", price: 850, budget: "high", duration: "7h 45m", departure: "08:30", arrival: "15:15", weather: "London: Cloudy, 18°C" },
+            { airline: "PIA", from: "Karachi", to: "Dubai", price: 220, budget: "low", duration: "2h 20m", departure: "06:00", arrival: "08:20", weather: "Dubai: Sunny, 32°C" },
+            { airline: "Turkish Airlines", from: "Istanbul", to: "New York", price: 620, budget: "medium", duration: "9h 30m", departure: "09:45", arrival: "18:15", weather: "NY: Mild, 22°C" }
+        ],
+        packages: [
+            { name: "Family Package", duration: "5 days", price: 1200, budget: "medium", includes: "Hotel, Breakfast, City Tour" },
+            { name: "Solo Adventure", duration: "4 days", price: 600, budget: "low", includes: "Hostel, Hiking, Guide" },
+            { name: "Luxury Escape", duration: "7 days", price: 2500, budget: "high", includes: "5-star Resort, Spa, Fine Dining" }
+        ]
+    };
+
+    let items = [];
+    if (type === 'all') {
+        items = [...allItems.destinations.map(d => ({ ...d, type: 'destination' })),
+                 ...allItems.hotels.map(h => ({ ...h, type: 'hotel' })),
+                 ...allItems.flights.map(f => ({ ...f, type: 'flight' })),
+                 ...allItems.packages.map(p => ({ ...p, type: 'package' }))];
+    } else if (type === 'destination') {
+        items = allItems.destinations.map(d => ({ ...d, type: 'destination' }));
+    } else if (type === 'hotel') {
+        items = allItems.hotels.map(h => ({ ...h, type: 'hotel' }));
+    } else if (type === 'flight') {
+        items = allItems.flights.map(f => ({ ...f, type: 'flight' }));
+    } else if (type === 'package') {
+        items = allItems.packages.map(p => ({ ...p, type: 'package' }));
+    }
+
+    if (budget) {
+        items = items.filter(item => item.budget === budget);
+    }
+
+    if (search) {
+        const searchLower = search.toLowerCase();
+        items = items.filter(item =>
+            (item.name && item.name.toLowerCase().includes(searchLower)) ||
+            (item.country && item.country.toLowerCase().includes(searchLower)) ||
+            (item.location && item.location.toLowerCase().includes(searchLower))
+        );
+    }
+
+    return items;
+}
+
+function displayRecommendations(items) {
+    const grid = document.getElementById('recommendationsGrid');
+
+    if (items.length === 0) {
+        grid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">No recommendations found. Try different filters!</div>';
+        return;
+    }
+
+    grid.innerHTML = items.map(item => {
+        if (item.type === 'destination') {
+            return `
+                <div class="recommend-card" onclick="bookItem('destination', '${item.name}', ${item.price})">
+                    <h4>🌍 ${item.name}</h4>
+                    <p>📍 ${item.country} | ${item.category}</p>
+                    <p>⭐ ${item.rating} ★</p>
+                    <div class="weather-info">
+                        <i class="fas fa-cloud-sun"></i> ${item.weather || 'Weather info available'}
+                    </div>
+                    <p class="price">💰 $${item.price}/day</p>
+                    <p><small>Best time: ${item.bestTime || 'Year-round'}</small></p>
+                </div>
+            `;
+        } else if (item.type === 'hotel') {
+            return `
+                <div class="recommend-card" onclick="bookItem('hotel', '${item.name}', ${item.price})">
+                    <h4>🏨 ${item.name}</h4>
+                    <p>📍 ${item.location} | ⭐ ${item.rating}★</p>
+                    <p>🎁 ${item.amenities}</p>
+                    <p class="price">💰 $${item.price}/night</p>
+                </div>
+            `;
+        } else if (item.type === 'flight') {
+            return `
+                <div class="recommend-card" onclick="bookItem('flight', '${item.airline} ${item.from}-${item.to}', ${item.price})">
+                    <h4>✈️ ${item.airline}</h4>
+                    <p>📍 ${item.from} → ${item.to}</p>
+                    <p>⏰ Dep: ${item.departure} | Arr: ${item.arrival}</p>
+                    <p>⏱️ ${item.duration}</p>
+                    <div class="weather-info">
+                        <i class="fas fa-cloud-sun"></i> ${item.weather}
+                    </div>
+                    <p class="price">💰 $${item.price}</p>
+                </div>
+            `;
+        } else if (item.type === 'package') {
+            return `
+                <div class="recommend-card" onclick="bookItem('package', '${item.name}', ${item.price})">
+                    <h4>🎒 ${item.name}</h4>
+                    <p>📅 ${item.duration}</p>
+                    <p>✅ ${item.includes}</p>
+                    <p class="price">💰 $${item.price}</p>
+                </div>
+            `;
+        }
+        return '';
+    }).join('');
+}
+
+function bookItem(type, name, price) {
+    alert(`📝 Booking: ${name}\n💰 Price: $${price}\n\nThis will redirect you to the booking page.`);
+    // In production, redirect to booking page
+    // window.location.href = `/book/?type=${type}&name=${encodeURIComponent(name)}&price=${price}`;
+}
+
+// ================= CHATBOT SYSTEM =================
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessage(message, 'user');
+    input.value = '';
+    showTyping(true);
+
+    setTimeout(() => {
+        const response = generateChatResponse(message);
+        addMessage(response, 'bot');
+        showTyping(false);
+    }, 800);
+}
+
+function sendQuickMessage(message) {
+    document.getElementById('chatInput').value = message;
+    sendMessage();
+}
+
+function addMessage(text, sender) {
+    const messagesDiv = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+    messageDiv.innerHTML = text;
+    messagesDiv.appendChild(messageDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function showTyping(show) {
+    const indicator = document.getElementById('typingIndicator');
+    indicator.style.display = show ? 'flex' : 'none';
+}
+
+function generateChatResponse(message) {
+    const lowerMsg = message.toLowerCase();
+
+    if (lowerMsg.includes('budget') || lowerMsg.includes('cheap')) {
+        return "💰 Budget-friendly options:\n\n🏖️ Thailand - $150/day\n🏔️ Nepal - $60/day\n🏨 Budget hotels from $90/night\n✈️ Economy flights from $200\n\nWould you like specific recommendations?";
+    }
+    else if (lowerMsg.includes('destination') || lowerMsg.includes('place')) {
+        return "🌍 Top destinations:\n\n🏝️ Maldives - Luxury beach\n🏔️ Switzerland - Mountain views\n🌆 Tokyo - City adventure\n🇫🇷 Paris - Romantic getaway\n\nWhich interests you?";
+    }
+    else if (lowerMsg.includes('flight')) {
+        return "✈️ Flight options with weather:\n\n🇦🇪 Dubai→🇬🇧 London: $850, Emirates, 7h45m (London: 18°C)\n🇵🇰 Karachi→🇦🇪 Dubai: $220, PIA, 2h20m (Dubai: 32°C)\n🇹🇷 Istanbul→🇺🇸 New York: $620, Turkish, 9h30m (NY: 22°C)";
+    }
+    else if (lowerMsg.includes('hotel')) {
+        return "🏨 Hotel recommendations:\n\n🇫🇷 Grand Paris Hotel - $350/night (5★)\n🇦🇪 Dubai Comfort Inn - $180/night (4★)\n🇺🇸 NYC Budget Stay - $120/night (3★)";
+    }
+    else if (lowerMsg.includes('package')) {
+        return "🎒 Special packages:\n\n👨‍👩‍👧 Family (5d): $1020\n🧘 Solo (4d): $600\n💑 Romance (3d): $720\n\nWhich package suits you?";
+    }
+    else {
+        return "🌟 I can help you find:\n• Destinations by budget\n• Hotels and flights\n• Weather forecasts\n• Package deals\n\nWhat are you looking for?";
+    }
+}
+</script>
+
+</body>
+</html>

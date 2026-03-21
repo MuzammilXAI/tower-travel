@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details - Tower Travel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .ticket {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px dashed #667eea;
+        }
+
+        .ticket-number {
+            font-size: 18px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .payment-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-partial { background: #cce5ff; color: #004085; }
+        .status-completed { background: #d4edda; color: #155724; }
+
+        .amount-highlight {
+            font-size: 24px;
+            color: #1e3c72;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 5px;
+            transition: width 0.3s;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .btn-pay {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="booking-card">
+            <h2>📋 Booking Details</h2>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% if is_overdue %}
+                <div class="alert alert-warning">
+                    <strong>⚠️ Payment Overdue!</strong> Please pay immediately to avoid cancellation.
+                </div>
+            {% endif %}
+
+            <div class="ticket">
+                <div class="ticket-number">Ticket: {{ booking.ticket_number }}</div>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Booking Type:</span>
+                <span class="value">{{ booking.get_booking_type_display }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Item:</span>
+                <span class="value">{{ booking.item_name }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Travel Date:</span>
+                <span class="value">{{ booking.travel_date|date:"M d, Y" }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Number of People:</span>
+                <span class="value">{{ booking.number_of_people }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Booking Date:</span>
+                <span class="value">{{ booking.booking_date|date:"M d, Y" }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Payment Status:</span>
+                <span class="value">
+                    <span class="payment-status status-{{ booking.payment_status }}">
+                        {{ booking.get_payment_status_display }}
+                    </span>
+                </span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Total Amount:</span>
+                <span class="value amount-highlight">${{ booking.total_price }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Amount Paid:</span>
+                <span class="value">${{ booking.amount_paid }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Remaining:</span>
+                <span class="value amount-highlight">${{ booking.remaining_amount }}</span>
+            </div>
+
+            {% if booking.payment_method %}
+            <div class="detail-row">
+                <span class="label">Payment Method:</span>
+                <span class="value">{{ booking.get_payment_method_display }}</span>
+            </div>
+            {% endif %}
+
+            {% if booking.transaction_id %}
+            <div class="detail-row">
+                <span class="label">Transaction ID:</span>
+                <span class="value">{{ booking.transaction_id }}</span>
+            </div>
+            {% endif %}
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ payment_progress }}%"></div>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Payment Due:</span>
+                <span class="value">{{ booking.payment_due_date|date:"M d, Y" }} ({{ days_until_due }} days left)</span>
+            </div>
+
+            <div class="action-buttons">
+                {% if booking.remaining_amount > 0 %}
+                    <a href="{% url 'payment_page' booking.id %}" class="btn btn-pay">Pay Now</a>
+                {% endif %}
+                <a href="{% url 'my_bookings' %}" class="btn btn-back">Back to Bookings</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

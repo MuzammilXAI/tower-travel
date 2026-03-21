@@ -1,0 +1,517 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Destinations – Tower Travel Premium</title>
+
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+    backdrop-filter: blur(4px);
+  }
+
+  .overlay {
+    background: rgba(0, 0, 0, 0.6);
+    min-height: 100vh;
+    width: 100%;
+    padding-bottom: 50px;
+  }
+
+  /* HEADER */
+  .header {
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffd54f;
+    box-shadow: 0 0 6px #ffd54f;
+  }
+
+  .logo-text {
+    font-size: 14px;
+    color: #ffd54f;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 6px rgba(255,213,79,0.6);
+  }
+
+  /* Navigation */
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links li {
+    display: inline-block;
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 8px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .nav-links li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background: #ffd54f;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .nav-links li a:hover::after { width: 100%; }
+  .nav-links li a:hover {
+    color: #ffd54f;
+    text-shadow: 0 0 6px #ffd54f;
+    transform: scale(1.02);
+    background: rgba(255,215,0,0.1);
+  }
+
+  /* User Module - Single Compact Card */
+  .user-module {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    border-radius: 25px;
+    padding: 3px 8px 3px 12px;
+    margin-left: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .user-module:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  }
+
+  .welcome-name {
+    color: rgba(255,255,255,0.95);
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .logout-icon {
+    color: white;
+    font-size: 10px;
+    text-decoration: none;
+    background: rgba(0,0,0,0.3);
+    padding: 2px 8px;
+    border-radius: 15px;
+    font-weight: 600;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .logout-icon:hover {
+    background: rgba(0,0,0,0.5);
+    color: #ffd54f;
+  }
+
+  .login-btn {
+    background: linear-gradient(90deg, #1976d2, #42a5f5);
+    color: white !important;
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    white-space: nowrap;
+    font-size: 11px !important;
+  }
+
+  /* FILTERS */
+  .search-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 15px auto;
+    max-width: 900px;
+    padding: 8px;
+  }
+
+  .search-filters input, .search-filters select {
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 12px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  }
+
+  /* DESTINATIONS CARDS */
+  .destinations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1300px;
+    margin: auto;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.97);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  }
+
+  .card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover img { transform: scale(1.05); }
+
+  .card-content {
+    padding: 12px;
+  }
+
+  .card-content h3 {
+    margin-top: 0;
+    color: #d32f2f;
+    font-size: 1.1rem;
+  }
+
+  .card-content p {
+    margin: 4px 0;
+    color: #333;
+    font-size: 12px;
+  }
+
+  .book-btn, .cancel-btn {
+    padding: 7px 10px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.3s;
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .book-btn { background: linear-gradient(90deg,#1976d2,#42a5f5); }
+  .book-btn:hover { background: linear-gradient(90deg,#1565c0,#1e88e5); transform: scale(1.02); }
+
+  .cancel-btn { background: linear-gradient(90deg,#d32f2f,#f44336); }
+  .cancel-btn:hover { background: linear-gradient(90deg,#b71c1c,#d32f2f); transform: scale(1.02); }
+
+  .form-group {
+    margin-bottom: 6px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 10px;
+    color: #555;
+    margin-bottom: 2px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 11px;
+  }
+
+  /* POPUP */
+  .popup {
+    display: none;
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.65);
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+  }
+
+  .popup-content {
+    background:#fff; padding:20px;
+    border-radius:15px;
+    width:90%; max-width:380px;
+    text-align:center;
+  }
+
+  .ticket { text-align:left; border:2px dashed #1976d2; padding:12px; border-radius:8px; margin-top:12px; font-size:0.85rem; background:#f9f9f9; }
+  .close-popup { margin-top:12px; background:linear-gradient(90deg,#1e3c72,#2a5298); color:#fff; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:12px; }
+
+  .no-destinations {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 40px;
+    color: white;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .header { flex-direction: column; text-align: center; }
+    .nav-links { justify-content: center; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links li a { font-size: 10px; padding: 4px 6px; }
+    .user-module { padding: 2px 6px 2px 8px; gap: 4px; }
+    .welcome-name { font-size: 9px; }
+    .logout-icon { font-size: 9px; padding: 2px 6px; }
+    .login-btn { padding: 3px 8px !important; font-size: 10px !important; }
+    .logo-text { font-size: 12px; }
+    .logo-img { width: 30px; height: 30px; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { flex-wrap: wrap; gap: 2px; }
+    .nav-links li a { font-size: 9px; padding: 3px 5px; }
+    .user-module { padding: 2px 5px 2px 7px; }
+    .welcome-name { font-size: 8px; }
+    .logout-icon { font-size: 8px; padding: 2px 5px; }
+    .search-filters { flex-direction: column; align-items: center; }
+    .search-filters input, .search-filters select { width: 95%; font-size: 11px; }
+    .destinations { grid-template-columns: 1fr; padding: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="overlay">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-area">
+      <img src="{% static '9.avif' %}" class="logo-img" alt="Logo">
+      <span class="logo-text">TOWER TRAVEL</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'destination' %}">Destinations</a></li>
+      <li><a href="{% url 'hotel' %}">Hotel</a></li>
+      <li><a href="{% url 'flight' %}">Flight</a></li>
+      <li><a href="{% url 'package' %}">Package</a></li>
+      <li><a href="{% url 'reviews' %}">Reviews</a></li>
+      <li><a href="{% url 'admin_page' %}">Admin</a></li>
+      <li><a href="{% url 'my_bookings' %}">Bookings</a></li>
+
+      {% if user.is_authenticated %}
+        <li>
+          <div class="user-module">
+            <span class="welcome-name">Hi, {{ user.username }}</span>
+            <a href="{% url 'logout' %}" class="logout-icon">Logout</a>
+          </div>
+        </li>
+      {% else %}
+        <li><a href="{% url 'login' %}" class="login-btn">Login</a></li>
+      {% endif %}
+    </ul>
+  </header>
+
+  <!-- FILTERS -->
+  <div class="search-filters">
+    <input type="text" id="search" placeholder="Search..." />
+    <select id="category">
+      <option value="">All Categories</option>
+      <option value="beach">Beach</option>
+      <option value="mountain">Mountain</option>
+      <option value="city">City</option>
+    </select>
+    <select id="budget">
+      <option value="">All Budgets</option>
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+  </div>
+
+  <!-- DESTINATIONS GRID -->
+  <div class="destinations" id="destinations">
+    {% for destination in destinations %}
+    <div class="card" data-category="{{ destination.category }}" data-budget="{{ destination.budget }}" data-name="{{ destination.name }}">
+      <img src="{{ destination.image_url }}" alt="{{ destination.name }}">
+      <div class="card-content">
+        <h3>{{ destination.name }}</h3>
+        <p>📍 {{ destination.country }} | {{ destination.category|title }} | {{ destination.budget|title }}</p>
+        <p>💰 ${{ destination.price_per_day }}/day</p>
+        <p>{{ destination.description|truncatechars:70 }}</p>
+
+        <form method="POST" action="{% url 'book_item' %}">
+          {% csrf_token %}
+          <input type="hidden" name="booking_type" value="destination">
+          <input type="hidden" name="item_id" value="{{ destination.id }}">
+          <input type="hidden" name="item_name" value="{{ destination.name }}">
+          <input type="hidden" name="price" value="{{ destination.price_per_day }}">
+
+          <div class="form-group">
+            <label>Travel Date:</label>
+            <input type="date" name="travel_date" required min="{{ today|date:'Y-m-d' }}">
+          </div>
+
+          <div class="form-group">
+            <label>People:</label>
+            <input type="number" name="people" value="1" min="1" max="10" required>
+          </div>
+
+          <div class="form-group">
+            <label>Full Name:</label>
+            <input type="text" name="full_name" value="{{ user.get_full_name }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Email:</label>
+            <input type="email" name="email" value="{{ user.email }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Phone:</label>
+            <input type="tel" name="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label>Special Requests:</label>
+            <textarea name="special_requests" rows="2"></textarea>
+          </div>
+
+          <button type="submit" class="book-btn">Confirm Booking</button>
+        </form>
+
+        <form method="POST" action="{% url 'cancel_booking' %}">
+          {% csrf_token %}
+          <input type="hidden" name="booking_type" value="destination">
+          <input type="hidden" name="item_name" value="{{ destination.name }}">
+          <button type="submit" class="cancel-btn">Cancel Booking</button>
+        </form>
+      </div>
+    </div>
+    {% empty %}
+    <div class="no-destinations">
+      <h3>No destinations found</h3>
+      <p>Try adjusting your search filters</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- POPUP TICKET -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>🎟️ Booking Details</h2>
+      <div class="ticket" id="ticket-details"></div>
+      <button class="close-popup" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const searchInput = document.getElementById('search');
+const categorySelect = document.getElementById('category');
+const budgetSelect = document.getElementById('budget');
+const cards = document.querySelectorAll('.card');
+const popup = document.getElementById('popup');
+const ticketDetails = document.getElementById('ticket-details');
+
+function filterCards() {
+  const searchValue = searchInput.value.toLowerCase();
+  const categoryValue = categorySelect.value;
+  const budgetValue = budgetSelect.value;
+
+  cards.forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    const category = card.dataset.category;
+    const budget = card.dataset.budget;
+
+    if (
+      (name.includes(searchValue) || searchValue === '') &&
+      (category === categoryValue || categoryValue === '') &&
+      (budget === budgetValue || budgetValue === '')
+    ) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+searchInput.addEventListener('input', filterCards);
+categorySelect.addEventListener('change', filterCards);
+budgetSelect.addEventListener('change', filterCards);
+
+function bookDestination(name, category, budget) {
+  ticketDetails.innerHTML = `
+    <p><strong>Destination:</strong> ${name}</p>
+    <p><strong>Category:</strong> ${category}</p>
+    <p><strong>Budget:</strong> ${budget}</p>
+    <p><strong>Status:</strong> ✅ Booking Confirmed</p>
+    <p><em>Ticket No:</em> DST-${Math.floor(Math.random()*1000000)}</p>
+  `;
+  popup.style.display = 'flex';
+}
+
+function cancelDestination(name) {
+  ticketDetails.innerHTML = `
+    <p><strong>Destination:</strong> ${name}</p>
+    <p><strong>Status:</strong> ❌ Booking Cancelled</p>
+    <p><em>Ticket No:</em> DST-${Math.floor(Math.random()*1000000)}</p>
+  `;
+  popup.style.display = 'flex';
+}
+
+function closePopup() { popup.style.display = 'none'; }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const today = new Date().toISOString().split('T')[0];
+  document.querySelectorAll('input[type="date"]').forEach(input => {
+    input.setAttribute('min', today);
+  });
+});
+</script>
+
+</body>
+</html>

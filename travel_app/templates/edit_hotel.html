@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Hotel - Tower Travel Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .edit-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <h2>🏨 Edit Hotel</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Hotel Name</label>
+                <input type="text" name="name" value="{{ hotel.name }}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Location</label>
+                    <select name="location" required>
+                        <option value="paris" {% if hotel.location == 'paris' %}selected{% endif %}>Paris</option>
+                        <option value="dubai" {% if hotel.location == 'dubai' %}selected{% endif %}>Dubai</option>
+                        <option value="newyork" {% if hotel.location == 'newyork' %}selected{% endif %}>New York</option>
+                        <option value="london" {% if hotel.location == 'london' %}selected{% endif %}>London</option>
+                        <option value="tokyo" {% if hotel.location == 'tokyo' %}selected{% endif %}>Tokyo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Price Category</label>
+                    <select name="price_category" required>
+                        <option value="low" {% if hotel.price_category == 'low' %}selected{% endif %}>Low</option>
+                        <option value="medium" {% if hotel.price_category == 'medium' %}selected{% endif %}>Medium</option>
+                        <option value="high" {% if hotel.price_category == 'high' %}selected{% endif %}>High</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>Rating (1-5)</label>
+                    <input type="number" name="rating" min="1" max="5" value="{{ hotel.rating }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Price/Night ($)</label>
+                    <input type="number" name="price_per_night" step="0.01" value="{{ hotel.price_per_night }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Available Rooms</label>
+                    <input type="number" name="available_rooms" value="{{ hotel.available_rooms }}" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" required>{{ hotel.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Amenities (comma separated)</label>
+                <input type="text" name="amenities" value="{{ hotel.amenities }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Image URL</label>
+                <input type="url" name="image_url" value="{{ hotel.image_url }}" required>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">Update Hotel</button>
+                <a href="{% url 'admin_page' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

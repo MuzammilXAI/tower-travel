@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Package - Tower Travel Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .edit-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .price-preview {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .price-preview span {
+            font-size: 20px;
+            font-weight: 700;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <h2>🎒 Edit Package</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Package Name</label>
+                <input type="text" name="name" value="{{ package.name }}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Duration (Days)</label>
+                    <input type="number" name="duration_days" value="{{ package.duration_days }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Price Per Person ($)</label>
+                    <input type="number" name="price_per_person" step="0.01" value="{{ package.price_per_person }}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Discount Percentage</label>
+                    <input type="number" name="discount_percentage" min="0" max="100" value="{{ package.discount_percentage }}">
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" name="is_active" id="is_active" {% if package.is_active %}checked{% endif %}>
+                    <label for="is_active">Active</label>
+                </div>
+            </div>
+
+            <div class="price-preview">
+                <strong>Final Price:</strong> <span>${{ package.discounted_price|floatformat:2 }}</span>
+                {% if package.discount_percentage > 0 %}
+                    ({{ package.discount_percentage }}% off)
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>What's Included</label>
+                <input type="text" name="includes" value="{{ package.includes }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" required>{{ package.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Image URL</label>
+                <input type="url" name="image_url" value="{{ package.image_url }}" required>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">Update Package</button>
+                <a href="{% url 'admin_page' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tower Travel - Reviews & Ratings</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ======= General ======= */
+body {
+    font-family: 'Cormorant Garamond', serif;
+    background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,20,0.8)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+/* ======= Navbar ======= */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(12px);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.logo-img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.logo-text {
+    color: #ffcc00;
+    font-weight: 700;
+    font-size: 28px;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+.nav-link a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+.nav-link a:hover {
+    background: #ffcc00;
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* ======= Section ======= */
+section {
+    padding: 150px 20px 50px 20px; /* top padding increased for navbar */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+h2 {
+    text-align: center;
+    font-size: 38px;
+    margin-bottom: 40px;
+    color: #ffcc00;
+}
+
+/* ======= Review Form ======= */
+.review-form {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+.review-form label {
+    display: block;
+    margin: 8px 0 4px 0;
+}
+.review-form input, 
+.review-form textarea,
+.review-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: none;
+}
+.review-form button {
+    width: 100%;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(45deg,#ffcc00,#ffdd33);
+    transition: 0.3s;
+}
+.review-form button:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* ======= Star Rating ======= */
+.star {
+    font-size: 25px;
+    color: #ccc;
+    cursor: pointer;
+    margin-right:5px;
+    transition: color 0.3s;
+}
+.star.selected,
+.star:hover,
+.star:hover ~ .star {
+    color: #ffcc00;
+}
+
+/* ======= Review Cards ======= */
+.review-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+.review-card h4 {
+    color: #ffcc00;
+    margin-bottom: 5px;
+}
+.review-card .rating {
+    color: #ffcc00;
+    margin-bottom: 10px;
+}
+
+/* ======= Average Rating ======= */
+.average-rating {
+    text-align: right;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #ffcc00;
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="header">
+    <div class="logo-area">
+        <img src="9.avif" class="logo-img" alt="Tower Travel Tourism Logo">
+        <span class="logo-text">TOWER TRAVEL TOURISM</span>
+    </div>
+
+    <ul class="nav-links">
+        <li class="nav-link"><a href="login.html">User</a></li>
+        <li class="nav-link"><a href="designation.html">Destination</a></li>
+        <li class="nav-link"><a href="hotel.html">Hotel</a></li>
+        <li class="nav-link"><a href="flight.html">Flight</a></li>
+        <li class="nav-link"><a href="packege.html">Packages</a></li>
+        <li class="nav-link"><a href="Reviews.html">Reviews</a></li>
+        <li class="nav-link"><a href="Admin.html">Admin</a></li>
+    </ul>
+</header>
+
+<!-- ================= REVIEWS & RATINGS ================= -->
+<section id="reviews">
+    <h2>⭐ Reviews & Ratings</h2>
+
+    <!-- Review Form -->
+    <div class="review-form">
+        <h3>Post a Review</h3>
+        <label for="review-type">Select Type:</label>
+        <select id="review-type">
+            <option value="Destination">Destination</option>
+            <option value="Hotel">Hotel</option>
+            <option value="Flight">Flight</option>
+        </select>
+
+        <label for="review-name">Your Name:</label>
+        <input type="text" id="review-name" placeholder="Enter your name">
+
+        <label for="review-text">Your Review:</label>
+        <textarea id="review-text" placeholder="Write your review..." rows="4"></textarea>
+
+        <label>Rating:</label>
+        <div id="star-container">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
+
+        <button id="submit-review">Submit Review</button>
+    </div>
+
+    <!-- Average Rating Display -->
+    <div id="average-rating" class="average-rating">Average Rating: 0/5</div>
+
+    <!-- Reviews List -->
+    <div id="reviews-list">
+        <!-- Reviews will appear here -->
+    </div>
+</section>
+
+<script>
+// ======= Star rating selection =======
+let selectedRating = 0;
+let reviews = [];
+
+document.querySelectorAll(".star").forEach(star => {
+    star.addEventListener("click", function() {
+        selectedRating = this.dataset.value;
+        highlightStars(selectedRating);
+    });
+    star.addEventListener("mouseover", function() { highlightStars(this.dataset.value); });
+    star.addEventListener("mouseout", function() { highlightStars(selectedRating); });
+});
+
+function highlightStars(rating) {
+    document.querySelectorAll(".star").forEach(star => {
+        star.style.color = (star.dataset.value <= rating) ? "#ffcc00" : "#ccc";
+    });
+}
+
+// ======= Submit review =======
+document.getElementById("submit-review").addEventListener("click", function() {
+    const type = document.getElementById("review-type").value;
+    const name = document.getElementById("review-name").value.trim();
+    const text = document.getElementById("review-text").value.trim();
+
+    if(name === "" || text === "" || selectedRating === 0) {
+        alert("⚠ Please fill all fields and select a rating.");
+        return;
+    }
+
+    const review = { type, name, text, rating: parseInt(selectedRating) };
+    reviews.push(review);
+    displayReviews();
+    updateAverageRating();
+
+    // Reset form
+    document.getElementById("review-name").value = "";
+    document.getElementById("review-text").value = "";
+    selectedRating = 0;
+    highlightStars(0);
+});
+
+// ======= Display reviews =======
+function displayReviews() {
+    const reviewsList = document.getElementById("reviews-list");
+    reviewsList.innerHTML = "";
+
+    reviews.slice().reverse().forEach(r => {
+        const reviewCard = document.createElement("div");
+        reviewCard.classList.add("review-card");
+        reviewCard.innerHTML = `
+            <h4>${r.name} - <small style="color:#fff;">${r.type}</small></h4>
+            <div class="rating">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</div>
+            <p>${r.text}</p>
+        `;
+        reviewsList.appendChild(reviewCard);
+    });
+}
+
+// ======= Update average rating =======
+function updateAverageRating() {
+    if(reviews.length === 0) {
+        document.getElementById("average-rating").textContent = "Average Rating: 0/5";
+        return;
+    }
+    const total = reviews.reduce((sum, r) => sum + r.rating, 0);
+    const avg = (total / reviews.length).toFixed(1);
+    document.getElementById("average-rating").textContent = `Average Rating: ${avg}/5 (${reviews.length} review${reviews.length>1?'s':''})`;
+}
+</script>
+
+</body>
+</html>

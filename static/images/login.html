@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login – Tower Travel Premium</title>
+
+<style>
+/* RESET & FONT */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* BODY & BACKGROUND */
+body {
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+  overflow: hidden;
+}
+
+/* OVERLAY */
+.overlay {
+  background: rgba(0, 0, 0, 0.6);
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* HEADER / NAVBAR */
+.header {
+  width: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 45px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  animation: slideDown 1s ease forwards;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-80px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffd54f;
+  box-shadow: 0 0 12px #ffd54f;
+  transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.logo-text {
+  font-size: 26px;
+  color: #ffd54f;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(255,213,79,0.6);
+  transition: all 0.3s ease;
+}
+
+.logo-text:hover {
+  text-shadow: 0 0 20px #ffd54f;
+  transform: scale(1.05);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: white;
+  font-size: 17px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #ffd54f; /* Gold text */
+  text-shadow: 0 0 15px #ffd54f; /* Glow effect */
+  transform: scale(1.1); /* Slight zoom */
+  background: rgba(255,215,0,0.1); /* Subtle highlight behind link */
+  box-shadow: 0 0 15px rgba(255,215,0,0.5); /* Glow around link */
+}
+
+/* FLOATING GOLD SHAPES */
+.float-shape {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  background: rgba(255,215,0,0.2);
+  border-radius: 50%;
+  filter: blur(50px);
+  animation: float 8s infinite ease-in-out alternate;
+  z-index: 0;
+}
+
+.shape1 { top: 10%; left: 10%; }
+.shape2 { bottom: 10%; right: 15%; animation-duration: 10s; }
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-50px) rotate(180deg); }
+  100% { transform: translateY(0px) rotate(360deg); }
+}
+
+/* LOGIN BOX */
+.login-box {
+  position: relative;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 25px;
+  border: 2px solid rgba(255,215,0,0.5);
+  box-shadow: 0 0 40px rgba(255,215,0,0.7);
+  width: 380px;
+  padding: 50px 40px;
+  text-align: center;
+  z-index: 1;
+  animation: popUp 1s ease forwards;
+}
+
+@keyframes popUp {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.login-box h2 {
+  color: #ffd54f;
+  font-size: 32px;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(255,215,0,0.9);
+  margin-bottom: 35px;
+}
+
+/* INPUT FIELDS */
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.input-field label {
+  color: #fff;
+  font-size: 15px;
+  margin-bottom: 6px;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.input-field input {
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.input-field input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+.input-field input:focus {
+  background: rgba(255,255,255,0.3);
+  box-shadow: 0 0 20px #ffd54f, 0 0 30px rgba(255,215,0,0.5);
+  border: 1px solid #ffd54f;
+  transform: scale(1.03);
+}
+
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ffd54f, #ffb300);
+  color: black;
+  box-shadow: 0 0 20px rgba(255,215,0,0.8);
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px #ffd54f, 0 0 40px rgba(255,215,0,0.6);
+}
+
+/* EXTRA LINKS */
+.extra-links {
+  margin-top: 20px;
+}
+
+.extra-links a {
+  color: #ffd54f;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.extra-links a:hover {
+  text-shadow: 0 0 10px gold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 450px) {
+  .login-box { width: 90%; padding: 35px 25px; }
+  .nav-links { flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+  <!-- Floating shapes -->
+  <div class="float-shape shape1"></div>
+  <div class="float-shape shape2"></div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-area">
+      <img src="9.avif" class="logo-img" alt="Logo">
+      <span class="logo-text">TOWER TRAVEL TOURISM</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="login.html">User</a></li>
+      <li><a href="designation.html">Destination</a></li>
+      <li><a href="hotel.html">Hotel</a></li>
+      <li><a href="flight.html">Flight</a></li>
+      <li><a href="packege.html">Packages</a></li>
+      <li><a href="Reviews.html">Reviews</a></li>
+      <li><a href="Admin.html">Admin</a></li>
+    </ul>
+  </header>
+  <br>
+
+  <!-- LOGIN BOX -->
+  <div class="login-box">
+    <h2>Welcome Back</h2>
+    <div class="input-field">
+      <label>Email</label>
+      <input type="email" placeholder="Enter your email" required>
+    </div>
+    <div class="input-field">
+      <label>Password</label>
+      <input type="password" placeholder="Enter your password" required>
+    </div>
+    <button class="btn">Login</button>
+    <div class="extra-links">
+      <p><a href="#">Forgot Password?</a></p>
+      <p><a href="signup.html">Create New Account</a></p>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

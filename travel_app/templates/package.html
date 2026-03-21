@@ -1,0 +1,672 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Packages – Tower Travel Premium</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+    backdrop-filter: blur(4px);
+  }
+
+  .overlay {
+    background: rgba(0, 0, 0, 0.6);
+    min-height: 100vh;
+    width: 100%;
+    padding-bottom: 50px;
+  }
+
+  /* ================= HEADER - MATCHING INDEX.HTML ================= */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    background: rgba(0,0,0,0.85);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    flex-wrap: nowrap;
+    gap: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .header::-webkit-scrollbar {
+    display: none;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 3px solid #ffd54f;
+    box-shadow: 0 0 12px rgba(255,213,79,0.6);
+    transition: all 0.3s ease;
+    background: #1a1a2e;
+  }
+
+  .logo-img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255,213,79,0.9);
+    border-color: #ffcc00;
+  }
+
+  .logo-text {
+    color: #ffcc00;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 12px rgba(255,204,0,0.5);
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .nav-links li {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 14px;
+    display: inline-block;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+
+  .nav-links li a:hover {
+    background: #ffcc00;
+    color: #1e3c72;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,204,0,0.4);
+  }
+
+  /* User Section */
+  .user-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,215,0,0.15);
+    padding: 5px 12px;
+    border-radius: 40px;
+    backdrop-filter: blur(5px);
+    flex-shrink: 0;
+  }
+
+  .welcome-text {
+    color: #ffd54f;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .logout-link {
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    padding: 5px 12px;
+    border-radius: 30px;
+    color: white !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    white-space: nowrap;
+  }
+
+  .logout-link:hover {
+    background: #ffcc00;
+    color: #1e3c72 !important;
+    transform: translateY(-1px);
+  }
+
+  .login-link {
+    background: linear-gradient(135deg, #1976d2, #0d47a1);
+    padding: 6px 18px;
+    border-radius: 30px;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+  }
+
+  .login-link:hover {
+    background: #ffcc00;
+    color: #1e3c72 !important;
+    transform: translateY(-1px);
+  }
+
+  /* FILTERS */
+  .search-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 25px auto;
+    max-width: 900px;
+    padding: 10px;
+  }
+
+  .search-filters input, .search-filters select {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .search-filters input:focus, .search-filters select:focus {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px #ffd54f, 0 0 20px rgba(255,215,0,0.5);
+  }
+
+  /* PACKAGES GRID */
+  .packages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    padding: 30px;
+    max-width: 1300px;
+    margin: auto;
+  }
+
+  .package-card {
+    background: rgba(255,255,255,0.97);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+  }
+
+  .package-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .package-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .package-card:hover img { transform: scale(1.1); }
+
+  .package-content {
+    padding: 20px;
+  }
+
+  .package-content h3 {
+    margin-top: 0;
+    color: #d32f2f;
+    text-shadow: 0 0 6px rgba(211,47,47,0.4);
+    font-size: 1.3rem;
+  }
+
+  .package-content p {
+    margin: 5px 0;
+    color: #333;
+    font-size: 0.95rem;
+  }
+
+  .package-content .price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1976d2;
+    margin: 10px 0;
+  }
+
+  .package-content .discount {
+    background: #ffd54f;
+    color: #d32f2f;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 10px;
+  }
+
+  /* Booking Form Styles */
+  .booking-form {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 4px;
+    color: #555;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: all 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #ffd54f;
+    box-shadow: 0 0 5px rgba(255,213,79,0.5);
+  }
+
+  .form-group input[type="date"] {
+    font-family: "Poppins", sans-serif;
+  }
+
+  .book-btn, .cancel-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.3s;
+    width: 100%;
+  }
+
+  .book-btn { background: linear-gradient(90deg,#1976d2,#42a5f5); }
+  .book-btn:hover { background: linear-gradient(90deg,#1565c0,#1e88e5); transform: scale(1.02); }
+
+  .cancel-btn { background: linear-gradient(90deg,#d32f2f,#f44336); }
+  .cancel-btn:hover { background: linear-gradient(90deg,#b71c1c,#d32f2f); transform: scale(1.02); }
+
+  /* POPUP */
+  .popup {
+    display: none;
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.65);
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+  }
+
+  .popup-content {
+    background:#fff; padding:25px 20px;
+    border-radius:15px;
+    width:95%; max-width:400px;
+    text-align:center;
+    animation: fadeIn 0.35s ease-in-out;
+    box-shadow:0 15px 35px rgba(0,0,0,0.2);
+  }
+
+  @keyframes fadeIn { from {opacity:0; transform:scale(0.9);} to {opacity:1; transform:scale(1);} }
+
+  .ticket {
+    text-align:left;
+    border:2px dashed #1976d2;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+    font-size:0.95rem;
+    color:#444;
+    background:#f9f9f9;
+  }
+
+  .close-popup {
+    margin-top:15px;
+    background:linear-gradient(90deg,#1e3c72,#2a5298);
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:500;
+    transition: all 0.3s;
+  }
+
+  .close-popup:hover {
+    background:linear-gradient(90deg,#1565c0,#1976d2);
+    transform:scale(1.05);
+  }
+
+  /* No Packages Message */
+  .no-packages {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 50px;
+    color: white;
+    font-size: 1.2rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1200px) {
+    .header {
+      padding: 8px 20px;
+      gap: 15px;
+    }
+    .nav-links li a {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+    .logo-text {
+      font-size: 18px;
+    }
+    .logo-img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .header {
+      overflow-x: auto;
+      justify-content: flex-start;
+    }
+    .logo-area {
+      flex-shrink: 0;
+    }
+    .nav-links {
+      flex-shrink: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links li a {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+    .logo-text {
+      font-size: 16px;
+    }
+    .logo-img {
+      width: 42px;
+      height: 42px;
+    }
+    .welcome-text {
+      font-size: 11px;
+    }
+    .logout-link, .login-link {
+      font-size: 11px !important;
+      padding: 4px 10px;
+    }
+    .search-filters {
+      flex-direction: column;
+      align-items: center;
+    }
+    .packages {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links li a {
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+    .logo-text {
+      font-size: 14px;
+    }
+    .logo-img {
+      width: 38px;
+      height: 38px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="overlay">
+
+  <!-- HEADER - MATCHING INDEX.HTML (NO AI MODULE) -->
+  <header class="header">
+    <div class="logo-area">
+      <img src="{% static '9.avif' %}" class="logo-img" alt="Logo">
+      <span class="logo-text">TOWER TRAVEL TOURISM</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'destination' %}">Destination</a></li>
+      <li><a href="{% url 'hotel' %}">Hotel</a></li>
+      <li><a href="{% url 'flight' %}">Flight</a></li>
+      <li><a href="{% url 'package' %}">Package</a></li>
+      <li><a href="{% url 'reviews' %}">Reviews</a></li>
+      <li><a href="{% url 'admin_page' %}">Admin</a></li>
+      <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+
+      {% if user.is_authenticated %}
+        <li class="user-info">
+          <span class="welcome-text"><i class="fas fa-user"></i> {{ user.username }}</span>
+          <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+        </li>
+      {% else %}
+        <li><a href="{% url 'login' %}" class="login-link">Login</a></li>
+      {% endif %}
+    </ul>
+  </header>
+
+  <!-- FILTERS -->
+  <div class="search-filters">
+    <input type="text" id="search" placeholder="Search Packages..." value="{{ search_query }}" />
+    <select id="type">
+      <option value="">All Types</option>
+      <option value="honeymoon" {% if selected_type == 'honeymoon' %}selected{% endif %}>Honeymoon</option>
+      <option value="family" {% if selected_type == 'family' %}selected{% endif %}>Family</option>
+      <option value="adventure" {% if selected_type == 'adventure' %}selected{% endif %}>Adventure</option>
+      <option value="luxury" {% if selected_type == 'luxury' %}selected{% endif %}>Luxury</option>
+      <option value="budget" {% if selected_type == 'budget' %}selected{% endif %}>Budget</option>
+    </select>
+    <select id="duration">
+      <option value="">Any Duration</option>
+      <option value="3" {% if selected_duration == '3' %}selected{% endif %}>3-5 Days</option>
+      <option value="6" {% if selected_duration == '6' %}selected{% endif %}>6-8 Days</option>
+      <option value="9" {% if selected_duration == '9' %}selected{% endif %}>9+ Days</option>
+    </select>
+  </div>
+
+  <!-- PACKAGES GRID -->
+  <div class="packages" id="packages">
+    {% for package in packages %}
+    <div class="package-card" data-name="{{ package.name|lower }}" data-type="{{ package.package_type }}" data-duration="{{ package.duration_days }}">
+      <img src="{{ package.image_url }}" alt="{{ package.name }}">
+      <div class="package-content">
+        <h3>{{ package.name }}</h3>
+        <p><strong>Duration:</strong> {{ package.duration_days }} days</p>
+        <p><strong>Includes:</strong> {{ package.includes|truncatechars:60 }}</p>
+        <p class="price">
+          {% if package.discount_percentage > 0 %}
+            <span style="text-decoration: line-through; color: #999;">${{ package.price_per_person }}</span>
+            ${{ package.discounted_price|floatformat:2 }}
+            <span class="discount">-{{ package.discount_percentage }}% OFF</span>
+          {% else %}
+            ${{ package.price_per_person }}
+          {% endif %}
+          <small>/person</small>
+        </p>
+        <p>{{ package.description|truncatechars:100 }}</p>
+
+        <!-- Booking Form -->
+        <form method="POST" action="{% url 'book_item' %}" class="booking-form">
+          {% csrf_token %}
+          <input type="hidden" name="booking_type" value="package">
+          <input type="hidden" name="item_id" value="{{ package.id }}">
+          <input type="hidden" name="item_name" value="{{ package.name }}">
+          <input type="hidden" name="price" value="{{ package.discounted_price }}">
+
+          <div class="form-group">
+            <label>Start Date:</label>
+            <input type="date" name="travel_date" required min="{{ today|date:'Y-m-d' }}">
+          </div>
+
+          <div class="form-group">
+            <label>Number of People:</label>
+            <input type="number" name="people" value="2" min="1" max="{{ package.max_people }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Full Name:</label>
+            <input type="text" name="full_name" value="{{ user.get_full_name }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Email:</label>
+            <input type="email" name="email" value="{{ user.email }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Phone:</label>
+            <input type="tel" name="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label>Special Requests:</label>
+            <textarea name="special_requests" rows="2" placeholder="Dietary requirements, room preferences, etc."></textarea>
+          </div>
+
+          <button type="submit" class="book-btn">Confirm Booking</button>
+        </form>
+
+        <!-- Cancel Booking Form -->
+        <form method="POST" action="{% url 'cancel_booking' %}">
+          {% csrf_token %}
+          <input type="hidden" name="booking_type" value="package">
+          <input type="hidden" name="item_name" value="{{ package.name }}">
+          <button type="submit" class="cancel-btn">Cancel Booking</button>
+        </form>
+      </div>
+    </div>
+    {% empty %}
+    <div class="no-packages">
+      <h3>No packages found</h3>
+      <p>Try adjusting your search filters</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- POPUP TICKET -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>🎟️ Booking Details</h2>
+      <div class="ticket" id="ticket-details"></div>
+      <button class="close-popup" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const searchInput = document.getElementById('search');
+const typeSelect = document.getElementById('type');
+const durationSelect = document.getElementById('duration');
+const cards = document.querySelectorAll('.package-card');
+const popup = document.getElementById('popup');
+const ticketDetails = document.getElementById('ticket-details');
+
+// Filter function
+function filterCards() {
+  const searchValue = searchInput.value.toLowerCase();
+  const typeValue = typeSelect.value;
+  const durationValue = durationSelect.value;
+
+  cards.forEach(card => {
+    const name = card.dataset.name;
+    const type = card.dataset.type;
+    const duration = parseInt(card.dataset.duration);
+
+    let matchesSearch = name.includes(searchValue);
+    let matchesType = typeValue === '' || type === typeValue;
+    let matchesDuration = true;
+
+    if (durationValue) {
+      if (durationValue === '3') matchesDuration = duration >= 3 && duration <= 5;
+      else if (durationValue === '6') matchesDuration = duration >= 6 && duration <= 8;
+      else if (durationValue === '9') matchesDuration = duration >= 9;
+    }
+
+    if (matchesSearch && matchesType && matchesDuration) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// Add event listeners
+searchInput.addEventListener('input', filterCards);
+typeSelect.addEventListener('change', filterCards);
+durationSelect.addEventListener('change', filterCards);
+
+// Popup functions
+function bookPackage(name) {
+  ticketDetails.innerHTML = `
+    <p><strong>Package:</strong> ${name}</p>
+    <p><strong>Status:</strong> ✅ Please use the booking form above</p>
+    <p><em>Note:</em> Fill the form to confirm booking</p>
+  `;
+  popup.style.display = 'flex';
+}
+
+function cancelPackage(name) {
+  ticketDetails.innerHTML = `
+    <p><strong>Package:</strong> ${name}</p>
+    <p><strong>Status:</strong> ❌ To cancel, use the cancel button below</p>
+  `;
+  popup.style.display = 'flex';
+}
+
+function closePopup() {
+  popup.style.display = 'none';
+}
+
+// Set minimum date for date inputs
+document.addEventListener('DOMContentLoaded', function() {
+  const today = new Date().toISOString().split('T')[0];
+  document.querySelectorAll('input[type="date"]').forEach(input => {
+    input.setAttribute('min', today);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - Tower Travel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .confirmation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #28a745;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 40px;
+            animation: scaleIn 0.5s ease 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .ticket {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px dashed #667eea;
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .ticket-header h3 {
+            color: #333;
+            font-size: 20px;
+        }
+
+        .ticket-number {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .ticket-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .price {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .price-label {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .price-value {
+            color: #28a745;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .info-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .info-text i {
+            color: #667eea;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-card">
+        <div class="success-icon">✓</div>
+        <h1>Booking Confirmed!</h1>
+        <p class="subtitle">Your travel booking has been successfully confirmed</p>
+
+        <div class="ticket">
+            <div class="ticket-header">
+                <h3>E-Ticket</h3>
+                <span class="ticket-number">{{ ticket_number }}</span>
+            </div>
+
+            <div class="ticket-details">
+                <div class="detail-item">
+                    <div class="detail-label">Booking Type</div>
+                    <div class="detail-value">{{ booking.booking_type|title }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Item</div>
+                    <div class="detail-value">{{ item_name }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Travel Date</div>
+                    <div class="detail-value">{{ booking.travel_date|date:"d M Y" }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Guests</div>
+                    <div class="detail-value">{{ booking.number_of_people }}</div>
+                </div>
+                {% if booking.booking_type == 'hotel' %}
+                <div class="detail-item">
+                    <div class="detail-label">Rooms</div>
+                    <div class="detail-value">{{ booking.number_of_rooms }}</div>
+                </div>
+                {% endif %}
+                <div class="detail-item">
+                    <div class="detail-label">Booking Date</div>
+                    <div class="detail-value">{{ booking.booking_date|date:"d M Y" }}</div>
+                </div>
+            </div>
+
+            <div class="price">
+                <div class="price-label">Total Amount Paid</div>
+                <div class="price-value">${{ total_price|floatformat:2 }}</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="{% url 'index' %}" class="btn btn-primary">Back to Home</a>
+            <a href="#" class="btn btn-secondary" onclick="window.print()">Print Ticket</a>
+        </div>
+
+        <div class="info-text">
+            <i class="fas fa-envelope"></i> A confirmation email has been sent to your email address
+        </div>
+    </div>
+</body>
+</html>
