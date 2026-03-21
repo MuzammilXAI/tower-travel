@@ -36,3 +36,16 @@ A comprehensive travel booking platform built with Django that allows users to b
 ```bash
 git clone https://github.com/MuzammilXAI/tower-travel.git
 cd tower-travel
+[![GitHub Repository](https://img.shields.io/badge/GitHub-View_on_GitHub-blue?logo=GitHub)](https://github.com/MuzammilXAI/tower-travel)
+[![Download ZIP](https://img.shields.io/badge/Download-ZIP-green)](https://github.com/MuzammilXAI/tower-travel/archive/refs/heads/main.zip)
+[![Clone with HTTPS](https://img.shields.io/badge/Clone-HTTPS-orange)](https://github.com/MuzammilXAI/tower-travel.git)
+
+## Repository
+🔗 **View Code**: [https://github.com/MuzammilXAI/tower-travel](https://github.com/MuzammilXAI/tower-travel)
+
+## Download
+📦 **Direct Download**: [Download ZIP](https://github.com/MuzammilXAI/tower-travel/archive/refs/heads/main.zip)
+
+## Clone
+```bash
+git clone https://github.com/MuzammilXAI/tower-travel.git
