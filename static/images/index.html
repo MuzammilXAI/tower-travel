@@ -4,9 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tower Travel Dashboard</title>
+<title>Tower Travel - AI Powered Travel Platform</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -15,11 +15,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #ffb347, #ffcc33);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     scroll-behavior: smooth;
 }
 
@@ -28,44 +28,43 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 25px;
-    background: rgba(0,0,0,0.6);
+    padding: 15px 40px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(12px);
     position: fixed;
     width: 100%;
-    z-index: 100;
-    backdrop-filter: blur(10px);
-    flex-wrap: wrap;
-    gap: 8px;
+    z-index: 1000;
+    top: 0;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
 }
 
-/* Logo section */
 .logo-area {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
+    gap: 12px;
 }
 
 .logo-img {
     width: 45px;
     height: 45px;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 12px;
 }
 
 .logo-text {
-    color: #ffcc00;
+    color: white;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 22px;
     letter-spacing: 1px;
+    background: linear-gradient(135deg, #fff, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Navbar Links */
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 20px;
     align-items: center;
 }
 
@@ -74,115 +73,297 @@ body {
     color: white;
     font-weight: 500;
     transition: 0.3s;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    display: inline-block;
-    white-space: nowrap;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
 }
 
 .nav-link a:hover {
-    background: #ffcc00;
-    color: black;
-    transform: scale(1.02);
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
 }
 
-/* AI Button Special */
 .ai-link a {
     background: linear-gradient(135deg, #ff6b6b, #ff8e53);
-    color: white !important;
+    padding: 8px 20px;
+    border-radius: 25px;
     font-weight: 600;
 }
 
 .ai-link a:hover {
-    background: linear-gradient(135deg, #ff8e53, #ff6b6b);
-    transform: scale(1.02);
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255,107,107,0.4);
 }
 
-/* User Section */
 .user-info {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 5px;
-    background: rgba(255,215,0,0.2);
-    padding: 4px 12px;
-    border-radius: 25px;
+    gap: 12px;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 16px;
+    border-radius: 30px;
 }
 
 .welcome-text {
-    color: #ffd54f;
-    font-size: 12px;
+    color: #ffd700;
+    font-size: 13px;
     font-weight: 500;
 }
 
 .logout-link {
     background: #ff4444;
-    padding: 4px 12px;
+    padding: 6px 14px;
     border-radius: 20px;
     color: white !important;
     font-size: 12px !important;
 }
 
-.logout-link:hover {
-    background: #ff0000;
-}
-
-/* ================= BANNER ================= */
-.banar {
-    min-height: 100vh;
+/* ================= HERO SECTION ================= */
+.hero {
+    min-height: 60vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')
-                no-repeat center center/cover;
-    color: white;
     text-align: center;
-    padding-top: 80px;
+    padding: 120px 20px 60px;
+    position: relative;
+    overflow: hidden;
 }
 
-.banar h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
-    animation: fadeInDown 1s ease forwards;
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80') no-repeat center center/cover;
+    opacity: 0.3;
+    z-index: -1;
 }
 
-.banar p {
-    font-size: 18px;
-    margin-bottom: 30px;
-    text-shadow: 1px 1px 8px rgba(0,0,0,0.5);
-}
-
-/* Explore Button */
-.banar .btn {
-    padding: 12px 30px;
-    background: #ff7700;
-    border: none;
+.hero h1 {
+    font-size: 64px;
+    font-weight: 800;
     color: white;
-    font-weight: bold;
-    border-radius: 12px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 20px rgba(0,0,0,0.3);
+    animation: fadeInUp 0.8s ease;
+}
+
+.hero p {
+    font-size: 20px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 40px;
+    max-width: 600px;
+    animation: fadeInUp 0.8s ease 0.2s forwards;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.hero .btn {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    border: none;
+    color: #1a1a2e;
+    font-weight: 700;
+    border-radius: 40px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
+    font-size: 16px;
+    animation: fadeInUp 0.8s ease 0.4s forwards;
+    opacity: 0;
+    animation-fill-mode: forwards;
 }
 
-.banar .btn:hover {
-    background: #ffcc00;
-    color: black;
+.hero .btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 15px #ffcc00;
+    box-shadow: 0 10px 30px rgba(255,215,0,0.3);
 }
 
-/* Animation */
-@keyframes fadeInDown {
-    0% { opacity: 0; transform: translateY(-50px); }
-    100% { opacity: 1; transform: translateY(0); }
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* ================= AI MODAL STYLES ================= */
+/* ================= RECOMMENDATIONS SECTION ================= */
+.recommendations-home {
+    padding: 60px 40px;
+    background: rgba(0,0,0,0.3);
+    margin-top: 20px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 40px;
+    font-size: 16px;
+}
+
+.recommendations-grid-home {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.recommend-card-home {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(255,215,0,0.2);
+}
+
+.recommend-card-home:hover {
+    transform: translateY(-8px);
+    border-color: #ffd700;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.15);
+}
+
+.recommend-card-home img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.recommend-badge-home {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.recommend-content-home {
+    padding: 20px;
+    position: relative;
+}
+
+.recommend-content-home h3 {
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.recommend-content-home p {
+    color: rgba(255,255,255,0.8);
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.recommend-content-home .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffd700;
+    margin-top: 12px;
+}
+
+.recommend-reason-home {
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #ffd700;
+}
+
+.match-score-home {
+    display: inline-block;
+    background: #28a745;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    margin-top: 10px;
+}
+
+.loading-spinner-home {
+    text-align: center;
+    padding: 60px;
+}
+
+.spinner-home {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255,255,255,0.2);
+    border-top: 4px solid #ffd700;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.empty-recommendations {
+    text-align: center;
+    padding: 60px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.empty-recommendations i {
+    font-size: 48px;
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+.empty-recommendations h3 {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.empty-recommendations p {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+}
+
+.empty-recommendations .explore-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    color: #1a1a2e;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.empty-recommendations .explore-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ================= AI MODAL ================= */
 .ai-modal {
     display: none;
     position: fixed;
@@ -191,32 +372,33 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.85);
-    z-index: 1000;
+    backdrop-filter: blur(8px);
+    z-index: 2000;
     justify-content: center;
     align-items: center;
 }
 
 .ai-modal-content {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    border-radius: 20px;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border-radius: 28px;
     width: 95%;
-    max-width: 1200px;
-    height: 85vh;
+    max-width: 1400px;
+    height: 88vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    animation: slideUp 0.4s ease;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    animation: modalSlideIn 0.4s ease;
 }
 
-@keyframes slideUp {
+@keyframes modalSlideIn {
     from {
-        transform: translateY(50px);
         opacity: 0;
+        transform: scale(0.95) translateY(-20px);
     }
     to {
-        transform: translateY(0);
         opacity: 1;
+        transform: scale(1) translateY(0);
     }
 }
 
@@ -224,25 +406,25 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 25px;
+    padding: 20px 30px;
     background: rgba(0,0,0,0.3);
-    border-bottom: 1px solid rgba(255,215,0,0.3);
+    border-bottom: 1px solid rgba(255,215,0,0.2);
 }
 
 .ai-modal-header h2 {
-    color: #ffd54f;
-    font-size: 22px;
+    color: #ffd700;
+    font-size: 24px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .close-ai-modal {
-    background: #ff4444;
+    background: rgba(255,255,255,0.1);
     color: white;
     border: none;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     font-size: 20px;
     cursor: pointer;
@@ -250,302 +432,366 @@ body {
 }
 
 .close-ai-modal:hover {
-    background: #ff0000;
-    transform: scale(1.1);
+    background: #ff4444;
+    transform: rotate(90deg);
 }
 
 .ai-tabs {
     display: flex;
-    gap: 5px;
-    padding: 12px 25px;
+    gap: 10px;
+    padding: 15px 30px;
     background: rgba(0,0,0,0.2);
-    border-bottom: 1px solid rgba(255,215,0,0.2);
+    border-bottom: 1px solid rgba(255,215,0,0.1);
 }
 
 .ai-tab {
-    padding: 8px 20px;
-    background: rgba(255,255,255,0.1);
+    padding: 10px 28px;
+    background: rgba(255,255,255,0.05);
     border: none;
-    color: white;
+    color: rgba(255,255,255,0.7);
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 30px;
     font-size: 14px;
+    font-weight: 500;
     transition: all 0.3s;
 }
 
 .ai-tab.active {
-    background: #ffd54f;
-    color: #1e3c72;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    color: #1a1a2e;
+    box-shadow: 0 4px 15px rgba(255,215,0,0.3);
 }
 
 .ai-tab:hover:not(.active) {
-    background: rgba(255,215,0,0.3);
+    background: rgba(255,215,0,0.2);
+    color: white;
 }
 
 .ai-content {
     flex: 1;
-    overflow-y: auto;
-    padding: 20px;
+    overflow: auto;
+    padding: 25px 30px;
     display: flex;
-    gap: 20px;
+    gap: 30px;
 }
 
-/* Recommendation Section */
 .recommendation-section {
     flex: 2;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .recommendation-header {
-    color: #ffd54f;
-    font-size: 18px;
-    margin-bottom: 10px;
+    color: #ffd700;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .recommendation-filters {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     flex-wrap: wrap;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .recommendation-filters select,
 .recommendation-filters input {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255,255,255,0.9);
-    font-size: 13px;
-    min-width: 130px;
+    padding: 12px 18px;
+    border-radius: 40px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 14px;
+    min-width: 150px;
+    backdrop-filter: blur(5px);
+}
+
+.recommendation-filters select option {
+    background: #1a1a2e;
+}
+
+.recommendation-filters input::placeholder {
+    color: rgba(255,255,255,0.5);
 }
 
 .recommendation-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 15px;
-    max-height: 450px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+    max-height: 480px;
     overflow-y: auto;
     padding-right: 10px;
 }
 
 .recommend-card {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
     backdrop-filter: blur(10px);
-    border-radius: 12px;
-    padding: 12px;
-    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 18px;
+    border: 1px solid rgba(255,215,0,0.2);
     transition: all 0.3s;
     cursor: pointer;
 }
 
 .recommend-card:hover {
-    transform: translateY(-3px);
-    border-color: #ffd54f;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
+    border-color: #ffd700;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.12);
 }
 
 .recommend-card h4 {
-    color: #ffd54f;
-    margin-bottom: 6px;
-    font-size: 16px;
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .recommend-card p {
-    color: rgba(255,255,255,0.9);
-    font-size: 12px;
-    margin: 4px 0;
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+    margin: 6px 0;
+    line-height: 1.4;
 }
 
 .recommend-card .price {
-    color: #ffd54f;
+    color: #ffd700;
     font-weight: bold;
-    font-size: 14px;
-    margin-top: 6px;
+    font-size: 16px;
+    margin-top: 10px;
 }
 
-.weather-info {
-    background: rgba(0,0,0,0.3);
-    border-radius: 6px;
-    padding: 5px;
-    margin-top: 6px;
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Chatbot Section */
 .chatbot-section {
     flex: 1;
     background: rgba(0,0,0,0.3);
-    border-radius: 12px;
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-width: 280px;
+    min-width: 350px;
+    backdrop-filter: blur(10px);
 }
 
 .chatbot-header {
-    padding: 12px;
-    background: rgba(255,215,0,0.2);
-    border-radius: 12px 12px 0 0;
-    color: #ffd54f;
-    font-weight: bold;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
+    border-radius: 24px 24px 0 0;
+    color: #ffd700;
+    font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 14px;
+    gap: 12px;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255,215,0,0.2);
 }
 
 .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 12px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    min-height: 280px;
-    max-height: 400px;
+    gap: 12px;
+    min-height: 400px;
+    max-height: 450px;
 }
 
 .message {
     max-width: 85%;
-    padding: 8px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    line-height: 1.4;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 13px;
+    line-height: 1.5;
+    word-wrap: break-word;
 }
 
 .message.user {
-    background: linear-gradient(135deg, #ffd54f, #ffb300);
-    color: #1e3c72;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    color: #1a1a2e;
     align-self: flex-end;
-    border-radius: 12px 12px 5px 12px;
+    border-radius: 18px 18px 5px 18px;
 }
 
 .message.bot {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.12);
     color: white;
     align-self: flex-start;
-    border-radius: 12px 12px 12px 5px;
-}
-
-.chat-input-area {
-    display: flex;
-    padding: 10px;
-    gap: 8px;
-    border-top: 1px solid rgba(255,215,0,0.2);
-}
-
-.chat-input {
-    flex: 1;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.9);
-    font-size: 12px;
-}
-
-.chat-send {
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #ffd54f, #ffb300);
-    border: none;
-    border-radius: 20px;
-    color: #1e3c72;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 12px;
+    border-radius: 18px 18px 18px 5px;
+    border-left: 3px solid #ffd700;
 }
 
 .quick-buttons {
     display: flex;
-    gap: 6px;
+    gap: 10px;
     flex-wrap: wrap;
-    padding: 8px 10px;
-    border-top: 1px solid rgba(255,215,0,0.2);
+    padding: 12px 20px;
+    border-top: 1px solid rgba(255,215,0,0.1);
+    border-bottom: 1px solid rgba(255,215,0,0.1);
 }
 
 .quick-btn {
-    background: rgba(255,215,0,0.2);
-    border: none;
-    padding: 5px 10px;
-    border-radius: 15px;
-    color: #ffd54f;
-    font-size: 11px;
+    background: rgba(255,215,0,0.12);
+    border: 1px solid rgba(255,215,0,0.3);
+    padding: 8px 16px;
+    border-radius: 30px;
+    color: #ffd700;
+    font-size: 12px;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s;
 }
 
 .quick-btn:hover {
-    background: #ffd54f;
-    color: #1e3c72;
+    background: #ffd700;
+    color: #1a1a2e;
+    transform: translateY(-2px);
+}
+
+.chat-input-area {
+    display: flex;
+    padding: 15px 20px;
+    gap: 12px;
+    border-top: 1px solid rgba(255,215,0,0.1);
+}
+
+.chat-input {
+    flex: 1;
+    padding: 12px 18px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 40px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 13px;
+}
+
+.chat-input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+.chat-send {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    border: none;
+    border-radius: 40px;
+    color: #1a1a2e;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.chat-send:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(255,215,0,0.3);
 }
 
 .typing-indicator {
     display: none;
     align-items: center;
-    gap: 4px;
-    padding: 8px 12px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 15px;
+    gap: 5px;
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 25px;
     width: fit-content;
-    margin: 5px;
+    margin: 5px 15px;
 }
 
 .typing-dot {
-    width: 6px;
-    height: 6px;
-    background: #ffd54f;
+    width: 8px;
+    height: 8px;
+    background: #ffd700;
     border-radius: 50%;
-    animation: typing 1.4s infinite;
+    animation: typingBounce 1.4s infinite;
 }
 
 .typing-dot:nth-child(2) { animation-delay: 0.2s; }
 .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-@keyframes typing {
+@keyframes typingBounce {
     0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-    30% { transform: translateY(-6px); opacity: 1; }
+    30% { transform: translateY(-8px); opacity: 1; }
 }
 
-/* Responsive */
+/* AI Status Badge */
+.ai-status-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 11px;
+    color: #ffd700;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ffd700;
+    border-radius: 10px;
+}
+
 @media (max-width: 1024px) {
     .header {
+        padding: 12px 20px;
         flex-direction: column;
-        text-align: center;
-        padding: 10px 15px;
+        gap: 10px;
     }
     .nav-links {
+        flex-wrap: wrap;
         justify-content: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        gap: 5px;
-    }
-    .nav-link a {
-        padding: 4px 8px;
-        font-size: 11px;
-    }
-    .ai-modal-content {
-        width: 98%;
-        height: 90vh;
     }
     .ai-content {
         flex-direction: column;
     }
     .chatbot-section {
-        min-height: 280px;
+        min-height: 400px;
     }
-    .banar h1 {
-        font-size: 32px;
+    .hero h1 {
+        font-size: 40px;
     }
-    .banar p {
-        font-size: 16px;
+    .recommendations-home {
+        padding: 40px 20px;
+    }
+    .recommendations-grid-home {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-modal-content {
+        width: 98%;
+        height: 92vh;
+    }
+    .recommendation-filters select,
+    .recommendation-filters input {
+        min-width: 120px;
+        font-size: 12px;
+    }
+    .quick-buttons {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding: 10px 15px;
+    }
+    .section-title {
+        font-size: 24px;
     }
 }
 </style>
@@ -555,37 +801,67 @@ body {
 <!-- ================= NAVBAR ================= -->
 <header class="header">
     <div class="logo-area">
-        <img src="{% static '9.avif' %}" class="logo-img" alt="Tower Travel Tourism Logo">
+        <img src="{% static '9.avif' %}" class="logo-img" alt="Tower Travel">
         <span class="logo-text">TOWER TRAVEL</span>
     </div>
 
     <ul class="nav-links">
-        <li class="nav-link"><a href="{% url 'index' %}">Home</a></li>
-        <li class="nav-link"><a href="{% url 'destination' %}">Destinations</a></li>
-        <li class="nav-link"><a href="{% url 'hotel' %}">Hotels</a></li>
-        <li class="nav-link"><a href="{% url 'flight' %}">Flights</a></li>
-        <li class="nav-link"><a href="{% url 'package' %}">Packages</a></li>
-        <li class="nav-link"><a href="{% url 'reviews' %}">Reviews</a></li>
-        <li class="nav-link"><a href="{% url 'admin_page' %}">Admin</a></li>
-        <li class="nav-link ai-link"><a href="#" onclick="openAIModal(); return false;"><i class="fas fa-robot"></i> AI</a></li>
+        <li class="nav-link"><a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a></li>
+        <li class="nav-link"><a href="{% url 'destination' %}"><i class="fas fa-map-marker-alt"></i> Destinations</a></li>
+        <li class="nav-link"><a href="{% url 'hotel' %}"><i class="fas fa-hotel"></i> Hotels</a></li>
+        <li class="nav-link"><a href="{% url 'flight' %}"><i class="fas fa-plane"></i> Flights</a></li>
+        <li class="nav-link"><a href="{% url 'package' %}"><i class="fas fa-suitcase"></i> Packages</a></li>
+        <li class="nav-link"><a href="{% url 'reviews' %}"><i class="fas fa-star"></i> Reviews</a></li>
+        <li class="nav-link"><a href="{% url 'admin_page' %}"><i class="fas fa-chart-line"></i> Admin</a></li>
+        <li class="nav-link ai-link"><a href="#" onclick="openAIModal(); return false;"><i class="fas fa-robot"></i> AI Assistant</a></li>
 
         {% if user.is_authenticated %}
             <li class="nav-link user-info">
-                <span class="welcome-text"><i class="fas fa-user"></i> {{ user.username }}</span>
+                <span class="welcome-text"><i class="fas fa-user-circle"></i> {{ user.username }}</span>
                 <a href="{% url 'logout' %}" class="logout-link">Logout</a>
             </li>
         {% else %}
-            <li class="nav-link"><a href="{% url 'login' %}" class="login-link">Login</a></li>
+            <li class="nav-link"><a href="{% url 'login' %}">Login</a></li>
         {% endif %}
     </ul>
 </header>
 
-<!-- ================= BANNER ================= -->
-<section class="banar">
-    <h1>Explore the Beauty of Greece</h1>
-    <p>Best travel packages curated just for you</p>
-    <a href="{% url 'destination' %}" class="btn">Explore Now</a>
+<!-- ================= HERO SECTION ================= -->
+<section class="hero">
+    <h1>Explore the World with AI</h1>
+    <p>Your personal AI travel assistant helps you find the perfect destinations, hotels, and flights based on your preferences.</p>
+    <a href="#" onclick="openAIModal(); return false;" class="btn">🤖 Try AI Assistant</a>
 </section>
+
+<!-- ================= PERSONALIZED RECOMMENDATIONS SECTION ================= -->
+{% if user.is_authenticated %}
+<section class="recommendations-home">
+    <h2 class="section-title">🎯 Personalized For You</h2>
+    <p class="section-subtitle">Based on your travel preferences and booking history</p>
+
+    <div id="home-recommendations-container">
+        <div class="loading-spinner-home">
+            <div class="spinner-home"></div>
+            <p style="color: white;">Finding personalized recommendations for you...</p>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="recommendations-home">
+    <div class="empty-recommendations">
+        <i class="fas fa-user-circle"></i>
+        <h3>Login to See Personalized Recommendations</h3>
+        <p>Sign in to get AI-powered travel recommendations based on your preferences and past bookings.</p>
+        <a href="{% url 'login' %}" class="explore-btn">Login Now</a>
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= AI STATUS BADGE ================= -->
+<div class="ai-status-badge" id="aiStatusBadge">
+    <i class="fas fa-microchip"></i>
+    <span id="aiStatusText">Checking AI Status...</span>
+</div>
 
 <!-- ================= AI MODAL ================= -->
 <div id="aiModal" class="ai-modal">
@@ -595,61 +871,74 @@ body {
             <button class="close-ai-modal" onclick="closeAIModal()">&times;</button>
         </div>
         <div class="ai-tabs">
-            <button class="ai-tab active" onclick="switchAITab('recommendations')">🎯 Recommendations</button>
-            <button class="ai-tab" onclick="switchAITab('chatbot')">💬 Travel Chatbot</button>
+            <button class="ai-tab active" onclick="switchAITab('recommendations')"><i class="fas fa-magic"></i> Smart Recommendations</button>
+            <button class="ai-tab" onclick="switchAITab('chatbot')"><i class="fas fa-comment-dots"></i> AI Chatbot</button>
         </div>
         <div class="ai-content">
             <!-- Recommendations Tab -->
             <div id="recommendationsTab" class="recommendation-section">
                 <div class="recommendation-header">
-                    <i class="fas fa-magic"></i> Personalized Recommendations
+                    <i class="fas fa-crown"></i> Personalized Recommendations
                 </div>
                 <div class="recommendation-filters">
                     <select id="recType" onchange="getRecommendations()">
-                        <option value="all">All</option>
-                        <option value="destination">Destinations</option>
-                        <option value="hotel">Hotels</option>
-                        <option value="flight">Flights</option>
-                        <option value="package">Packages</option>
+                        <option value="all">✨ All Categories</option>
+                        <option value="destination">🏝️ Destinations</option>
+                        <option value="hotel">🏨 Hotels</option>
+                        <option value="flight">✈️ Flights</option>
+                        <option value="package">🎒 Packages</option>
                     </select>
                     <select id="recBudget" onchange="getRecommendations()">
-                        <option value="">Any Budget</option>
-                        <option value="low">Low Budget</option>
-                        <option value="medium">Medium Budget</option>
-                        <option value="high">High Budget</option>
+                        <option value="">💰 Any Budget</option>
+                        <option value="budget">🟢 Budget (Under $150)</option>
+                        <option value="moderate">🟡 Moderate ($150-$300)</option>
+                        <option value="luxury">🔴 Luxury ($300+)</option>
                     </select>
-                    <input type="text" id="recSearch" placeholder="Search..." onkeyup="getRecommendations()">
+                    <input type="text" id="recSearch" placeholder="🔍 Search destinations, cities..." onkeyup="getRecommendations()">
                 </div>
                 <div id="recommendationsGrid" class="recommendation-grid">
-                    <div style="text-align: center; color: white; padding: 40px;">Loading recommendations...</div>
+                    <div style="text-align: center; color: rgba(255,255,255,0.7); padding: 60px;">
+                        <i class="fas fa-spinner fa-pulse fa-2x"></i>
+                        <p style="margin-top: 15px;">Loading personalized recommendations...</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Chatbot Tab -->
             <div id="chatbotTab" class="chatbot-section" style="display: none;">
                 <div class="chatbot-header">
-                    <i class="fas fa-comment-dots"></i> Travel Assistant
-                    <span style="font-size: 11px;">Ask me anything!</span>
+                    <i class="fas fa-brain"></i> AI Travel Assistant
+                    <span id="chatbotAISource" style="font-size: 10px; margin-left: auto;">🤖 AI Ready</span>
                 </div>
                 <div id="chatMessages" class="chat-messages">
                     <div class="message bot">
-                        👋 Hi! I'm your AI Travel Assistant. I can help you find the best destinations, hotels, flights, and packages based on your budget and preferences. Ask me anything!
+                        <i class="fas fa-robot"></i> Hi! I'm your AI Travel Assistant powered by advanced AI.<br><br>
+                        I can help you with:<br>
+                        • ✈️ Find the best destinations<br>
+                        • 🏨 Book hotels and flights<br>
+                        • 🌤️ Weather forecasts<br>
+                        • 💰 Budget planning<br>
+                        • 🎒 Custom itineraries<br><br>
+                        <strong>How can I help you today?</strong>
                     </div>
                 </div>
                 <div class="quick-buttons">
-                    <button class="quick-btn" onclick="sendQuickMessage('Find cheap destinations')">🏖️ Cheap Destinations</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Best hotels under $200')">🏨 Hotels under $200</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Flights with weather info')">✈️ Flights + Weather</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Family packages')">👨‍👩‍👧 Family Packages</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Find cheap beach destinations under $100')">🏖️ Cheap Beaches</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Best luxury hotels in Paris')">🏨 Luxury Hotels</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Flights from Dubai to London with weather')">✈️ Flights + Weather</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Family vacation packages for 4 people')">👨‍👩‍👧 Family Packages</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Create 5-day itinerary for Tokyo')">🗺️ Itinerary</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Weather in Paris')">☁️ Weather</button>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendMessage()">
-                    <button class="chat-send" onclick="sendMessage()">Send</button>
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Ask me anything about travel..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button class="chat-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
                 <div id="typingIndicator" class="typing-indicator">
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
+                    <span style="margin-left: 8px; font-size: 11px;">AI is thinking...</span>
                 </div>
             </div>
         </div>
@@ -657,10 +946,118 @@ body {
 </div>
 
 <script>
+// ================= CSRF TOKEN FOR DJANGO =================
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// ================= HOME PAGE PERSONALIZED RECOMMENDATIONS =================
+async function loadHomeRecommendations() {
+    const container = document.getElementById('home-recommendations-container');
+    if (!container) return;
+
+    try {
+        const response = await fetch('/api/personalized-recommendations/');
+        const data = await response.json();
+
+        if (data.success && data.recommendations && data.recommendations.length > 0) {
+            displayHomeRecommendations(data.recommendations);
+        } else {
+            container.innerHTML = `
+                <div class="empty-recommendations">
+                    <i class="fas fa-compass"></i>
+                    <h3>No Recommendations Yet</h3>
+                    <p>Start exploring destinations, hotels, and flights to get personalized recommendations!</p>
+                    <a href="{% url 'destination' %}" class="explore-btn">Explore Destinations</a>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error loading home recommendations:', error);
+        container.innerHTML = `
+            <div class="empty-recommendations">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Unable to Load Recommendations</h3>
+                <p>Please try again later or explore our destinations manually.</p>
+                <a href="{% url 'destination' %}" class="explore-btn">Explore Destinations</a>
+            </div>
+        `;
+    }
+}
+
+function displayHomeRecommendations(recommendations) {
+    const container = document.getElementById('home-recommendations-container');
+
+    const recommendationsHtml = `
+        <div class="recommendations-grid-home">
+            ${recommendations.map(rec => `
+                <div class="recommend-card-home" style="position: relative;" onclick="bookItem('${rec.type}', '${rec.name.replace(/'/g, "\\'")}', ${rec.price})">
+                    <img src="${rec.image || 'https://via.placeholder.com/300x200?text=' + encodeURIComponent(rec.name)}" alt="${rec.name}" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div class="recommend-badge-home">${rec.match_percentage}% Match</div>
+                    <div class="recommend-content-home">
+                        <h3>${rec.type === 'destination' ? '🌍' : rec.type === 'hotel' ? '🏨' : rec.type === 'flight' ? '✈️' : '🎒'} ${rec.name}</h3>
+                        ${rec.country ? `<p><i class="fas fa-globe"></i> ${rec.country}</p>` : ''}
+                        ${rec.location ? `<p><i class="fas fa-location-dot"></i> ${rec.location}</p>` : ''}
+                        ${rec.from_city ? `<p><i class="fas fa-plane-departure"></i> ${rec.from_city} → ${rec.to_city}</p>` : ''}
+                        <p class="price"><i class="fas fa-tag"></i> $${rec.price}${rec.type === 'destination' ? '/day' : rec.type === 'hotel' ? '/night' : ''}</p>
+                        <div class="recommend-reason-home">
+                            <i class="fas fa-star"></i> ${rec.reason}
+                        </div>
+                        <div class="match-score-home">
+                            <i class="fas fa-chart-line"></i> ${rec.match_percentage}% Match Score
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    container.innerHTML = recommendationsHtml;
+}
+
+function bookItem(type, name, price) {
+    if (confirm(`📝 Book: ${name}\n💰 Price: $${price}\n\nWould you like to proceed to booking?`)) {
+        window.location.href = `/book/?type=${type}&name=${encodeURIComponent(name)}&price=${price}`;
+    }
+}
+
+// ================= CHECK AI STATUS =================
+async function checkAIStatus() {
+    try {
+        const response = await fetch('/api/ai-status/');
+        const data = await response.json();
+        const badge = document.getElementById('aiStatusText');
+        const chatbotSource = document.getElementById('chatbotAISource');
+
+        if (data.real_ai_enabled && data.api_key_available) {
+            badge.innerHTML = '<i class="fas fa-check-circle"></i> AI Powered by Hugging Face';
+            if (chatbotSource) chatbotSource.innerHTML = '🧠 Hugging Face AI Active';
+        } else {
+            badge.innerHTML = '<i class="fas fa-shield-alt"></i> Smart AI Assistant';
+            if (chatbotSource) chatbotSource.innerHTML = '🤖 Smart AI Ready';
+        }
+    } catch (error) {
+        console.error('Error checking AI status:', error);
+        document.getElementById('aiStatusText').innerHTML = '<i class="fas fa-microchip"></i> AI Assistant Ready';
+    }
+}
+
 // ================= AI MODAL FUNCTIONS =================
 function openAIModal() {
     document.getElementById('aiModal').style.display = 'flex';
     getRecommendations();
+    checkAIStatus();
 }
 
 function closeAIModal() {
@@ -686,86 +1083,33 @@ function switchAITab(tab) {
 }
 
 // ================= RECOMMENDATION SYSTEM =================
-function getRecommendations() {
+async function getRecommendations() {
     const type = document.getElementById('recType').value;
     const budget = document.getElementById('recBudget').value;
     const search = document.getElementById('recSearch').value;
 
     const grid = document.getElementById('recommendationsGrid');
-    grid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">Loading recommendations...</div>';
+    grid.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.7); padding: 60px;"><i class="fas fa-spinner fa-pulse fa-2x"></i><p style="margin-top: 15px;">Loading recommendations...</p></div>';
 
-    setTimeout(() => {
-        const recommendations = generateRecommendations(type, budget, search);
-        displayRecommendations(recommendations);
-    }, 500);
+    try {
+        let url = `/api/recommendations/?type=${type}`;
+        if (budget) url += `&budget=${budget}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+        displayModalRecommendations(data.recommendations);
+    } catch (error) {
+        console.error('Error fetching recommendations:', error);
+        grid.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.7); padding: 60px;"><i class="fas fa-exclamation-circle"></i><p style="margin-top: 15px;">Unable to load recommendations. Please try again.</p></div>';
+    }
 }
 
-function generateRecommendations(type, budget, search) {
-    // Sample data - In production, fetch from Django backend
-    const allItems = {
-        destinations: [
-            { name: "Beach Paradise", country: "Maldives", category: "beach", budget: "high", price: 350, rating: 4.8, weather: "Sunny, 28°C", bestTime: "Nov-Apr" },
-            { name: "Mountain Escape", country: "Switzerland", category: "mountain", budget: "medium", price: 200, rating: 4.7, weather: "Cool, 15°C", bestTime: "Jun-Sep" },
-            { name: "City Lights", country: "USA", category: "city", budget: "low", price: 150, rating: 4.6, weather: "Moderate, 22°C", bestTime: "Apr-Oct" },
-            { name: "Tokyo Adventure", country: "Japan", category: "city", budget: "high", price: 280, rating: 4.9, weather: "Mild, 20°C", bestTime: "Mar-May, Sep-Nov" },
-            { name: "Dubai Luxury", country: "UAE", category: "city", budget: "high", price: 320, rating: 4.9, weather: "Hot, 32°C", bestTime: "Nov-Mar" },
-            { name: "Paris Romance", country: "France", category: "city", budget: "high", price: 280, rating: 4.8, weather: "Mild, 18°C", bestTime: "Apr-Oct" }
-        ],
-        hotels: [
-            { name: "Grand Paris Hotel", location: "Paris", rating: 5, price: 350, budget: "high", amenities: "Pool, Spa, WiFi" },
-            { name: "Dubai Comfort Inn", location: "Dubai", rating: 4, price: 180, budget: "medium", amenities: "WiFi, Gym" },
-            { name: "NYC Budget Stay", location: "New York", rating: 3, price: 120, budget: "low", amenities: "WiFi, Breakfast" },
-            { name: "Swiss Alpine Lodge", location: "Switzerland", rating: 5, price: 280, budget: "high", amenities: "Spa, Mountain View" }
-        ],
-        flights: [
-            { airline: "Emirates", from: "Dubai", to: "London", price: 850, budget: "high", duration: "7h 45m", departure: "08:30", arrival: "15:15", weather: "London: Cloudy, 18°C" },
-            { airline: "PIA", from: "Karachi", to: "Dubai", price: 220, budget: "low", duration: "2h 20m", departure: "06:00", arrival: "08:20", weather: "Dubai: Sunny, 32°C" },
-            { airline: "Turkish Airlines", from: "Istanbul", to: "New York", price: 620, budget: "medium", duration: "9h 30m", departure: "09:45", arrival: "18:15", weather: "NY: Mild, 22°C" }
-        ],
-        packages: [
-            { name: "Family Package", duration: "5 days", price: 1200, budget: "medium", includes: "Hotel, Breakfast, City Tour" },
-            { name: "Solo Adventure", duration: "4 days", price: 600, budget: "low", includes: "Hostel, Hiking, Guide" },
-            { name: "Luxury Escape", duration: "7 days", price: 2500, budget: "high", includes: "5-star Resort, Spa, Fine Dining" }
-        ]
-    };
-
-    let items = [];
-    if (type === 'all') {
-        items = [...allItems.destinations.map(d => ({ ...d, type: 'destination' })),
-                 ...allItems.hotels.map(h => ({ ...h, type: 'hotel' })),
-                 ...allItems.flights.map(f => ({ ...f, type: 'flight' })),
-                 ...allItems.packages.map(p => ({ ...p, type: 'package' }))];
-    } else if (type === 'destination') {
-        items = allItems.destinations.map(d => ({ ...d, type: 'destination' }));
-    } else if (type === 'hotel') {
-        items = allItems.hotels.map(h => ({ ...h, type: 'hotel' }));
-    } else if (type === 'flight') {
-        items = allItems.flights.map(f => ({ ...f, type: 'flight' }));
-    } else if (type === 'package') {
-        items = allItems.packages.map(p => ({ ...p, type: 'package' }));
-    }
-
-    if (budget) {
-        items = items.filter(item => item.budget === budget);
-    }
-
-    if (search) {
-        const searchLower = search.toLowerCase();
-        items = items.filter(item =>
-            (item.name && item.name.toLowerCase().includes(searchLower)) ||
-            (item.country && item.country.toLowerCase().includes(searchLower)) ||
-            (item.location && item.location.toLowerCase().includes(searchLower))
-        );
-    }
-
-    return items;
-}
-
-function displayRecommendations(items) {
+function displayModalRecommendations(items) {
     const grid = document.getElementById('recommendationsGrid');
 
-    if (items.length === 0) {
-        grid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">No recommendations found. Try different filters!</div>';
+    if (!items || items.length === 0) {
+        grid.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.7); padding: 60px;"><i class="fas fa-search"></i><p style="margin-top: 15px;">No recommendations found. Try different filters!</p></div>';
         return;
     }
 
@@ -773,45 +1117,44 @@ function displayRecommendations(items) {
         if (item.type === 'destination') {
             return `
                 <div class="recommend-card" onclick="bookItem('destination', '${item.name}', ${item.price})">
-                    <h4>🌍 ${item.name}</h4>
-                    <p>📍 ${item.country} | ${item.category}</p>
-                    <p>⭐ ${item.rating} ★</p>
+                    <h4><i class="fas fa-map-marker-alt"></i> ${item.name}</h4>
+                    <p><i class="fas fa-globe"></i> ${item.country} | ${item.category}</p>
+                    <p><i class="fas fa-star" style="color: #ffd700;"></i> ${item.rating || 4.5} ★</p>
                     <div class="weather-info">
-                        <i class="fas fa-cloud-sun"></i> ${item.weather || 'Weather info available'}
+                        <i class="fas fa-cloud-sun"></i> ${item.weather || 'Check forecast'}
                     </div>
-                    <p class="price">💰 $${item.price}/day</p>
-                    <p><small>Best time: ${item.bestTime || 'Year-round'}</small></p>
+                    <p class="price"><i class="fas fa-tag"></i> $${item.price}/day</p>
                 </div>
             `;
         } else if (item.type === 'hotel') {
             return `
                 <div class="recommend-card" onclick="bookItem('hotel', '${item.name}', ${item.price})">
-                    <h4>🏨 ${item.name}</h4>
-                    <p>📍 ${item.location} | ⭐ ${item.rating}★</p>
-                    <p>🎁 ${item.amenities}</p>
-                    <p class="price">💰 $${item.price}/night</p>
+                    <h4><i class="fas fa-hotel"></i> ${item.name}</h4>
+                    <p><i class="fas fa-location-dot"></i> ${item.location}</p>
+                    <p><i class="fas fa-star" style="color: #ffd700;"></i> ${item.rating}★</p>
+                    <p><i class="fas fa-concierge-bell"></i> ${item.amenities || 'Premium amenities'}</p>
+                    <p class="price"><i class="fas fa-tag"></i> $${item.price}/night</p>
                 </div>
             `;
         } else if (item.type === 'flight') {
             return `
                 <div class="recommend-card" onclick="bookItem('flight', '${item.airline} ${item.from}-${item.to}', ${item.price})">
-                    <h4>✈️ ${item.airline}</h4>
-                    <p>📍 ${item.from} → ${item.to}</p>
-                    <p>⏰ Dep: ${item.departure} | Arr: ${item.arrival}</p>
-                    <p>⏱️ ${item.duration}</p>
+                    <h4><i class="fas fa-plane"></i> ${item.airline}</h4>
+                    <p><i class="fas fa-map-pin"></i> ${item.from} → ${item.to}</p>
+                    <p><i class="fas fa-clock"></i> ${item.departure} | ${item.arrival}</p>
                     <div class="weather-info">
-                        <i class="fas fa-cloud-sun"></i> ${item.weather}
+                        <i class="fas fa-cloud-sun"></i> ${item.weather || 'Weather available'}
                     </div>
-                    <p class="price">💰 $${item.price}</p>
+                    <p class="price"><i class="fas fa-tag"></i> $${item.price}</p>
                 </div>
             `;
         } else if (item.type === 'package') {
             return `
                 <div class="recommend-card" onclick="bookItem('package', '${item.name}', ${item.price})">
-                    <h4>🎒 ${item.name}</h4>
-                    <p>📅 ${item.duration}</p>
-                    <p>✅ ${item.includes}</p>
-                    <p class="price">💰 $${item.price}</p>
+                    <h4><i class="fas fa-suitcase"></i> ${item.name}</h4>
+                    <p><i class="fas fa-calendar"></i> ${item.duration} days</p>
+                    <p><i class="fas fa-gift"></i> ${item.includes || 'All-inclusive'}</p>
+                    <p class="price"><i class="fas fa-tag"></i> $${item.price}</p>
                 </div>
             `;
         }
@@ -819,14 +1162,8 @@ function displayRecommendations(items) {
     }).join('');
 }
 
-function bookItem(type, name, price) {
-    alert(`📝 Booking: ${name}\n💰 Price: $${price}\n\nThis will redirect you to the booking page.`);
-    // In production, redirect to booking page
-    // window.location.href = `/book/?type=${type}&name=${encodeURIComponent(name)}&price=${price}`;
-}
-
 // ================= CHATBOT SYSTEM =================
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('chatInput');
     const message = input.value.trim();
     if (!message) return;
@@ -835,11 +1172,23 @@ function sendMessage() {
     input.value = '';
     showTyping(true);
 
-    setTimeout(() => {
-        const response = generateChatResponse(message);
-        addMessage(response, 'bot');
+    try {
+        const response = await fetch('/api/chatbot/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ message: message })
+        });
+        const data = await response.json();
+        addMessage(data.response, 'bot');
+    } catch (error) {
+        console.error('Chatbot error:', error);
+        addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+    } finally {
         showTyping(false);
-    }, 800);
+    }
 }
 
 function sendQuickMessage(message) {
@@ -851,7 +1200,7 @@ function addMessage(text, sender) {
     const messagesDiv = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
-    messageDiv.innerHTML = text;
+    messageDiv.innerHTML = text.replace(/\n/g, '<br>');
     messagesDiv.appendChild(messageDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
@@ -861,28 +1210,19 @@ function showTyping(show) {
     indicator.style.display = show ? 'flex' : 'none';
 }
 
-function generateChatResponse(message) {
-    const lowerMsg = message.toLowerCase();
+// ================= INITIALIZE =================
+document.addEventListener('DOMContentLoaded', function() {
+    checkAIStatus();
+    {% if user.is_authenticated %}
+    loadHomeRecommendations();
+    {% endif %}
 
-    if (lowerMsg.includes('budget') || lowerMsg.includes('cheap')) {
-        return "💰 Budget-friendly options:\n\n🏖️ Thailand - $150/day\n🏔️ Nepal - $60/day\n🏨 Budget hotels from $90/night\n✈️ Economy flights from $200\n\nWould you like specific recommendations?";
-    }
-    else if (lowerMsg.includes('destination') || lowerMsg.includes('place')) {
-        return "🌍 Top destinations:\n\n🏝️ Maldives - Luxury beach\n🏔️ Switzerland - Mountain views\n🌆 Tokyo - City adventure\n🇫🇷 Paris - Romantic getaway\n\nWhich interests you?";
-    }
-    else if (lowerMsg.includes('flight')) {
-        return "✈️ Flight options with weather:\n\n🇦🇪 Dubai→🇬🇧 London: $850, Emirates, 7h45m (London: 18°C)\n🇵🇰 Karachi→🇦🇪 Dubai: $220, PIA, 2h20m (Dubai: 32°C)\n🇹🇷 Istanbul→🇺🇸 New York: $620, Turkish, 9h30m (NY: 22°C)";
-    }
-    else if (lowerMsg.includes('hotel')) {
-        return "🏨 Hotel recommendations:\n\n🇫🇷 Grand Paris Hotel - $350/night (5★)\n🇦🇪 Dubai Comfort Inn - $180/night (4★)\n🇺🇸 NYC Budget Stay - $120/night (3★)";
-    }
-    else if (lowerMsg.includes('package')) {
-        return "🎒 Special packages:\n\n👨‍👩‍👧 Family (5d): $1020\n🧘 Solo (4d): $600\n💑 Romance (3d): $720\n\nWhich package suits you?";
-    }
-    else {
-        return "🌟 I can help you find:\n• Destinations by budget\n• Hotels and flights\n• Weather forecasts\n• Package deals\n\nWhat are you looking for?";
-    }
-}
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAIModal();
+        }
+    });
+});
 </script>
 
 </body>

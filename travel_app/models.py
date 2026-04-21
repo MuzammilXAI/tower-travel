@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from datetime import datetime, timedelta
+import uuid
 
 
 # Destination Module
@@ -145,6 +146,27 @@ class Review(models.Model):
         return f"{self.name} - {self.rating}★"
 
 
+# Email Verification Module - NEW
+class EmailVerification(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='email_verification')
+    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+
+    def is_expired(self):
+        """Check if verification token has expired (24 hours)"""
+        expiry_hours = 24
+        from django.utils import timezone
+        return timezone.now() > self.created_at + timedelta(hours=expiry_hours)
+
+    def __str__(self):
+        return f"{self.user.username} - {'Verified' if self.is_verified else 'Pending'}"
+
+    class Meta:
+        verbose_name = 'Email Verification'
+        verbose_name_plural = 'Email Verifications'
+
+
 # Booking Module - Updated with payment fields
 class Booking(models.Model):
     BOOKING_TYPE_CHOICES = [
@@ -239,7 +261,8 @@ class Booking(models.Model):
 
         # Set payment due date (7 days from booking if not set)
         if not self.payment_due_date and not self.id:
-            self.payment_due_date = (datetime.now().date() + timedelta(days=7))
+            from django.utils import timezone
+            self.payment_due_date = (timezone.now().date() + timedelta(days=7))
 
         # Update payment status based on amount paid
         if self.remaining_amount <= 0:

@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login – Tower Travel Premium</title>
+<title>Admin Login – Tower Travel Admin Panel</title>
 
 <style>
 /* RESET & FONT */
@@ -15,16 +15,16 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* BODY & BACKGROUND */
+/* BODY & BACKGROUND - Same as user login but with dark gradient */
 body {
   height: 100vh;
   background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
   overflow: hidden;
 }
 
-/* OVERLAY */
+/* OVERLAY - Slightly darker for admin */
 .overlay {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -33,7 +33,7 @@ body {
   flex-direction: column;
 }
 
-/* HEADER / NAVBAR */
+/* HEADER - Same as user login */
 .header {
   width: 100%;
   background: rgba(0,0,0,0.7);
@@ -112,7 +112,7 @@ body {
   box-shadow: 0 0 15px rgba(255,215,0,0.5);
 }
 
-/* FLOATING GOLD SHAPES */
+/* FLOATING GOLD SHAPES - Same as user login */
 .float-shape {
   position: absolute;
   width: 160px;
@@ -133,7 +133,7 @@ body {
   100% { transform: translateY(0px) rotate(360deg); }
 }
 
-/* LOGIN BOX */
+/* LOGIN BOX - Same as user login */
 .login-box {
   position: relative;
   background: rgba(255,255,255,0.1);
@@ -158,10 +158,24 @@ body {
   font-size: 32px;
   font-weight: 700;
   text-shadow: 0 0 20px rgba(255,215,0,0.9);
-  margin-bottom: 35px;
+  margin-bottom: 10px;
 }
 
-/* MESSAGES - Added to match signup page */
+/* Security Note - Slightly different for admin */
+.security-note {
+  background: rgba(255,215,0,0.12);
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: #ffd54f;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* MESSAGES - Same as user login */
 .message {
   padding: 10px;
   margin-bottom: 20px;
@@ -181,7 +195,13 @@ body {
   color: #fff;
 }
 
-/* INPUT FIELDS */
+.message.warning {
+  background: rgba(255, 152, 0, 0.3);
+  border: 1px solid #ff9800;
+  color: #fff;
+}
+
+/* INPUT FIELDS - Same as user login */
 .input-field {
   display: flex;
   flex-direction: column;
@@ -218,7 +238,7 @@ body {
   transform: scale(1.03);
 }
 
-/* BUTTON */
+/* BUTTON - Same gradient as user login */
 .btn {
   width: 100%;
   padding: 16px;
@@ -231,6 +251,7 @@ body {
   color: black;
   box-shadow: 0 0 20px rgba(255,215,0,0.8);
   transition: all 0.3s ease;
+  margin-bottom: 15px;
 }
 
 .btn:hover {
@@ -238,23 +259,41 @@ body {
   box-shadow: 0 0 30px #ffd54f, 0 0 40px rgba(255,215,0,0.6);
 }
 
-/* EXTRA LINKS */
+.btn-secondary {
+  background: linear-gradient(135deg, #6c757d, #495057);
+  box-shadow: 0 0 20px rgba(108, 117, 125, 0.5);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #5a6268, #343a40);
+  box-shadow: 0 0 30px rgba(108, 117, 125, 0.7);
+}
+
+/* EXTRA LINKS - Forgot password removed */
 .extra-links {
   margin-top: 20px;
+  min-height: 30px;
 }
 
-.extra-links a {
+.user-redirect {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255,215,0,0.3);
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}
+
+.user-redirect a {
   color: #ffd54f;
   text-decoration: none;
-  font-size: 14px;
-  transition: 0.3s;
+  font-weight: 600;
 }
 
-.extra-links a:hover {
+.user-redirect a:hover {
   text-shadow: 0 0 10px gold;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE - Same as user login */
 @media (max-width: 450px) {
   .login-box { width: 90%; padding: 35px 25px; }
   .nav-links { flex-direction: column; gap: 12px; }
@@ -263,7 +302,6 @@ body {
 </head>
 
 <body>
-
 <div class="overlay">
 
   <!-- Floating shapes -->
@@ -274,62 +312,60 @@ body {
   <header class="header">
     <div class="logo-area">
       <img src="{% static '9.avif' %}" class="logo-img" alt="Logo">
-      <span class="logo-text">TOWER TRAVEL TOURISM</span>
+      <span class="logo-text">TOWER TRAVEL ADMIN</span>
     </div>
-      <ul class="nav-links">
-  <li><a href="{% url 'index' %}">Home</a></li>
-  <li><a href="{% url 'destination' %}">Destination</a></li>
-  <li><a href="{% url 'hotel' %}">Hotel</a></li>
-  <li><a href="{% url 'flight' %}">Flight</a></li>
-  <li><a href="{% url 'package' %}">Package</a></li>
-  <li><a href="{% url 'reviews' %}">Reviews</a></li>
-  <li><a href="{% url 'admin_page' %}">Admin</a></li>
-
-  {% if user.is_authenticated %}
-      <li style="color:gold;">Welcome {{ user.username }}</li>
-      <li><a href="{% url 'logout' %}">Logout</a></li>
-  {% else %}
-      <li><a href="{% url 'login' %}">Login</a></li>
-  {% endif %}
-</ul>
+    <ul class="nav-links">
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'destination' %}">Destination</a></li>
+      <li><a href="{% url 'hotel' %}">Hotel</a></li>
+      <li><a href="{% url 'flight' %}">Flight</a></li>
+      <li><a href="{% url 'package' %}">Package</a></li>
+      <li><a href="{% url 'reviews' %}">Reviews</a></li>
+    </ul>
   </header>
-  <br>
 
   <!-- LOGIN BOX -->
-    <div class="login-box">
-  <h2>Welcome Back</h2>
+  <div class="login-box">
+    <h2>Admin Portal</h2>
+    <div class="security-note">
+      <i class="fas fa-shield-alt"></i> Secure area - Authorized personnel only
+    </div>
 
-  <!-- SHOW MESSAGES - Updated to use message styling -->
-  {% if messages %}
-    {% for message in messages %}
-      <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
-        {{ message }}
+    <!-- SHOW MESSAGES -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'admin_login' %}">
+      {% csrf_token %}
+
+      <div class="input-field">
+        <label>Admin Email</label>
+        <input type="email" name="email" placeholder="admin@towertravel.com" required>
       </div>
-    {% endfor %}
-  {% endif %}
 
-  <form method="POST">
-    {% csrf_token %}
+      <div class="input-field">
+        <label>Admin Password</label>
+        <input type="password" name="password" placeholder="Enter admin password" required>
+      </div>
 
-    <div class="input-field">
-      <label>Username</label>
-      <input type="text" name="username" placeholder="Enter username" required>
+      <button type="submit" class="btn">Access Admin Dashboard</button>
+    </form>
+
+    <!-- FORGOT PASSWORD LINK REMOVED -->
+
+    <div class="user-redirect">
+      <i class="fas fa-user-friends"></i> Customer access?
+      <a href="{% url 'user_login' %}">Go to User Portal →</a>
     </div>
-
-    <div class="input-field">
-      <label>Password</label>
-      <input type="password" name="password" placeholder="Enter password" required>
-    </div>
-
-    <button type="submit" class="btn">Login</button>
-  </form>
-
-  <div class="extra-links">
-    <p><a href="{% url 'forgot_password' %}">Forgot Password?</a></p>
-    <p><a href="{% url 'signup' %}">Create New Account</a></p>
   </div>
+
 </div>
 
-</div> <!-- This closing div was missing! -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </body>
 </html>

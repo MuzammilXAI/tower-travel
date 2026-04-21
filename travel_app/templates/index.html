@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tower Travel Dashboard</title>
+<title>Tower Travel - AI Powered Travel Platform</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -37,16 +37,13 @@ body {
     backdrop-filter: blur(10px);
     flex-wrap: nowrap;
     gap: 20px;
-    overflow-x: auto;
     white-space: nowrap;
 }
 
-/* Hide scrollbar for cleaner look */
 .header::-webkit-scrollbar {
     display: none;
 }
 
-/* Circular Logo with Yellow Border */
 .logo-area {
     display: flex;
     align-items: center;
@@ -58,20 +55,25 @@ body {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    object-fit: cover;
-    object-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 3px solid #ffd54f;
     box-shadow: 0 0 12px rgba(255,213,79,0.6);
     transition: all 0.3s ease;
-    background: #1a1a2e; /* Dark background for dark image */
-    filter: brightness(0.95) contrast(1.1);
+    background: linear-gradient(135deg, #ffd54f, #ffb300);
+}
+
+.logo-img span {
+    color: #1e3c72;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .logo-img:hover {
     transform: scale(1.08);
     box-shadow: 0 0 20px rgba(255,213,79,0.9);
     border-color: #ffcc00;
-    filter: brightness(1) contrast(1.2);
 }
 
 .logo-text {
@@ -89,7 +91,6 @@ body {
     gap: 8px;
     align-items: center;
     flex-shrink: 1;
-    overflow-x: auto;
     white-space: nowrap;
 }
 
@@ -111,7 +112,6 @@ body {
     letter-spacing: 0.3px;
 }
 
-/* Hover effect - Yellow highlight */
 .nav-link a:hover {
     background: #ffcc00;
     color: #1e3c72;
@@ -119,54 +119,148 @@ body {
     box-shadow: 0 6px 20px rgba(255,204,0,0.4);
 }
 
-/* AI Button Special */
-.ai-link a {
-    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
-    color: white !important;
-    font-weight: 700;
-    box-shadow: 0 2px 8px rgba(255,107,107,0.3);
+/* User Dropdown Styles - FIXED */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
 }
 
-.ai-link a:hover {
-    background: #ffcc00;
-    color: #1e3c72 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255,204,0,0.4);
-}
-
-/* User Section */
-.user-info {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+.user-dropdown-btn {
     background: rgba(255,215,0,0.15);
-    padding: 5px 12px;
+    padding: 8px 16px;
     border-radius: 40px;
-    backdrop-filter: blur(5px);
-    flex-shrink: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,215,0,0.3);
 }
 
-.welcome-text {
+.user-dropdown-btn:hover {
+    background: rgba(255,215,0,0.3);
+    border-color: #ffd54f;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #ffd54f, #ffb300);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e3c72;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.user-name {
     color: #ffd54f;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
-    white-space: nowrap;
 }
 
-.logout-link {
-    background: linear-gradient(135deg, #ff4444, #cc0000);
-    padding: 5px 12px;
-    border-radius: 30px;
+.dropdown-arrow {
+    color: #ffd54f;
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+/* Dropdown Menu - FIXED POSITIONING */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    min-width: 220px;
+    border: 1px solid rgba(255,215,0,0.4);
+    z-index: 99999;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+/* Show dropdown on hover */
+.user-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-item {
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 15px;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:first-child {
+    border-radius: 16px 16px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 16px 16px;
+}
+
+.dropdown-item i {
+    width: 22px;
+    color: #ffd54f;
+    font-size: 18px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,215,0,0.15);
+    color: #ffd54f;
+    padding-left: 28px;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255,215,0,0.2);
+    margin: 5px 0;
+}
+
+.logout-item {
+    color: #ff6b6b;
+}
+
+.logout-item i {
+    color: #ff6b6b;
+}
+
+.logout-item:hover {
+    background: rgba(255,107,107,0.15);
+    color: #ff6b6b;
+}
+
+/* Admin Link Styling */
+.admin-link a {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
     color: white !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    white-space: nowrap;
 }
 
-.logout-link:hover {
-    background: #ffcc00;
+.admin-link a:hover {
+    background: linear-gradient(135deg, #ffd54f, #ffb300);
     color: #1e3c72 !important;
-    transform: translateY(-1px);
 }
 
 .login-link {
@@ -213,7 +307,6 @@ body {
     text-shadow: 1px 1px 8px rgba(0,0,0,0.5);
 }
 
-/* Explore Button */
 .banar .btn {
     padding: 14px 40px;
     background: linear-gradient(135deg, #ff7700, #ff5500);
@@ -241,6 +334,239 @@ body {
     100% { opacity: 1; transform: translateY(0); }
 }
 
+/* ================= FOOTER RECOMMENDATIONS SECTION ================= */
+.footer-recommendations {
+    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+                url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')
+                no-repeat center center/cover;
+    background-attachment: fixed;
+    padding: 80px 40px 50px;
+    margin-top: 0;
+    position: relative;
+}
+
+.footer-title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 15px rgba(0,0,0,0.5);
+}
+
+.footer-subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 60px;
+    font-size: 18px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+}
+
+.recommendations-grid-footer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.recommend-card-footer {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.recommend-card-footer:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+}
+
+.recommend-card-footer img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.recommend-badge-footer {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: bold;
+    z-index: 1;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.recommend-content-footer {
+    padding: 22px;
+}
+
+.recommend-content-footer h3 {
+    color: #d32f2f;
+    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.recommend-content-footer p {
+    color: #555;
+    margin: 8px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.recommend-content-footer .price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1976d2;
+    margin-top: 12px;
+}
+
+.recommend-reason-footer {
+    background: rgba(255,215,0,0.15);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #1e3c72;
+    border-left: 3px solid #ffd700;
+}
+
+.match-score-footer {
+    display: inline-block;
+    background: #28a745;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+/* ================= COPYRIGHT FOOTER ================= */
+.copyright-footer {
+    background: rgba(0,0,0,0.8);
+    padding: 20px;
+    text-align: center;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    margin-top: 0;
+}
+
+/* ================= FLOATING AI BUTTON ================= */
+.floating-ai-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    animation: pulse 2s infinite;
+}
+
+.floating-ai-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 35px rgba(255,107,107,0.5);
+}
+
+.floating-ai-btn i {
+    font-size: 32px;
+    color: white;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,107,107,0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(255,107,107,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,107,107,0); }
+}
+
+/* Loading Spinner */
+.loading-spinner-footer {
+    text-align: center;
+    padding: 60px;
+}
+
+.spinner-footer {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top: 4px solid #ffd700;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner-footer p {
+    color: white;
+    font-size: 18px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.empty-footer {
+    text-align: center;
+    padding: 50px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    margin: 20px auto;
+    max-width: 550px;
+}
+
+.empty-footer i {
+    font-size: 60px;
+    color: #ff7700;
+    margin-bottom: 20px;
+}
+
+.empty-footer h4 {
+    color: #1e3c72;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.empty-footer p {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.empty-footer .explore-link {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ff7700, #ff5500);
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.empty-footer .explore-link:hover {
+    transform: scale(1.05);
+    background: #ffcc00;
+    color: #1e3c72;
+}
+
 /* ================= AI MODAL STYLES ================= */
 .ai-modal {
     display: none;
@@ -250,7 +576,7 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.85);
-    z-index: 1000;
+    z-index: 2000;
     justify-content: center;
     align-items: center;
 }
@@ -343,7 +669,6 @@ body {
     gap: 20px;
 }
 
-/* Recommendation Section */
 .recommendation-section {
     flex: 2;
     display: flex;
@@ -383,7 +708,7 @@ body {
     padding-right: 10px;
 }
 
-.recommend-card {
+.recommend-card-ai {
     background: rgba(255,255,255,0.15);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -393,43 +718,31 @@ body {
     cursor: pointer;
 }
 
-.recommend-card:hover {
+.recommend-card-ai:hover {
     transform: translateY(-3px);
     border-color: #ffd54f;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
-.recommend-card h4 {
+.recommend-card-ai h4 {
     color: #ffd54f;
     margin-bottom: 6px;
     font-size: 16px;
 }
 
-.recommend-card p {
+.recommend-card-ai p {
     color: rgba(255,255,255,0.9);
     font-size: 12px;
     margin: 4px 0;
 }
 
-.recommend-card .price {
+.recommend-card-ai .price {
     color: #ffd54f;
     font-weight: bold;
     font-size: 14px;
     margin-top: 6px;
 }
 
-.weather-info {
-    background: rgba(0,0,0,0.3);
-    border-radius: 6px;
-    padding: 5px;
-    margin-top: 6px;
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Chatbot Section */
 .chatbot-section {
     flex: 1;
     background: rgba(0,0,0,0.3);
@@ -581,6 +894,9 @@ body {
         width: 48px;
         height: 48px;
     }
+    .logo-img span {
+        font-size: 20px;
+    }
 }
 
 @media (max-width: 992px) {
@@ -593,6 +909,12 @@ body {
     }
     .nav-links {
         flex-shrink: 0;
+    }
+    .recommendations-grid-footer {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .footer-title {
+        font-size: 36px;
     }
 }
 
@@ -608,18 +930,45 @@ body {
         width: 42px;
         height: 42px;
     }
-    .welcome-text {
-        font-size: 11px;
+    .logo-img span {
+        font-size: 18px;
     }
-    .logout-link, .login-link {
-        font-size: 11px !important;
-        padding: 4px 10px;
+    .user-name {
+        font-size: 12px;
+    }
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
     }
     .banar h1 {
         font-size: 32px;
     }
     .banar p {
         font-size: 16px;
+    }
+    .footer-title {
+        font-size: 28px;
+    }
+    .footer-subtitle {
+        font-size: 14px;
+        margin-bottom: 40px;
+    }
+    .footer-recommendations {
+        padding: 50px 20px 40px;
+    }
+    .floating-ai-btn {
+        width: 55px;
+        height: 55px;
+        bottom: 20px;
+        right: 20px;
+    }
+    .floating-ai-btn i {
+        font-size: 26px;
+    }
+    .recommendations-grid-footer {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 }
 
@@ -635,15 +984,23 @@ body {
         width: 38px;
         height: 38px;
     }
+    .logo-img span {
+        font-size: 16px;
+    }
+    .footer-title {
+        font-size: 24px;
+    }
 }
 </style>
 </head>
 <body>
 
-<!-- ================= NAVBAR - CIRCULAR LOGO WITH DARK IMAGE ================= -->
+<!-- ================= NAVBAR ================= -->
 <header class="header">
     <div class="logo-area">
-        <img src="{% static 'logo.png' %}" class="logo-img" alt="Travel Agency Logo">
+        <div class="logo-img">
+            <span>TT</span>
+        </div>
         <span class="logo-text">TOWER TRAVEL TOURISM</span>
     </div>
 
@@ -654,16 +1011,39 @@ body {
         <li class="nav-link"><a href="{% url 'flight' %}">Flights</a></li>
         <li class="nav-link"><a href="{% url 'package' %}">Packages</a></li>
         <li class="nav-link"><a href="{% url 'reviews' %}">Reviews</a></li>
-        <li class="nav-link"><a href="{% url 'admin_page' %}">Admin</a></li>
-        <li class="nav-link ai-link"><a href="#" onclick="openAIModal(); return false;"><i class="fas fa-robot"></i> AI</a></li>
+
+        {% if user.is_authenticated and user.is_superuser %}
+            <li class="nav-link admin-link"><a href="{% url 'admin_page' %}"><i class="fas fa-crown"></i> Admin Panel</a></li>
+        {% endif %}
 
         {% if user.is_authenticated %}
-            <li class="nav-link user-info">
-                <span class="welcome-text"><i class="fas fa-user"></i> {{ user.username }}</span>
-                <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+            <li class="nav-link user-dropdown">
+                <div class="user-dropdown-btn">
+                    <div class="user-avatar">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <span class="user-name">{{ user.username }}</span>
+                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </div>
+                <div class="dropdown-menu">
+                    <a href="{% url 'my_profile' %}" class="dropdown-item">
+                        <i class="fas fa-user-circle"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="{% url 'my_bookings' %}" class="dropdown-item">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>My Bookings</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'logout' %}" class="dropdown-item logout-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
             </li>
         {% else %}
-            <li class="nav-link"><a href="{% url 'login' %}" class="login-link">Login</a></li>
+            <li class="nav-link"><a href="{% url 'user_login' %}" class="login-link">Login</a></li>
+            <li class="nav-link"><a href="{% url 'user_signup' %}" class="login-link" style="background: linear-gradient(135deg, #ff9800, #f57c00);">Sign Up</a></li>
         {% endif %}
     </ul>
 </header>
@@ -675,6 +1055,39 @@ body {
     <a href="{% url 'destination' %}" class="btn">Explore Now</a>
 </section>
 
+<!-- ================= FOOTER RECOMMENDATIONS SECTION ================= -->
+<footer>
+    <div class="footer-recommendations">
+        <h3 class="footer-title"> Recommendations For You</h3>
+        <p class="footer-subtitle">Based on your travel preferences and past bookings</p>
+
+        <div id="footer-recommendations-container">
+            {% if user.is_authenticated %}
+            <div class="loading-spinner-footer">
+                <div class="spinner-footer"></div>
+                <p>Finding personalized recommendations for you...</p>
+            </div>
+            {% else %}
+            <div class="empty-footer">
+                <i class="fas fa-user-circle"></i>
+                <h4>Login to See Personalized Recommendations</h4>
+                <p>Sign in to get AI-powered travel recommendations based on your preferences and past bookings.</p>
+                <a href="{% url 'user_login' %}" class="explore-link">Login Now</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="copyright-footer">
+        <p>&copy; 2024 Tower Travel Tourism. All rights reserved. | Powered by AI Technology</p>
+    </div>
+</footer>
+
+<!-- ================= FLOATING AI BUTTON ================= -->
+<div class="floating-ai-btn" onclick="openAIModal()">
+    <i class="fas fa-robot"></i>
+</div>
+
 <!-- ================= AI MODAL ================= -->
 <div id="aiModal" class="ai-modal">
     <div class="ai-modal-content">
@@ -683,11 +1096,10 @@ body {
             <button class="close-ai-modal" onclick="closeAIModal()">&times;</button>
         </div>
         <div class="ai-tabs">
-            <button class="ai-tab active" onclick="switchAITab('recommendations')">🎯 Recommendations</button>
-            <button class="ai-tab" onclick="switchAITab('chatbot')">💬 Travel Chatbot</button>
+            <button class="ai-tab active" onclick="switchAITab('recommendations')">Recommendations</button>
+            <button class="ai-tab" onclick="switchAITab('chatbot')">Travel Chatbot</button>
         </div>
         <div class="ai-content">
-            <!-- Recommendations Tab -->
             <div id="recommendationsTab" class="recommendation-section">
                 <div class="recommendation-header">
                     <i class="fas fa-magic"></i> Personalized Recommendations
@@ -713,7 +1125,6 @@ body {
                 </div>
             </div>
 
-            <!-- Chatbot Tab -->
             <div id="chatbotTab" class="chatbot-section" style="display: none;">
                 <div class="chatbot-header">
                     <i class="fas fa-comment-dots"></i> Travel Assistant
@@ -725,10 +1136,10 @@ body {
                     </div>
                 </div>
                 <div class="quick-buttons">
-                    <button class="quick-btn" onclick="sendQuickMessage('Find cheap destinations')">🏖️ Cheap Destinations</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Best hotels under $200')">🏨 Hotels under $200</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Flights with weather info')">✈️ Flights + Weather</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Family packages')">👨‍👩‍👧 Family Packages</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Find cheap destinations')">Cheap Destinations</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Best hotels under $200')">Hotels under $200</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Flights with weather info')">Flights + Weather</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Family packages')">Family Packages</button>
                 </div>
                 <div class="chat-input-area">
                     <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendMessage()">
@@ -745,6 +1156,118 @@ body {
 </div>
 
 <script>
+// ================= JAVASCRIPT FALLBACK FOR DROPDOWN =================
+document.addEventListener('DOMContentLoaded', function() {
+    // Ensure dropdown works on hover
+    const dropdown = document.querySelector('.user-dropdown');
+    if (dropdown) {
+        dropdown.addEventListener('mouseenter', function() {
+            const menu = this.querySelector('.dropdown-menu');
+            if (menu) {
+                menu.style.opacity = '1';
+                menu.style.visibility = 'visible';
+                menu.style.transform = 'translateY(0)';
+            }
+        });
+
+        dropdown.addEventListener('mouseleave', function() {
+            const menu = this.querySelector('.dropdown-menu');
+            if (menu) {
+                menu.style.opacity = '0';
+                menu.style.visibility = 'hidden';
+                menu.style.transform = 'translateY(-10px)';
+            }
+        });
+    }
+});
+
+// ================= CSRF TOKEN FOR DJANGO =================
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// ================= FOOTER PERSONALIZED RECOMMENDATIONS =================
+async function loadFooterRecommendations() {
+    const container = document.getElementById('footer-recommendations-container');
+    if (!container) return;
+
+    try {
+        const response = await fetch('/api/personalized-recommendations/');
+        const data = await response.json();
+
+        if (data.success && data.recommendations && data.recommendations.length > 0) {
+            displayFooterRecommendations(data.recommendations);
+        } else {
+            container.innerHTML = `
+                <div class="empty-footer">
+                    <i class="fas fa-compass"></i>
+                    <h4>No Recommendations Yet</h4>
+                    <p>Start exploring destinations, hotels, and flights to get personalized recommendations!</p>
+                    <a href="{% url 'destination' %}" class="explore-link">Explore Destinations</a>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error loading footer recommendations:', error);
+        container.innerHTML = `
+            <div class="empty-footer">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h4>Unable to Load Recommendations</h4>
+                <p>Please try again later or explore our destinations manually.</p>
+                <a href="{% url 'destination' %}" class="explore-link">Explore Destinations</a>
+            </div>
+        `;
+    }
+}
+
+function displayFooterRecommendations(recommendations) {
+    const container = document.getElementById('footer-recommendations-container');
+
+    const recommendationsHtml = `
+        <div class="recommendations-grid-footer">
+            ${recommendations.slice(0, 6).map(rec => `
+                <div class="recommend-card-footer" onclick="bookItem('${rec.type}', '${rec.name.replace(/'/g, "\\'")}', ${rec.price}, '${rec.id || ''}')">
+                    <img src="${rec.image || 'https://via.placeholder.com/400x220?text=' + encodeURIComponent(rec.name)}" alt="${rec.name}" onerror="this.src='https://via.placeholder.com/400x220?text=Image+Not+Available'">
+                    <div class="recommend-badge-footer">${rec.match_percentage}% Match</div>
+                    <div class="recommend-content-footer">
+                        <h3>${rec.type === 'destination' ? '🌍' : rec.type === 'hotel' ? '🏨' : rec.type === 'flight' ? '✈️' : '🎒'} ${rec.name}</h3>
+                        ${rec.country ? `<p><i class="fas fa-globe"></i> <strong>Country:</strong> ${rec.country}</p>` : ''}
+                        ${rec.location ? `<p><i class="fas fa-location-dot"></i> <strong>Location:</strong> ${rec.location}</p>` : ''}
+                        ${rec.from_city ? `<p><i class="fas fa-plane-departure"></i> <strong>From:</strong> ${rec.from_city} → ${rec.to_city}</p>` : ''}
+                        <p class="price"><i class="fas fa-tag"></i> $${rec.price}${rec.type === 'destination' ? '/day' : rec.type === 'hotel' ? '/night' : ''}</p>
+                        <div class="recommend-reason-footer">
+                            <i class="fas fa-star"></i> ${rec.reason}
+                        </div>
+                        <div class="match-score-footer">
+                            <i class="fas fa-chart-line"></i> ${rec.match_percentage}% Match Score
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    container.innerHTML = recommendationsHtml;
+}
+
+// ================= BOOKING FUNCTION =================
+function bookItem(type, name, price, itemId) {
+    if (confirm(`📝 Book: ${name}\n💰 Price: $${price}\n\nWould you like to proceed to booking?`)) {
+        window.location.href = `/book/?booking_type=${type}&item_name=${encodeURIComponent(name)}&price=${price}`;
+    }
+}
+
 // ================= AI MODAL FUNCTIONS =================
 function openAIModal() {
     document.getElementById('aiModal').style.display = 'flex';
@@ -773,7 +1296,6 @@ function switchAITab(tab) {
     }
 }
 
-// ================= RECOMMENDATION SYSTEM =================
 async function getRecommendations() {
     const type = document.getElementById('recType').value;
     const budget = document.getElementById('recBudget').value;
@@ -783,16 +1305,20 @@ async function getRecommendations() {
     grid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">Loading recommendations...</div>';
 
     try {
-        const response = await fetch(`/api/recommendations/?type=${type}&budget=${budget}&search=${encodeURIComponent(search)}`);
+        let url = `/api/recommendations/?type=${type}`;
+        if (budget) url += `&budget=${budget}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
+
+        const response = await fetch(url);
         const data = await response.json();
-        displayRecommendations(data.recommendations);
+        displayModalRecommendations(data.recommendations);
     } catch (error) {
         console.error('Error fetching recommendations:', error);
         grid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">Unable to load recommendations. Please try again.</div>';
     }
 }
 
-function displayRecommendations(items) {
+function displayModalRecommendations(items) {
     const grid = document.getElementById('recommendationsGrid');
 
     if (items.length === 0) {
@@ -803,41 +1329,33 @@ function displayRecommendations(items) {
     grid.innerHTML = items.map(item => {
         if (item.type === 'destination') {
             return `
-                <div class="recommend-card" onclick="bookItem('destination', '${item.name}', ${item.price})">
+                <div class="recommend-card-ai" onclick="bookItem('destination', '${item.name}', ${item.price})">
                     <h4>🌍 ${item.name}</h4>
                     <p>📍 ${item.country} | ${item.category}</p>
                     <p>⭐ ${item.rating || 4.5} ★</p>
-                    <div class="weather-info">
-                        <i class="fas fa-cloud-sun"></i> ${item.weather || 'Weather info available'}
-                    </div>
                     <p class="price">💰 $${item.price}/day</p>
                 </div>
             `;
         } else if (item.type === 'hotel') {
             return `
-                <div class="recommend-card" onclick="bookItem('hotel', '${item.name}', ${item.price})">
+                <div class="recommend-card-ai" onclick="bookItem('hotel', '${item.name}', ${item.price})">
                     <h4>🏨 ${item.name}</h4>
                     <p>📍 ${item.location} | ⭐ ${item.rating}★</p>
-                    <p>🎁 ${item.amenities || 'Premium amenities'}</p>
                     <p class="price">💰 $${item.price}/night</p>
                 </div>
             `;
         } else if (item.type === 'flight') {
             return `
-                <div class="recommend-card" onclick="bookItem('flight', '${item.airline} ${item.from}-${item.to}', ${item.price})">
+                <div class="recommend-card-ai" onclick="bookItem('flight', '${item.airline} ${item.from}-${item.to}', ${item.price})">
                     <h4>✈️ ${item.airline}</h4>
                     <p>📍 ${item.from} → ${item.to}</p>
                     <p>⏰ Dep: ${item.departure} | Arr: ${item.arrival}</p>
-                    <p>⏱️ ${item.duration}</p>
-                    <div class="weather-info">
-                        <i class="fas fa-cloud-sun"></i> ${item.weather || 'Weather forecast available'}
-                    </div>
                     <p class="price">💰 $${item.price}</p>
                 </div>
             `;
         } else if (item.type === 'package') {
             return `
-                <div class="recommend-card" onclick="bookItem('package', '${item.name}', ${item.price})">
+                <div class="recommend-card-ai" onclick="bookItem('package', '${item.name}', ${item.price})">
                     <h4>🎒 ${item.name}</h4>
                     <p>📅 ${item.duration} days</p>
                     <p>✅ ${item.includes || 'All-inclusive package'}</p>
@@ -847,12 +1365,6 @@ function displayRecommendations(items) {
         }
         return '';
     }).join('');
-}
-
-function bookItem(type, name, price) {
-    if (confirm(`📝 Book: ${name}\n💰 Price: $${price}\n\nWould you like to proceed to booking?`)) {
-        window.location.href = `/book/?type=${type}&name=${encodeURIComponent(name)}&price=${price}`;
-    }
 }
 
 // ================= CHATBOT SYSTEM =================
@@ -898,7 +1410,6 @@ function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
 
-    // Convert markdown-style formatting to HTML
     let formattedText = text
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\n/g, '<br>')
@@ -907,7 +1418,6 @@ function addMessage(text, sender) {
         .replace(/🎉/g, '<span style="color: #ffd700;">🎉</span>')
         .replace(/🌟/g, '<span style="color: #ffd54f;">🌟</span>');
 
-    // Add special styling for booking confirmations
     if (text.includes('Booking Confirmed') || text.includes('Booking Summary')) {
         formattedText = `<div style="background: rgba(40, 167, 69, 0.1); padding: 10px; border-radius: 10px; border-left: 3px solid #28a745;">${formattedText}</div>`;
     }
@@ -922,21 +1432,18 @@ function showTyping(show) {
     indicator.style.display = show ? 'flex' : 'none';
 }
 
-// Helper function to get CSRF token
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+// ================= INITIALIZE =================
+document.addEventListener('DOMContentLoaded', function() {
+    {% if user.is_authenticated %}
+    loadFooterRecommendations();
+    {% endif %}
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAIModal();
         }
-    }
-    return cookieValue;
-}
+    });
+});
 </script>
 
 </body>

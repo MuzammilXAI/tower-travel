@@ -2,402 +2,597 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment - Tower Travel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Payment – Tower Travel Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
 
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+  body {
+    font-family: "Poppins", sans-serif;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+    backdrop-filter: blur(4px);
+  }
 
-        .payment-container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
+  .overlay {
+    background: rgba(0, 0, 0, 0.6);
+    min-height: 100vh;
+    width: 100%;
+    padding: 100px 20px 50px;
+  }
 
-        h2 {
-            color: #333;
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 28px;
-        }
+  /* ================= NAVBAR - SAME AS DESTINATION PAGE ================= */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25px;
+    background: rgba(0,0,0,0.85);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    flex-wrap: nowrap;
+    gap: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }
+  .header::-webkit-scrollbar {
+    display: none;
+  }
 
-        .booking-summary {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
 
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #dee2e6;
-        }
+  .logo-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 3px solid #ffd54f;
+    box-shadow: 0 0 12px rgba(255,213,79,0.6);
+    transition: all 0.3s ease;
+    background: #1a1a2e;
+  }
 
-        .summary-item:last-child {
-            border-bottom: none;
-        }
+  .logo-img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255,213,79,0.9);
+    border-color: #ffcc00;
+  }
 
-        .summary-label {
-            color: #555;
-            font-weight: 500;
-        }
+  .logo-text {
+    color: #ffcc00;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 12px rgba(255,204,0,0.5);
+    white-space: nowrap;
+  }
 
-        .summary-value {
-            color: #333;
-            font-weight: 600;
-        }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 
-        .total-amount {
-            font-size: 20px;
-            color: #1e3c72;
-            font-weight: 700;
-        }
+  .nav-links li {
+    position: relative;
+    flex-shrink: 0;
+  }
 
-        .payment-status {
-            background: #fff3cd;
-            color: #856404;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+  .nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 14px;
+    display: inline-block;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
 
-        .due-date {
-            background: #cce5ff;
-            color: #004085;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+  .nav-links li a:hover {
+    background: #ffcc00;
+    color: #1e3c72;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,204,0,0.4);
+  }
 
-        .payment-methods {
-            margin-bottom: 30px;
-        }
+  .user-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,215,0,0.15);
+    padding: 5px 12px;
+    border-radius: 40px;
+    backdrop-filter: blur(5px);
+    flex-shrink: 0;
+  }
 
-        .payment-method {
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+  .welcome-text {
+    color: #ffd54f;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
 
-        .payment-method:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
+  .logout-link {
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    padding: 5px 12px;
+    border-radius: 30px;
+    color: white !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    white-space: nowrap;
+  }
 
-        .payment-method input[type="radio"] {
-            margin-right: 10px;
-        }
+  .logout-link:hover {
+    background: #ffcc00;
+    color: #1e3c72 !important;
+  }
 
-        .payment-method label {
-            font-weight: 500;
-            color: #333;
-            cursor: pointer;
-        }
+  .login-link {
+    background: linear-gradient(135deg, #1976d2, #0d47a1);
+    padding: 6px 18px;
+    border-radius: 30px;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+  }
 
-        .payment-method i {
-            margin-right: 10px;
-            font-size: 20px;
-        }
+  .login-link:hover {
+    background: #ffcc00;
+    color: #1e3c72 !important;
+  }
 
-        .fa-credit-card { color: #1e3c72; }
-        .fa-paypal { color: #003087; }
-        .fa-university { color: #555; }
+  /* Payment Container */
+  .payment-container {
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
 
-        .amount-section {
-            margin-bottom: 30px;
-        }
+  .payment-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
 
-        .amount-options {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
+  h2 {
+    color: #d32f2f;
+    text-shadow: 0 0 6px rgba(211,47,47,0.4);
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 28px;
+  }
 
-        .amount-option {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+  .subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+  }
 
-        .amount-option:hover,
-        .amount-option.selected {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
+  .booking-summary {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
 
-        .custom-amount {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #dee2e6;
+  }
 
-        .custom-amount input {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-        }
+  .summary-item:last-child {
+    border-bottom: none;
+  }
 
-        .btn-pay {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+  .summary-label {
+    color: #555;
+    font-weight: 500;
+  }
 
-        .btn-pay:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
+  .summary-value {
+    color: #333;
+    font-weight: 600;
+  }
 
-        .btn-pay:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+  .total-amount {
+    font-size: 20px;
+    color: #1976d2;
+    font-weight: 700;
+  }
 
-        .btn-back {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
-            text-decoration: none;
-        }
+  .payment-status {
+    background: #fff3cd;
+    color: #856404;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 
-        .btn-back:hover {
-            color: #667eea;
-        }
+  .due-date {
+    background: #cce5ff;
+    color: #004085;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 
-        .alert {
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+  .payment-methods {
+    margin-bottom: 30px;
+  }
 
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
+  .payment-method {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
 
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+  .payment-method:hover {
+    border-color: #ffd54f;
+    background: rgba(255,213,79,0.1);
+    transform: translateX(5px);
+  }
 
-        .alert-info {
-            background: #cce5ff;
-            color: #004085;
-            border: 1px solid #b8daff;
-        }
-    </style>
+  .payment-method input[type="radio"] {
+    margin-right: 10px;
+  }
+
+  .payment-method label {
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .payment-method i {
+    margin-right: 10px;
+    font-size: 20px;
+  }
+
+  .fa-credit-card { color: #1976d2; }
+  .fa-paypal { color: #003087; }
+  .fa-university { color: #555; }
+
+  .amount-section {
+    margin-bottom: 30px;
+  }
+
+  .amount-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .amount-option {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .amount-option:hover,
+  .amount-option.selected {
+    border-color: #ffd54f;
+    background: rgba(255,213,79,0.1);
+    transform: scale(1.02);
+  }
+
+  .custom-amount {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .custom-amount input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+  }
+
+  .custom-amount input:focus {
+    outline: none;
+    border-color: #ffd54f;
+    box-shadow: 0 0 5px rgba(255,213,79,0.5);
+  }
+
+  .btn-pay {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg, #1976d2, #42a5f5);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn-pay:hover {
+    background: linear-gradient(90deg, #1565c0, #1e88e5);
+    transform: scale(1.02);
+  }
+
+  .btn-pay:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-back {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-back:hover {
+    color: #1976d2;
+    transform: translateX(-5px);
+  }
+
+  .alert {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  .alert-info {
+    background: #cce5ff;
+    color: #004085;
+    border: 1px solid #b8daff;
+  }
+
+  .text-muted {
+    color: #666;
+    font-size: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .payment-container {
+      padding: 25px;
+    }
+    .header {
+      padding: 8px 15px;
+    }
+    .logo-text {
+      font-size: 16px;
+    }
+    .logo-img {
+      width: 42px;
+      height: 42px;
+    }
+    .nav-links li a {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+    .amount-options {
+      flex-direction: column;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="payment-container">
-        <h2>💳 Complete Your Payment</h2>
-        <p class="subtitle">Secure payment for your booking</p>
+<div class="overlay">
+  <!-- Navbar same as destination page -->
+  <header class="header">
+    <div class="logo-area">
+      <img src="{% static 'logo.png' %}" class="logo-img" alt="Logo">
+      <span class="logo-text">TOWER TRAVEL TOURISM</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'destination' %}">Destination</a></li>
+      <li><a href="{% url 'hotel' %}">Hotel</a></li>
+      <li><a href="{% url 'flight' %}">Flight</a></li>
+      <li><a href="{% url 'package' %}">Package</a></li>
+      <li><a href="{% url 'reviews' %}">Reviews</a></li>
+      <li><a href="{% url 'admin_page' %}">Admin</a></li>
+      <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+      {% if user.is_authenticated %}
+        <li class="user-info">
+          <span class="welcome-text"><i class="fas fa-user"></i> {{ user.username }}</span>
+          <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+        </li>
+      {% else %}
+        <li><a href="{% url 'login' %}" class="login-link">Login</a></li>
+      {% endif %}
+    </ul>
+  </header>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
+  <div class="payment-container">
+    <h2>💳 Complete Your Payment</h2>
+    <p class="subtitle">Secure payment for your booking</p>
 
-        <div class="payment-status">
-            <strong>Payment Status:</strong> {{ booking.get_payment_status_display }}
-        </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
 
-        {% if days_until_due > 0 %}
-            <div class="due-date">
-                <strong>⚠️ Payment Due in {{ days_until_due }} days</strong> ({{ booking.payment_due_date|date:"M d, Y" }})
-            </div>
-        {% else %}
-            <div class="due-date" style="background:#f8d7da; color:#721c24;">
-                <strong>⚠️ Payment Overdue!</strong> Please pay immediately to avoid cancellation.
-            </div>
-        {% endif %}
-
-        <div class="booking-summary">
-            <h3 style="margin-bottom: 15px;">Booking Summary</h3>
-            <div class="summary-item">
-                <span class="summary-label">Ticket Number:</span>
-                <span class="summary-value">{{ booking.ticket_number }}</span>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Item:</span>
-                <span class="summary-value">{{ booking.item_name }}</span>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Travel Date:</span>
-                <span class="summary-value">{{ booking.travel_date|date:"M d, Y" }}</span>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Total Amount:</span>
-                <span class="summary-value total-amount">${{ booking.total_price }}</span>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Amount Paid:</span>
-                <span class="summary-value">${{ booking.amount_paid }}</span>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Remaining:</span>
-                <span class="summary-value total-amount">${{ booking.remaining_amount }}</span>
-            </div>
-        </div>
-
-        <form method="POST" action="{% url 'process_payment' booking.id %}" id="payment-form">
-            {% csrf_token %}
-
-            <div class="payment-methods">
-                <h3 style="margin-bottom: 15px;">Select Payment Method</h3>
-
-                <div class="payment-method">
-                    <input type="radio" name="payment_method" id="credit_card" value="credit_card" checked>
-                    <label for="credit_card">
-                        <i class="fas fa-credit-card"></i> Credit / Debit Card
-                    </label>
-                </div>
-
-                <div class="payment-method">
-                    <input type="radio" name="payment_method" id="paypal" value="paypal">
-                    <label for="paypal">
-                        <i class="fab fa-paypal"></i> PayPal
-                    </label>
-                </div>
-
-                <div class="payment-method">
-                    <input type="radio" name="payment_method" id="bank_transfer" value="bank_transfer">
-                    <label for="bank_transfer">
-                        <i class="fas fa-university"></i> Bank Transfer
-                    </label>
-                </div>
-            </div>
-
-            <div class="amount-section">
-                <h3 style="margin-bottom: 15px;">Payment Amount</h3>
-
-                <div class="amount-options">
-                    <div class="amount-option" onclick="selectAmount('full')" id="full-amount">
-                        <strong>Full Amount</strong><br>
-                        ${{ booking.total_price }}
-                    </div>
-                    <div class="amount-option" onclick="selectAmount('half')" id="half-amount">
-                        <strong>50% Deposit</strong><br>
-                        ${{ booking.total_price|floatformat:2|add:'/2' }}
-                    </div>
-                </div>
-
-                <div class="custom-amount">
-                    <input type="number" name="amount" id="custom-amount" step="0.01"
-                           placeholder="Enter custom amount" min="1" max="{{ booking.remaining_amount }}">
-                </div>
-                <small class="text-muted">Minimum payment: $1 | Maximum: ${{ booking.remaining_amount }}</small>
-            </div>
-
-            <button type="submit" class="btn-pay" id="pay-button">Pay ${{ booking.remaining_amount }}</button>
-        </form>
-
-        <a href="{% url 'booking_detail' booking.id %}" class="btn-back">← Back to Booking Details</a>
+    <div class="payment-status">
+      <strong>Payment Status:</strong> {{ booking.get_payment_status_display }}
     </div>
 
-    <script>
-        let remainingAmount = {{ booking.remaining_amount }};
-        let totalAmount = {{ booking.total_price }};
+    {% if days_until_due > 0 %}
+      <div class="due-date">
+        <strong>⚠️ Payment Due in {{ days_until_due }} days</strong> ({{ booking.payment_due_date|date:"M d, Y" }})
+      </div>
+    {% else %}
+      <div class="due-date" style="background:#f8d7da; color:#721c24;">
+        <strong>⚠️ Payment Overdue!</strong> Please pay immediately to avoid cancellation.
+      </div>
+    {% endif %}
 
-        function selectAmount(type) {
-            const amountInput = document.getElementById('custom-amount');
-            const payButton = document.getElementById('pay-button');
+    <div class="booking-summary">
+      <h3 style="margin-bottom: 15px;">Booking Summary</h3>
+      <div class="summary-item">
+        <span class="summary-label">Ticket Number:</span>
+        <span class="summary-value">{{ booking.ticket_number }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Item:</span>
+        <span class="summary-value">{{ booking.item_name }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Travel Date:</span>
+        <span class="summary-value">{{ booking.travel_date|date:"M d, Y" }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Total Amount:</span>
+        <span class="summary-value total-amount">${{ booking.total_price }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Amount Paid:</span>
+        <span class="summary-value">${{ booking.amount_paid }}</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Remaining:</span>
+        <span class="summary-value total-amount">${{ booking.remaining_amount }}</span>
+      </div>
+    </div>
 
-            // Remove selected class from all options
-            document.querySelectorAll('.amount-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
+    <form method="POST" action="{% url 'process_payment' booking.id %}" id="payment-form">
+      {% csrf_token %}
 
-            if (type === 'full') {
-                document.getElementById('full-amount').classList.add('selected');
-                amountInput.value = remainingAmount;
-                payButton.textContent = `Pay $${remainingAmount.toFixed(2)}`;
-            } else if (type === 'half') {
-                document.getElementById('half-amount').classList.add('selected');
-                let halfAmount = totalAmount / 2;
-                if (halfAmount > remainingAmount) halfAmount = remainingAmount;
-                amountInput.value = halfAmount.toFixed(2);
-                payButton.textContent = `Pay $${halfAmount.toFixed(2)}`;
-            }
-        }
+      <div class="payment-methods">
+        <h3 style="margin-bottom: 15px;">Select Payment Method</h3>
+        <div class="payment-method">
+          <input type="radio" name="payment_method" id="credit_card" value="credit_card" checked>
+          <label for="credit_card"><i class="fas fa-credit-card"></i> Credit / Debit Card</label>
+        </div>
+        <div class="payment-method">
+          <input type="radio" name="payment_method" id="paypal" value="paypal">
+          <label for="paypal"><i class="fab fa-paypal"></i> PayPal</label>
+        </div>
+        <div class="payment-method">
+          <input type="radio" name="payment_method" id="bank_transfer" value="bank_transfer">
+          <label for="bank_transfer"><i class="fas fa-university"></i> Bank Transfer</label>
+        </div>
+      </div>
 
-        document.getElementById('custom-amount').addEventListener('input', function() {
-            const value = parseFloat(this.value) || 0;
-            const payButton = document.getElementById('pay-button');
+      <div class="amount-section">
+        <h3 style="margin-bottom: 15px;">Payment Amount</h3>
+        <div class="amount-options">
+          <div class="amount-option" onclick="selectAmount('full')" id="full-amount">
+            <strong>Full Amount</strong><br>${{ booking.total_price }}
+          </div>
+          <div class="amount-option" onclick="selectAmount('half')" id="half-amount">
+            <strong>50% Deposit</strong><br>${{ booking.total_price|floatformat:2|add:'/2' }}
+          </div>
+        </div>
+        <div class="custom-amount">
+          <input type="number" name="amount" id="custom-amount" step="0.01" placeholder="Enter custom amount" min="1" max="{{ booking.remaining_amount }}">
+        </div>
+        <small class="text-muted">Minimum payment: $1 | Maximum: ${{ booking.remaining_amount }}</small>
+      </div>
 
-            // Remove selected class from all options
-            document.querySelectorAll('.amount-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
+      <button type="submit" class="btn-pay" id="pay-button">Pay ${{ booking.remaining_amount }}</button>
+    </form>
 
-            if (value > 0 && value <= remainingAmount) {
-                payButton.textContent = `Pay $${value.toFixed(2)}`;
-            } else {
-                payButton.textContent = `Invalid Amount`;
-            }
-        });
+    <a href="{% url 'booking_detail' booking.id %}" class="btn-back">← Back to Booking Details</a>
+  </div>
+</div>
 
-        // Form validation
-        document.getElementById('payment-form').addEventListener('submit', function(e) {
-            const amount = parseFloat(document.getElementById('custom-amount').value);
+<script>
+  let remainingAmount = {{ booking.remaining_amount }};
+  let totalAmount = {{ booking.total_price }};
 
-            if (!amount || amount <= 0) {
-                e.preventDefault();
-                alert('Please enter a valid amount');
-            } else if (amount > remainingAmount) {
-                e.preventDefault();
-                alert(`Amount cannot exceed $${remainingAmount}`);
-            }
-        });
-    </script>
+  function selectAmount(type) {
+    const amountInput = document.getElementById('custom-amount');
+    const payButton = document.getElementById('pay-button');
+    document.querySelectorAll('.amount-option').forEach(opt => opt.classList.remove('selected'));
+    if (type === 'full') {
+      document.getElementById('full-amount').classList.add('selected');
+      amountInput.value = remainingAmount;
+      payButton.textContent = `Pay $${remainingAmount.toFixed(2)}`;
+    } else if (type === 'half') {
+      document.getElementById('half-amount').classList.add('selected');
+      let halfAmount = totalAmount / 2;
+      if (halfAmount > remainingAmount) halfAmount = remainingAmount;
+      amountInput.value = halfAmount.toFixed(2);
+      payButton.textContent = `Pay $${halfAmount.toFixed(2)}`;
+    }
+  }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  document.getElementById('custom-amount').addEventListener('input', function() {
+    const value = parseFloat(this.value) || 0;
+    const payButton = document.getElementById('pay-button');
+    document.querySelectorAll('.amount-option').forEach(opt => opt.classList.remove('selected'));
+    if (value > 0 && value <= remainingAmount) {
+      payButton.textContent = `Pay $${value.toFixed(2)}`;
+    } else {
+      payButton.textContent = `Invalid Amount`;
+    }
+  });
+
+  document.getElementById('payment-form').addEventListener('submit', function(e) {
+    const amount = parseFloat(document.getElementById('custom-amount').value);
+    if (!amount || amount <= 0) {
+      e.preventDefault();
+      alert('Please enter a valid amount');
+    } else if (amount > remainingAmount) {
+      e.preventDefault();
+      alert(`Amount cannot exceed $${remainingAmount}`);
+    }
+  });
+</script>
 </body>
 </html>

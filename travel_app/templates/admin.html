@@ -239,6 +239,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .content-header h2 {
@@ -262,12 +264,18 @@
             box-shadow: 0 5px 15px rgba(30,60,114,0.3);
         }
 
-        /* STATS CARDS */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
+        /* STATS CARDS - HORIZONTAL SCROLL ON MOBILE, GRID ON DESKTOP */
+        .stats-wrapper {
+            overflow-x: auto;
             margin-bottom: 30px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            min-width: min-content;
         }
 
         .stat-card {
@@ -279,6 +287,8 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+            min-width: 200px;
+            flex: 1;
         }
 
         .stat-card:hover {
@@ -327,6 +337,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 600px;
         }
 
         th {
@@ -351,6 +362,7 @@
         .action-btns {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .edit-btn, .delete-btn, .view-btn, .approve-btn {
@@ -378,6 +390,7 @@
             border-radius: 4px;
             font-size: 12px;
             font-weight: 500;
+            display: inline-block;
         }
 
         .status-active { background: #d4edda; color: #155724; }
@@ -504,12 +517,25 @@
         }
 
         /* Quick Action Buttons */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
         .quick-action-btn {
             transition: all 0.3s;
             font-weight: 500;
             border: none;
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            display: block;
         }
 
         .quick-action-btn:hover {
@@ -530,6 +556,15 @@
             color: #ccc;
             margin-bottom: 15px;
             display: block;
+        }
+
+        /* SECTION TITLE */
+        .section-title {
+            color: #1e3c72;
+            font-size: 18px;
+            margin: 20px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         /* RESPONSIVE */
@@ -577,6 +612,12 @@
             .sidebar-menu li {
                 margin-bottom: 0;
             }
+            .stats-grid {
+                gap: 15px;
+            }
+            .stat-card {
+                min-width: 180px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -598,8 +639,18 @@
                 font-size: 11px !important;
                 padding: 4px 10px;
             }
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            .main-content {
+                padding: 20px;
+            }
+            .stat-card {
+                min-width: 160px;
+                padding: 15px;
+            }
+            .stat-card .number {
+                font-size: 24px;
+            }
+            .quick-actions-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             }
         }
 
@@ -615,8 +666,18 @@
                 width: 38px;
                 height: 38px;
             }
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .stat-card {
+                min-width: 140px;
+                padding: 12px;
+            }
+            .stat-card .number {
+                font-size: 20px;
+            }
+            .stat-card h4 {
+                font-size: 12px;
+            }
+            .quick-actions-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             }
         }
     </style>
@@ -632,13 +693,6 @@
 
     <ul class="nav-links">
         <li><a href="{% url 'index' %}">Home</a></li>
-        <li><a href="{% url 'destination' %}">Destination</a></li>
-        <li><a href="{% url 'hotel' %}">Hotel</a></li>
-        <li><a href="{% url 'flight' %}">Flight</a></li>
-        <li><a href="{% url 'package' %}">Package</a></li>
-        <li><a href="{% url 'reviews' %}">Reviews</a></li>
-        <li><a href="{% url 'admin_page' %}" class="active">Admin</a></li>
-        <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
 
         {% if user.is_authenticated %}
             <li class="user-info">
@@ -660,15 +714,15 @@
             <p>Manage your travel platform</p>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#" class="active" onclick="showTab('dashboard')"><i>📊</i> Dashboard</a></li>
-            <li><a href="#" onclick="showTab('users')"><i>👥</i> Users</a></li>
-            <li><a href="#" onclick="showTab('destinations')"><i>🌍</i> Destinations</a></li>
-            <li><a href="#" onclick="showTab('hotels')"><i>🏨</i> Hotels</a></li>
-            <li><a href="#" onclick="showTab('flights')"><i>✈️</i> Flights</a></li>
-            <li><a href="#" onclick="showTab('packages')"><i>🎒</i> Packages</a></li>
-            <li><a href="#" onclick="showTab('bookings')"><i>📅</i> Bookings</a></li>
-            <li><a href="#" onclick="showTab('reviews')"><i>⭐</i> Reviews</a></li>
-            <li><a href="#" onclick="showTab('contacts')"><i>📧</i> Contacts</a></li>
+            <li><a href="#" onclick="showTab('dashboard'); return false;" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#" onclick="showTab('users'); return false;"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="#" onclick="showTab('destinations'); return false;"><i class="fas fa-globe"></i> Destinations</a></li>
+            <li><a href="#" onclick="showTab('hotels'); return false;"><i class="fas fa-hotel"></i> Hotels</a></li>
+            <li><a href="#" onclick="showTab('flights'); return false;"><i class="fas fa-plane"></i> Flights</a></li>
+            <li><a href="#" onclick="showTab('packages'); return false;"><i class="fas fa-box"></i> Packages</a></li>
+            <li><a href="#" onclick="showTab('bookings'); return false;"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+            <li><a href="#" onclick="showTab('reviews'); return false;"><i class="fas fa-star"></i> Reviews</a></li>
+            <li><a href="#" onclick="showTab('contacts'); return false;"><i class="fas fa-envelope"></i> Contacts</a></li>
         </ul>
     </div>
 
@@ -690,325 +744,344 @@
                 <h2>Dashboard Overview</h2>
             </div>
 
-            <!-- STATS CARDS - ROW 1: User Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card" style="border-left: 4px solid #1e3c72;">
-                    <h4>Total Users</h4>
-                    <div class="number">{{ total_users|default:0 }}</div>
-                    <small>{{ new_users_today|default:0 }} new today | {{ new_users_week|default:0 }} this week</small>
-                </div>
-                <div class="stat-card" style="border-left: 4px solid #28a745;">
-                    <h4>Active Users</h4>
-                    <div class="number">{{ active_users|default:0 }}</div>
-                    <small>{{ inactive_users|default:0 }} inactive</small>
-                </div>
-                <div class="stat-card" style="border-left: 4px solid #ffc107;">
-                    <h4>Staff Users</h4>
-                    <div class="number">{{ staff_users|default:0 }}</div>
-                    <small>{{ superusers|default:0 }} superusers</small>
-                </div>
-                <div class="stat-card" style="border-left: 4px solid #17a2b8;">
-                    <h4>Newsletter</h4>
-                    <div class="number">{{ total_subscribers|default:0 }}</div>
-                    <small>{{ active_subscribers|default:0 }} active</small>
+            <!-- SECTION 1: User Statistics - HORIZONTAL SCROLL -->
+            <div class="section-title">User Statistics</div>
+            <div class="stats-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left: 4px solid #1e3c72;">
+                        <h4>Total Users</h4>
+                        <div class="number">{{ total_users|default:0 }}</div>
+                        <small>{{ new_users_today|default:0 }} new today | {{ new_users_week|default:0 }} this week</small>
+                    </div>
+                    <div class="stat-card" style="border-left: 4px solid #28a745;">
+                        <h4>Active Users</h4>
+                        <div class="number">{{ active_users|default:0 }}</div>
+                        <small>{{ inactive_users|default:0 }} inactive</small>
+                    </div>
+                    <div class="stat-card" style="border-left: 4px solid #ffc107;">
+                        <h4>Staff Users</h4>
+                        <div class="number">{{ staff_users|default:0 }}</div>
+                        <small>{{ superusers|default:0 }} superusers</small>
+                    </div>
+                    <div class="stat-card" style="border-left: 4px solid #17a2b8;">
+                        <h4>Newsletter</h4>
+                        <div class="number">{{ total_subscribers|default:0 }}</div>
+                        <small>{{ active_subscribers|default:0 }} active</small>
+                    </div>
                 </div>
             </div>
 
-            <!-- STATS CARDS - ROW 2: Destination Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card" style="border-left: 4px solid #dc3545;">
-                    <h4>Total Destinations</h4>
-                    <div class="number">{{ total_destinations|default:0 }}</div>
-                    <small>{{ active_destinations|default:0 }} active | {{ inactive_destinations|default:0 }} inactive</small>
-                </div>
-                <div class="stat-card">
-                    <h4>By Category</h4>
-                    {% for cat in destinations_by_category %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ cat.category|title }}:</span>
-                        <span><strong>{{ cat.count }}</strong></span>
+            <!-- SECTION 2: Destination Statistics - HORIZONTAL SCROLL -->
+            <div class="section-title">Destination Statistics</div>
+            <div class="stats-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left: 4px solid #dc3545;">
+                        <h4>Total Destinations</h4>
+                        <div class="number">{{ total_destinations|default:0 }}</div>
+                        <small>{{ active_destinations|default:0 }} active | {{ inactive_destinations|default:0 }} inactive</small>
                     </div>
-                    {% empty %}
-                    <small>No data</small>
-                    {% endfor %}
-                </div>
-                <div class="stat-card">
-                    <h4>By Budget</h4>
-                    {% for budget in destinations_by_budget %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ budget.budget|title }}:</span>
-                        <span><strong>{{ budget.count }}</strong></span>
+                    <div class="stat-card">
+                        <h4>By Category</h4>
+                        {% for cat in destinations_by_category %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ cat.category|title }}:</span>
+                            <span><strong>{{ cat.count }}</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No data</small>
+                        {% endfor %}
                     </div>
-                    {% empty %}
-                    <small>No data</small>
-                    {% endfor %}
-                </div>
-                <div class="stat-card">
-                    <h4>Popular Destinations</h4>
-                    {% for dest in popular_destinations %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ dest.item_name|truncatechars:15 }}:</span>
-                        <span><strong>{{ dest.bookings }} bookings</strong></span>
+                    <div class="stat-card">
+                        <h4>By Budget</h4>
+                        {% for budget in destinations_by_budget %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ budget.budget|title }}:</span>
+                            <span><strong>{{ budget.count }}</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No data</small>
+                        {% endfor %}
                     </div>
-                    {% empty %}
-                    <small>No bookings yet</small>
-                    {% endfor %}
+                    <div class="stat-card">
+                        <h4>Popular Destinations</h4>
+                        {% for dest in popular_destinations %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ dest.item_name|truncatechars:15 }}:</span>
+                            <span><strong>{{ dest.bookings }} bookings</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No bookings yet</small>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
-            <!-- STATS CARDS - ROW 3: Hotel Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card" style="border-left: 4px solid #fd7e14;">
-                    <h4>Total Hotels</h4>
-                    <div class="number">{{ total_hotels|default:0 }}</div>
-                    <small>{{ available_hotels|default:0 }} available | {{ fully_booked_hotels|default:0 }} full</small>
-                </div>
-                <div class="stat-card">
-                    <h4>Total Rooms</h4>
-                    <div class="number">{{ total_rooms_available|default:0 }}</div>
-                    <small>across all hotels</small>
-                </div>
-                <div class="stat-card">
-                    <h4>By Location</h4>
-                    {% for loc in hotels_by_location %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ loc.location|title }}:</span>
-                        <span><strong>{{ loc.count }}</strong></span>
+            <!-- SECTION 3: Hotel Statistics - HORIZONTAL SCROLL -->
+            <div class="section-title">Hotel Statistics</div>
+            <div class="stats-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left: 4px solid #fd7e14;">
+                        <h4>Total Hotels</h4>
+                        <div class="number">{{ total_hotels|default:0 }}</div>
+                        <small>{{ available_hotels|default:0 }} available | {{ fully_booked_hotels|default:0 }} full</small>
                     </div>
-                    {% empty %}
-                    <small>No data</small>
-                    {% endfor %}
-                </div>
-                <div class="stat-card">
-                    <h4>By Rating</h4>
-                    {% for rating in hotels_by_rating %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ rating.rating }}★:</span>
-                        <span><strong>{{ rating.count }}</strong></span>
+                    <div class="stat-card">
+                        <h4>Total Rooms</h4>
+                        <div class="number">{{ total_rooms_available|default:0 }}</div>
+                        <small>across all hotels</small>
                     </div>
-                    {% empty %}
-                    <small>No data</small>
-                    {% endfor %}
+                    <div class="stat-card">
+                        <h4>By Location</h4>
+                        {% for loc in hotels_by_location %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ loc.location|title }}:</span>
+                            <span><strong>{{ loc.count }}</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No data</small>
+                        {% endfor %}
+                    </div>
+                    <div class="stat-card">
+                        <h4>By Rating</h4>
+                        {% for rating in hotels_by_rating %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ rating.rating }}★:</span>
+                            <span><strong>{{ rating.count }}</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No data</small>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
-            <!-- STATS CARDS - ROW 4: Flight Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card" style="border-left: 4px solid #6f42c1;">
-                    <h4>Total Flights</h4>
-                    <div class="number">{{ total_flights|default:0 }}</div>
-                    <small>{{ active_flights|default:0 }} active | {{ upcoming_flights|default:0 }} upcoming</small>
-                </div>
-                <div class="stat-card">
-                    <h4>Total Seats</h4>
-                    <div class="number">{{ total_seats_available|default:0 }}</div>
-                    <small>available across all flights</small>
-                </div>
-                <div class="stat-card">
-                    <h4>By Airline</h4>
-                    {% for airline in flights_by_airline %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ airline.airline|title }}:</span>
-                        <span><strong>{{ airline.count }}</strong></span>
+            <!-- SECTION 4: Flight Statistics - HORIZONTAL SCROLL -->
+            <div class="section-title">Flight Statistics</div>
+            <div class="stats-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left: 4px solid #6f42c1;">
+                        <h4>Total Flights</h4>
+                        <div class="number">{{ total_flights|default:0 }}</div>
+                        <small>{{ active_flights|default:0 }} active | {{ upcoming_flights|default:0 }} upcoming</small>
                     </div>
-                    {% empty %}
-                    <small>No data</small>
-                    {% endfor %}
-                </div>
-                <div class="stat-card">
-                    <h4>By Price</h4>
-                    {% for price in flights_by_price %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ price.price_category|title }}:</span>
-                        <span><strong>{{ price.count }}</strong></span>
+                    <div class="stat-card">
+                        <h4>Total Seats</h4>
+                        <div class="number">{{ total_seats_available|default:0 }}</div>
+                        <small>available across all flights</small>
                     </div>
-                    {% empty %}
-                    <small>No data</small>
-                    {% endfor %}
+                    <div class="stat-card">
+                        <h4>By Airline</h4>
+                        {% for airline in flights_by_airline %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ airline.airline|title }}:</span>
+                            <span><strong>{{ airline.count }}</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No data</small>
+                        {% endfor %}
+                    </div>
+                    <div class="stat-card">
+                        <h4>By Price</h4>
+                        {% for price in flights_by_price %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ price.price_category|title }}:</span>
+                            <span><strong>{{ price.count }}</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No data</small>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
-            <!-- STATS CARDS - ROW 5: Package Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card" style="border-left: 4px solid #20c997;">
-                    <h4>Total Packages</h4>
-                    <div class="number">{{ total_packages|default:0 }}</div>
-                    <small>{{ active_packages|default:0 }} active | {{ packages_with_discount|default:0 }} with discount</small>
-                </div>
-                <div class="stat-card">
-                    <h4>Avg Price</h4>
-                    <div class="number">${{ avg_package_price|default:0|floatformat:0 }}</div>
-                    <small>per person</small>
-                </div>
-                <div class="stat-card">
-                    <h4>By Duration</h4>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>Short (≤3d):</span>
-                        <span><strong>{{ short_packages|default:0 }}</strong></span>
+            <!-- SECTION 5: Package Statistics - HORIZONTAL SCROLL -->
+            <div class="section-title">Package Statistics</div>
+            <div class="stats-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left: 4px solid #20c997;">
+                        <h4>Total Packages</h4>
+                        <div class="number">{{ total_packages|default:0 }}</div>
+                        <small>{{ active_packages|default:0 }} active | {{ packages_with_discount|default:0 }} with discount</small>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>Medium (4-7d):</span>
-                        <span><strong>{{ medium_packages|default:0 }}</strong></span>
+                    <div class="stat-card">
+                        <h4>Avg Price</h4>
+                        <div class="number">${{ avg_package_price|default:0|floatformat:0 }}</div>
+                        <small>per person</small>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>Long (>7d):</span>
-                        <span><strong>{{ long_packages|default:0 }}</strong></span>
+                    <div class="stat-card">
+                        <h4>By Duration</h4>
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>Short (≤3d):</span>
+                            <span><strong>{{ short_packages|default:0 }}</strong></span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>Medium (4-7d):</span>
+                            <span><strong>{{ medium_packages|default:0 }}</strong></span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>Long (>7d):</span>
+                            <span><strong>{{ long_packages|default:0 }}</strong></span>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <h4>Popular Packages</h4>
-                    {% for pkg in popular_packages %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ pkg.item_name|truncatechars:15 }}:</span>
-                        <span><strong>{{ pkg.bookings }} bookings</strong></span>
+                    <div class="stat-card">
+                        <h4>Popular Packages</h4>
+                        {% for pkg in popular_packages %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ pkg.item_name|truncatechars:15 }}:</span>
+                            <span><strong>{{ pkg.bookings }} bookings</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No bookings yet</small>
+                        {% endfor %}
                     </div>
-                    {% empty %}
-                    <small>No bookings yet</small>
-                    {% endfor %}
                 </div>
             </div>
 
-            <!-- STATS CARDS - ROW 6: Booking & Revenue Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card" style="border-left: 4px solid #007bff;">
-                    <h4>Total Bookings</h4>
-                    <div class="number">{{ total_bookings|default:0 }}</div>
-                    <small>{{ confirmed_bookings|default:0 }} confirmed | {{ pending_bookings|default:0 }} pending</small>
-                </div>
-                <div class="stat-card">
-                    <h4>Bookings Today</h4>
-                    <div class="number">{{ bookings_today|default:0 }}</div>
-                    <small>{{ bookings_week|default:0 }} this week | {{ bookings_month|default:0 }} this month</small>
-                </div>
-                <div class="stat-card">
-                    <h4>Total Revenue</h4>
-                    <div class="number">${{ total_revenue|default:0|floatformat:0 }}</div>
-                    <small>${{ revenue_today|default:0|floatformat:0 }} today</small>
-                </div>
-                <div class="stat-card">
-                    <h4>Revenue</h4>
-                    <small>This week: ${{ revenue_week|default:0|floatformat:0 }}</small><br>
-                    <small>This month: ${{ revenue_month|default:0|floatformat:0 }}</small>
+            <!-- SECTION 6: Booking & Revenue Statistics - HORIZONTAL SCROLL -->
+            <div class="section-title">Booking & Revenue Statistics</div>
+            <div class="stats-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left: 4px solid #007bff;">
+                        <h4>Total Bookings</h4>
+                        <div class="number">{{ total_bookings|default:0 }}</div>
+                        <small>{{ confirmed_bookings|default:0 }} confirmed | {{ pending_bookings|default:0 }} pending</small>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Bookings Today</h4>
+                        <div class="number">{{ bookings_today|default:0 }}</div>
+                        <small>{{ bookings_week|default:0 }} this week | {{ bookings_month|default:0 }} this month</small>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Revenue</h4>
+                        <div class="number">${{ total_revenue|default:0|floatformat:0 }}</div>
+                        <small>${{ revenue_today|default:0|floatformat:0 }} today</small>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Revenue</h4>
+                        <small>This week: ${{ revenue_week|default:0|floatformat:0 }}</small><br>
+                        <small>This month: ${{ revenue_month|default:0|floatformat:0 }}</small>
+                    </div>
                 </div>
             </div>
 
-            <!-- STATS CARDS - ROW 7: Review & Contact Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card" style="border-left: 4px solid #ffc107;">
-                    <h4>Total Reviews</h4>
-                    <div class="number">{{ total_reviews|default:0 }}</div>
-                    <small>{{ approved_reviews|default:0 }} approved | {{ pending_reviews|default:0 }} pending</small>
-                </div>
-                <div class="stat-card">
-                    <h4>Average Rating</h4>
-                    <div class="number">{{ avg_rating|default:0|floatformat:1 }} ★</div>
-                    <small>out of 5 stars</small>
-                </div>
-                <div class="stat-card">
-                    <h4>Contact Messages</h4>
-                    <div class="number">{{ total_contacts|default:0 }}</div>
-                    <small>{{ unresolved_contacts|default:0 }} unresolved</small>
-                </div>
-                <div class="stat-card">
-                    <h4>By Rating</h4>
-                    {% for rating in reviews_by_rating %}
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
-                        <span>{{ rating.rating }}★:</span>
-                        <span><strong>{{ rating.count }}</strong></span>
+            <!-- SECTION 7: Review & Contact Statistics - HORIZONTAL SCROLL -->
+            <div class="section-title">Review & Contact Statistics</div>
+            <div class="stats-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left: 4px solid #ffc107;">
+                        <h4>Total Reviews</h4>
+                        <div class="number">{{ total_reviews|default:0 }}</div>
+                        <small>{{ approved_reviews|default:0 }} approved | {{ pending_reviews|default:0 }} pending</small>
                     </div>
-                    {% empty %}
-                    <small>No data</small>
-                    {% endfor %}
+                    <div class="stat-card">
+                        <h4>Average Rating</h4>
+                        <div class="number">{{ avg_rating|default:0|floatformat:1 }} ★</div>
+                        <small>out of 5 stars</small>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Contact Messages</h4>
+                        <div class="number">{{ total_contacts|default:0 }}</div>
+                        <small>{{ unresolved_contacts|default:0 }} unresolved</small>
+                    </div>
+                    <div class="stat-card">
+                        <h4>By Rating</h4>
+                        {% for rating in reviews_by_rating %}
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0;">
+                            <span>{{ rating.rating }}★:</span>
+                            <span><strong>{{ rating.count }}</strong></span>
+                        </div>
+                        {% empty %}
+                        <small>No data</small>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
             <!-- QUICK ACTIONS -->
-            <div style="margin: 30px 0;">
-                <h3 style="color: #1e3c72; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-                    <i>⚡</i> Quick Actions
-                </h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px;">
-                    <a href="#" onclick="showTab('users'); return false;" class="quick-action-btn" style="background: #1e3c72; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; display: block;">
-                        <div style="font-size: 24px; margin-bottom: 5px;">👥</div>
-                        <div><strong>Manage Users</strong></div>
-                        <small style="opacity: 0.8;">{{ total_users }} users</small>
-                    </a>
-                    <a href="#" onclick="showTab('destinations'); return false;" class="quick-action-btn" style="background: #dc3545; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; display: block;">
-                        <div style="font-size: 24px; margin-bottom: 5px;">🌍</div>
-                        <div><strong>Manage Destinations</strong></div>
-                        <small style="opacity: 0.8;">{{ total_destinations }} destinations</small>
-                    </a>
-                    <a href="#" onclick="showTab('hotels'); return false;" class="quick-action-btn" style="background: #fd7e14; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; display: block;">
-                        <div style="font-size: 24px; margin-bottom: 5px;">🏨</div>
-                        <div><strong>Manage Hotels</strong></div>
-                        <small style="opacity: 0.8;">{{ total_hotels }} hotels</small>
-                    </a>
-                    <a href="#" onclick="showTab('flights'); return false;" class="quick-action-btn" style="background: #6f42c1; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; display: block;">
-                        <div style="font-size: 24px; margin-bottom: 5px;">✈️</div>
-                        <div><strong>Manage Flights</strong></div>
-                        <small style="opacity: 0.8;">{{ total_flights }} flights</small>
-                    </a>
-                    <a href="#" onclick="showTab('packages'); return false;" class="quick-action-btn" style="background: #20c997; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; display: block;">
-                        <div style="font-size: 24px; margin-bottom: 5px;">🎒</div>
-                        <div><strong>Manage Packages</strong></div>
-                        <small style="opacity: 0.8;">{{ total_packages }} packages</small>
-                    </a>
-                    <a href="#" onclick="showTab('bookings'); return false;" class="quick-action-btn" style="background: #007bff; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; display: block;">
-                        <div style="font-size: 24px; margin-bottom: 5px;">📅</div>
-                        <div><strong>Manage Bookings</strong></div>
-                        <small style="opacity: 0.8;">{{ total_bookings }} bookings</small>
-                    </a>
-                    <a href="#" onclick="showTab('reviews'); return false;" class="quick-action-btn" style="background: #ffc107; color: #333; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; display: block;">
-                        <div style="font-size: 24px; margin-bottom: 5px;">⭐</div>
-                        <div><strong>Manage Reviews</strong></div>
-                        <small style="opacity: 0.8;">{{ total_reviews }} reviews</small>
-                    </a>
-                    <a href="#" onclick="showTab('contacts'); return false;" class="quick-action-btn" style="background: #17a2b8; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; display: block;">
-                        <div style="font-size: 24px; margin-bottom: 5px;">📧</div>
-                        <div><strong>Manage Contacts</strong></div>
-                        <small style="opacity: 0.8;">{{ total_contacts }} messages</small>
-                    </a>
-                </div>
+            <div class="section-title">Quick Actions</div>
+            <div class="quick-actions-grid">
+                <a href="#" onclick="showTab('users'); return false;" class="quick-action-btn" style="background: #1e3c72; color: white;">
+                    <div style="font-size: 24px; margin-bottom: 5px;">👥</div>
+                    <div><strong>Manage Users</strong></div>
+                    <small style="opacity: 0.8;">{{ total_users }} users</small>
+                </a>
+                <a href="#" onclick="showTab('destinations'); return false;" class="quick-action-btn" style="background: #dc3545; color: white;">
+                    <div style="font-size: 24px; margin-bottom: 5px;">🌍</div>
+                    <div><strong>Manage Destinations</strong></div>
+                    <small style="opacity: 0.8;">{{ total_destinations }} destinations</small>
+                </a>
+                <a href="#" onclick="showTab('hotels'); return false;" class="quick-action-btn" style="background: #fd7e14; color: white;">
+                    <div style="font-size: 24px; margin-bottom: 5px;">🏨</div>
+                    <div><strong>Manage Hotels</strong></div>
+                    <small style="opacity: 0.8;">{{ total_hotels }} hotels</small>
+                </a>
+                <a href="#" onclick="showTab('flights'); return false;" class="quick-action-btn" style="background: #6f42c1; color: white;">
+                    <div style="font-size: 24px; margin-bottom: 5px;">✈️</div>
+                    <div><strong>Manage Flights</strong></div>
+                    <small style="opacity: 0.8;">{{ total_flights }} flights</small>
+                </a>
+                <a href="#" onclick="showTab('packages'); return false;" class="quick-action-btn" style="background: #20c997; color: white;">
+                    <div style="font-size: 24px; margin-bottom: 5px;">🎒</div>
+                    <div><strong>Manage Packages</strong></div>
+                    <small style="opacity: 0.8;">{{ total_packages }} packages</small>
+                </a>
+                <a href="#" onclick="showTab('bookings'); return false;" class="quick-action-btn" style="background: #007bff; color: white;">
+                    <div style="font-size: 24px; margin-bottom: 5px;">📅</div>
+                    <div><strong>Manage Bookings</strong></div>
+                    <small style="opacity: 0.8;">{{ total_bookings }} bookings</small>
+                </a>
+                <a href="#" onclick="showTab('reviews'); return false;" class="quick-action-btn" style="background: #ffc107; color: #333;">
+                    <div style="font-size: 24px; margin-bottom: 5px;">⭐</div>
+                    <div><strong>Manage Reviews</strong></div>
+                    <small style="opacity: 0.8;">{{ total_reviews }} reviews</small>
+                </a>
+                <a href="#" onclick="showTab('contacts'); return false;" class="quick-action-btn" style="background: #17a2b8; color: white;">
+                    <div style="font-size: 24px; margin-bottom: 5px;">📧</div>
+                    <div><strong>Manage Contacts</strong></div>
+                    <small style="opacity: 0.8;">{{ total_contacts }} messages</small>
+                </a>
             </div>
 
             <!-- Recent Bookings -->
             <div class="table-container">
                 <h3><i>📋</i> Recent Bookings</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Booking ID</th>
-                            <th>User</th>
-                            <th>Type</th>
-                            <th>Item</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Amount</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for booking in recent_bookings %}
-                        <tr>
-                            <td>#{{ booking.id }}</td>
-                            <td>{{ booking.user.username }}</td>
-                            <td>{{ booking.booking_type }}</td>
-                            <td>{{ booking.item_name }}</td>
-                            <td>{{ booking.booking_date|date:"Y-m-d" }}</td>
-                            <td><span class="status-badge status-{{ booking.status }}">{{ booking.status }}</span></td>
-                            <td>${{ booking.total_price }}</td>
-                            <td><button class="view-btn" onclick="viewBooking({{ booking.id }})">View</button></td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="empty-state">
-                                <i>📅</i>
-                                <p>No bookings found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Item</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in recent_bookings %}
+                            <tr>
+                                <td>#{{ booking.id }}</td>
+                                <td>{{ booking.user.username }}</td>
+                                <td>{{ booking.booking_type }}</td>
+                                <td>{{ booking.item_name }}</td>
+                                <td>{{ booking.booking_date|date:"Y-m-d" }}</td>
+                                <td><span class="status-badge status-{{ booking.status }}">{{ booking.status }}</span></td>
+                                <td>${{ booking.total_price }}</td>
+                                <td><button class="view-btn" onclick="viewBooking({{ booking.id }})">View</button></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i>📅</i>
+                                    <p>No bookings found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1020,49 +1093,51 @@
             </div>
             <div class="table-container">
                 <h3><i>👥</i> All Users</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Date Joined</th>
-                            <th>Last Login</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in all_users %}
-                        <tr>
-                            <td>#{{ user.id }}</td>
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.date_joined|date:"Y-m-d" }}</td>
-                            <td>{{ user.last_login|date:"Y-m-d"|default:"Never" }}</td>
-                            <td>
-                                <span class="status-badge {% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
-                                    {% if user.is_active %}Active{% else %}Inactive{% endif %}
-                                </span>
-                            </td>
-                            <td class="action-btns">
-                                <button class="edit-btn" onclick="editUser({{ user.id }})">Edit</button>
-                                <button class="delete-btn" onclick="deleteUser({{ user.id }})">Delete</button>
-                                {% if not user.is_active %}
-                                <button class="approve-btn" onclick="activateUser({{ user.id }})">Activate</button>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="7" class="empty-state">
-                                <i>👥</i>
-                                <p>No users found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Date Joined</th>
+                                <th>Last Login</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in all_users %}
+                            <tr>
+                                <td>#{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.date_joined|date:"Y-m-d" }}</td>
+                                <td>{{ user.last_login|date:"Y-m-d"|default:"Never" }}</td>
+                                <td>
+                                    <span class="status-badge {% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                        {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    <button class="edit-btn" onclick="editUser({{ user.id }})">Edit</button>
+                                    <button class="delete-btn" onclick="deleteUser({{ user.id }})">Delete</button>
+                                    {% if not user.is_active %}
+                                    <button class="approve-btn" onclick="activateUser({{ user.id }})">Activate</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    <i>👥</i>
+                                    <p>No users found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1074,49 +1149,51 @@
             </div>
             <div class="table-container">
                 <h3><i>🌍</i> All Destinations</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Category</th>
-                            <th>Budget</th>
-                            <th>Price/Day</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for dest in all_destinations %}
-                        <tr>
-                            <td>#{{ dest.id }}</td>
-                            <td>{{ dest.name }}</td>
-                            <td>{{ dest.country }}</td>
-                            <td>{{ dest.get_category_display }}</td>
-                            <td>{{ dest.get_budget_display }}</td>
-                            <td>${{ dest.price_per_day }}</td>
-                            <td>
-                                <span class="status-badge {% if dest.is_active %}status-active{% else %}status-inactive{% endif %}">
-                                    {% if dest.is_active %}Active{% else %}Inactive{% endif %}
-                                </span>
-                            </td>
-                            <td class="action-btns">
-                                <button class="edit-btn" onclick="editDestination({{ dest.id }})">Edit</button>
-                                <button class="delete-btn" onclick="deleteDestination({{ dest.id }})">Delete</button>
-                                <button class="view-btn" onclick="viewDestination({{ dest.id }})">View</button>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="empty-state">
-                                <i>🌍</i>
-                                <p>No destinations found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Country</th>
+                                <th>Category</th>
+                                <th>Budget</th>
+                                <th>Price/Day</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for dest in all_destinations %}
+                            <tr>
+                                <td>#{{ dest.id }}</td>
+                                <td>{{ dest.name }}</td>
+                                <td>{{ dest.country }}</td>
+                                <td>{{ dest.get_category_display }}</td>
+                                <td>{{ dest.get_budget_display }}</td>
+                                <td>${{ dest.price_per_day }}</td>
+                                <td>
+                                    <span class="status-badge {% if dest.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                        {% if dest.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    <button class="edit-btn" onclick="editDestination({{ dest.id }})">Edit</button>
+                                    <button class="delete-btn" onclick="deleteDestination({{ dest.id }})">Delete</button>
+                                    <button class="view-btn" onclick="viewDestination({{ dest.id }})">View</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i>🌍</i>
+                                    <p>No destinations found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1128,49 +1205,51 @@
             </div>
             <div class="table-container">
                 <h3><i>🏨</i> All Hotels</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Location</th>
-                            <th>Rating</th>
-                            <th>Price/Night</th>
-                            <th>Rooms</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for hotel in all_hotels %}
-                        <tr>
-                            <td>#{{ hotel.id }}</td>
-                            <td>{{ hotel.name }}</td>
-                            <td>{{ hotel.get_location_display }}</td>
-                            <td>{{ hotel.rating }}★</td>
-                            <td>${{ hotel.price_per_night }}</td>
-                            <td>{{ hotel.available_rooms }}</td>
-                            <td>
-                                <span class="status-badge {% if hotel.available_rooms > 0 %}status-active{% else %}status-inactive{% endif %}">
-                                    {% if hotel.available_rooms > 0 %}Available{% else %}Full{% endif %}
-                                </span>
-                            </td>
-                            <td class="action-btns">
-                                <button class="edit-btn" onclick="editHotel({{ hotel.id }})">Edit</button>
-                                <button class="delete-btn" onclick="deleteHotel({{ hotel.id }})">Delete</button>
-                                <button class="view-btn" onclick="viewHotel({{ hotel.id }})">View</button>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="empty-state">
-                                <i>🏨</i>
-                                <p>No hotels found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Rating</th>
+                                <th>Price/Night</th>
+                                <th>Rooms</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hotel in all_hotels %}
+                            <tr>
+                                <td>#{{ hotel.id }}</td>
+                                <td>{{ hotel.name }}</td>
+                                <td>{{ hotel.get_location_display }}</td>
+                                <td>{{ hotel.rating }}★</td>
+                                <td>${{ hotel.price_per_night }}</td>
+                                <td>{{ hotel.available_rooms }}</td>
+                                <td>
+                                    <span class="status-badge {% if hotel.available_rooms > 0 %}status-active{% else %}status-inactive{% endif %}">
+                                        {% if hotel.available_rooms > 0 %}Available{% else %}Full{% endif %}
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    <button class="edit-btn" onclick="editHotel({{ hotel.id }})">Edit</button>
+                                    <button class="delete-btn" onclick="deleteHotel({{ hotel.id }})">Delete</button>
+                                    <button class="view-btn" onclick="viewHotel({{ hotel.id }})">View</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i>🏨</i>
+                                    <p>No hotels found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1182,53 +1261,55 @@
             </div>
             <div class="table-container">
                 <h3><i>✈️</i> All Flights</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Airline</th>
-                            <th>Flight No</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Date</th>
-                            <th>Price</th>
-                            <th>Seats</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for flight in all_flights %}
-                        <tr>
-                            <td>#{{ flight.id }}</td>
-                            <td>{{ flight.get_airline_display }}</td>
-                            <td>{{ flight.flight_number }}</td>
-                            <td>{{ flight.from_city }}</td>
-                            <td>{{ flight.to_city }}</td>
-                            <td>{{ flight.departure_date|date:"Y-m-d" }}</td>
-                            <td>${{ flight.price }}</td>
-                            <td>{{ flight.available_seats }}</td>
-                            <td>
-                                <span class="status-badge {% if flight.is_active %}status-active{% else %}status-inactive{% endif %}">
-                                    {% if flight.is_active %}Active{% else %}Inactive{% endif %}
-                                </span>
-                            </td>
-                            <td class="action-btns">
-                                <button class="edit-btn" onclick="editFlight({{ flight.id }})">Edit</button>
-                                <button class="delete-btn" onclick="deleteFlight({{ flight.id }})">Delete</button>
-                                <button class="view-btn" onclick="viewFlight({{ flight.id }})">View</button>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="10" class="empty-state">
-                                <i>✈️</i>
-                                <p>No flights found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Airline</th>
+                                <th>Flight No</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Date</th>
+                                <th>Price</th>
+                                <th>Seats</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for flight in all_flights %}
+                            <tr>
+                                <td>#{{ flight.id }}</td>
+                                <td>{{ flight.get_airline_display }}</td>
+                                <td>{{ flight.flight_number }}</td>
+                                <td>{{ flight.from_city }}</td>
+                                <td>{{ flight.to_city }}</td>
+                                <td>{{ flight.departure_date|date:"Y-m-d" }}</td>
+                                <td>${{ flight.price }}</td>
+                                <td>{{ flight.available_seats }}</td>
+                                <td>
+                                    <span class="status-badge {% if flight.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                        {% if flight.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    <button class="edit-btn" onclick="editFlight({{ flight.id }})">Edit</button>
+                                    <button class="delete-btn" onclick="deleteFlight({{ flight.id }})">Delete</button>
+                                    <button class="view-btn" onclick="viewFlight({{ flight.id }})">View</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="10" class="empty-state">
+                                    <i>✈️</i>
+                                    <p>No flights found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1240,51 +1321,53 @@
             </div>
             <div class="table-container">
                 <h3><i>🎒</i> All Packages</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Duration</th>
-                            <th>Includes</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                            <th>Final Price</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for package in all_packages %}
-                        <tr>
-                            <td>#{{ package.id }}</td>
-                            <td>{{ package.name }}</td>
-                            <td>{{ package.duration_days }} days</td>
-                            <td>{{ package.includes|truncatechars:30 }}</td>
-                            <td>${{ package.price_per_person }}</td>
-                            <td>{{ package.discount_percentage }}%</td>
-                            <td>${{ package.discounted_price|floatformat:2 }}</td>
-                            <td>
-                                <span class="status-badge {% if package.is_active %}status-active{% else %}status-inactive{% endif %}">
-                                    {% if package.is_active %}Active{% else %}Inactive{% endif %}
-                                </span>
-                            </td>
-                            <td class="action-btns">
-                                <button class="edit-btn" onclick="editPackage({{ package.id }})">Edit</button>
-                                <button class="delete-btn" onclick="deletePackage({{ package.id }})">Delete</button>
-                                <button class="view-btn" onclick="viewPackage({{ package.id }})">View</button>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="9" class="empty-state">
-                                <i>🎒</i>
-                                <p>No packages found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Duration</th>
+                                <th>Includes</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Final Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for package in all_packages %}
+                            <tr>
+                                <td>#{{ package.id }}</td>
+                                <td>{{ package.name }}</td>
+                                <td>{{ package.duration_days }} days</td>
+                                <td>{{ package.includes|truncatechars:30 }}</td>
+                                <td>${{ package.price_per_person }}</td>
+                                <td>{{ package.discount_percentage }}%</td>
+                                <td>${{ package.discounted_price|floatformat:2 }}</td>
+                                <td>
+                                    <span class="status-badge {% if package.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                        {% if package.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    <button class="edit-btn" onclick="editPackage({{ package.id }})">Edit</button>
+                                    <button class="delete-btn" onclick="deletePackage({{ package.id }})">Delete</button>
+                                    <button class="view-btn" onclick="viewPackage({{ package.id }})">View</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="9" class="empty-state">
+                                    <i>🎒</i>
+                                    <p>No packages found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1295,54 +1378,56 @@
             </div>
             <div class="table-container">
                 <h3><i>📅</i> All Bookings</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Booking ID</th>
-                            <th>Ticket No</th>
-                            <th>User</th>
-                            <th>Type</th>
-                            <th>Item</th>
-                            <th>Booking Date</th>
-                            <th>Travel Date</th>
-                            <th>People</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for booking in all_bookings %}
-                        <tr>
-                            <td>#{{ booking.id }}</td>
-                            <td>{{ booking.ticket_number }}</td>
-                            <td>{{ booking.user.username }}</td>
-                            <td>{{ booking.get_booking_type_display }}</td>
-                            <td>{{ booking.item_name }}</td>
-                            <td>{{ booking.booking_date|date:"Y-m-d H:i" }}</td>
-                            <td>{{ booking.travel_date|date:"Y-m-d"|default:"-" }}</td>
-                            <td>{{ booking.number_of_people }}</td>
-                            <td>${{ booking.total_price }}</td>
-                            <td>
-                                <span class="status-badge status-{{ booking.status }}">
-                                    {{ booking.get_status_display }}
-                                </span>
-                            </td>
-                            <td class="action-btns">
-                                <button class="view-btn" onclick="viewBooking({{ booking.id }})">View</button>
-                                <button class="edit-btn" onclick="updateBookingStatus({{ booking.id }})">Status</button>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="11" class="empty-state">
-                                <i>📅</i>
-                                <p>No bookings found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Ticket No</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Item</th>
+                                <th>Booking Date</th>
+                                <th>Travel Date</th>
+                                <th>People</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in all_bookings %}
+                            <tr>
+                                <td>#{{ booking.id }}</td>
+                                <td>{{ booking.ticket_number }}</td>
+                                <td>{{ booking.user.username }}</td>
+                                <td>{{ booking.get_booking_type_display }}</td>
+                                <td>{{ booking.item_name }}</td>
+                                <td>{{ booking.booking_date|date:"Y-m-d H:i" }}</td>
+                                <td>{{ booking.travel_date|date:"Y-m-d"|default:"-" }}</td>
+                                <td>{{ booking.number_of_people }}</td>
+                                <td>${{ booking.total_price }}</td>
+                                <td>
+                                    <span class="status-badge status-{{ booking.status }}">
+                                        {{ booking.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    <button class="view-btn" onclick="viewBooking({{ booking.id }})">View</button>
+                                    <button class="edit-btn" onclick="updateBookingStatus({{ booking.id }})">Status</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="11" class="empty-state">
+                                    <i>📅</i>
+                                    <p>No bookings found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1353,51 +1438,53 @@
             </div>
             <div class="table-container">
                 <h3><i>⭐</i> All Reviews</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>User</th>
-                            <th>Type</th>
-                            <th>Rating</th>
-                            <th>Review</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for review in all_reviews %}
-                        <tr>
-                            <td>#{{ review.id }}</td>
-                            <td>{{ review.name }}</td>
-                            <td>{{ review.get_review_type_display }}</td>
-                            <td>{{ review.rating }}★</td>
-                            <td>{{ review.text|truncatechars:50 }}</td>
-                            <td>{{ review.created_at|date:"Y-m-d" }}</td>
-                            <td>
-                                <span class="status-badge {% if review.is_approved %}status-active{% else %}status-pending{% endif %}">
-                                    {% if review.is_approved %}Approved{% else %}Pending{% endif %}
-                                </span>
-                            </td>
-                            <td class="action-btns">
-                                {% if not review.is_approved %}
-                                <button class="approve-btn" onclick="approveReview({{ review.id }})">Approve</button>
-                                {% endif %}
-                                <button class="delete-btn" onclick="deleteReview({{ review.id }})">Delete</button>
-                                <button class="view-btn" onclick="viewReview({{ review.id }})">View</button>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="empty-state">
-                                <i>⭐</i>
-                                <p>No reviews found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Rating</th>
+                                <th>Review</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review in all_reviews %}
+                            <tr>
+                                <td>#{{ review.id }}</td>
+                                <td>{{ review.name }}</td>
+                                <td>{{ review.get_review_type_display }}</td>
+                                <td>{{ review.rating }}★</td>
+                                <td>{{ review.text|truncatechars:50 }}</td>
+                                <td>{{ review.created_at|date:"Y-m-d" }}</td>
+                                <td>
+                                    <span class="status-badge {% if review.is_approved %}status-active{% else %}status-pending{% endif %}">
+                                        {% if review.is_approved %}Approved{% else %}Pending{% endif %}
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    {% if not review.is_approved %}
+                                    <button class="approve-btn" onclick="approveReview({{ review.id }})">Approve</button>
+                                    {% endif %}
+                                    <button class="delete-btn" onclick="deleteReview({{ review.id }})">Delete</button>
+                                    <button class="view-btn" onclick="viewReview({{ review.id }})">View</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i>⭐</i>
+                                    <p>No reviews found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -1408,50 +1495,52 @@
             </div>
             <div class="table-container">
                 <h3><i>📧</i> All Messages</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Subject</th>
-                            <th>Message</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for contact in all_contacts %}
-                        <tr>
-                            <td>#{{ contact.id }}</td>
-                            <td>{{ contact.name }}</td>
-                            <td>{{ contact.email }}</td>
-                            <td>{{ contact.subject }}</td>
-                            <td>{{ contact.message|truncatechars:50 }}</td>
-                            <td>{{ contact.created_at|date:"Y-m-d" }}</td>
-                            <td>
-                                <span class="status-badge {% if contact.is_resolved %}status-active{% else %}status-pending{% endif %}">
-                                    {% if contact.is_resolved %}Resolved{% else %}Unresolved{% endif %}
-                                </span>
-                            </td>
-                            <td class="action-btns">
-                                <button class="view-btn" onclick="viewContact({{ contact.id }})">View</button>
-                                {% if not contact.is_resolved %}
-                                <button class="approve-btn" onclick="markResolved({{ contact.id }})">Mark Resolved</button>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="empty-state">
-                                <i>📧</i>
-                                <p>No messages found</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="stats-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contact in all_contacts %}
+                            <tr>
+                                <td>#{{ contact.id }}</td>
+                                <td>{{ contact.name }}</td>
+                                <td>{{ contact.email }}</td>
+                                <td>{{ contact.subject }}</td>
+                                <td>{{ contact.message|truncatechars:50 }}</td>
+                                <td>{{ contact.created_at|date:"Y-m-d" }}</td>
+                                <td>
+                                    <span class="status-badge {% if contact.is_resolved %}status-active{% else %}status-pending{% endif %}">
+                                        {% if contact.is_resolved %}Resolved{% else %}Unresolved{% endif %}
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    <button class="view-btn" onclick="viewContact({{ contact.id }})">View</button>
+                                    {% if not contact.is_resolved %}
+                                    <button class="approve-btn" onclick="markResolved({{ contact.id }})">Mark Resolved</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i>📧</i>
+                                    <p>No messages found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -1754,7 +1843,15 @@ function showTab(tabName) {
     document.querySelectorAll('.sidebar-menu a').forEach(link => {
         link.classList.remove('active');
     });
-    event.target.classList.add('active');
+
+    // Find the clicked link and add active class
+    const links = document.querySelectorAll('.sidebar-menu a');
+    for (let link of links) {
+        if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(tabName)) {
+            link.classList.add('active');
+            break;
+        }
+    }
 }
 
 // Modal functions
@@ -1775,7 +1872,7 @@ window.onclick = function(event) {
 
 // CRUD operation functions
 function editUser(userId) {
-    alert('Edit functionality for user ' + userId + ' - Edit feature coming soon');
+    alert('Edit functionality for user ' + userId + ' - Coming soon');
 }
 
 function deleteUser(userId) {
@@ -1853,7 +1950,6 @@ function viewBooking(bookingId) {
 function updateBookingStatus(bookingId) {
     let newStatus = prompt('Enter new status (confirmed/cancelled/pending):', 'confirmed');
     if (newStatus && ['confirmed', 'cancelled', 'pending'].includes(newStatus)) {
-        // Create a form to submit the status update via POST
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = `/dashboard/update-booking-status/${bookingId}/`;
@@ -1901,6 +1997,22 @@ function markResolved(contactId) {
     if(confirm('Mark this message as resolved?')) {
         window.location.href = "{% url 'admin_mark_resolved' 0 %}".replace('0', contactId);
     }
+}
+
+// Helper function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 </script>
 

@@ -1,10 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign Up – Tower Travel Premium</title>
-{% load static %}
 
 <style>
 /* RESET & FONT */
@@ -31,26 +31,6 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-/* FLOATING GOLD SHAPES */
-.float-shape {
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  background: rgba(255,215,0,0.2);
-  border-radius: 50%;
-  filter: blur(50px);
-  animation: float 8s infinite ease-in-out alternate;
-  z-index: 0;
-}
-.shape1 { top: 10%; left: 10%; }
-.shape2 { bottom: 10%; right: 15%; animation-duration: 10s; }
-
-@keyframes float {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-50px) rotate(180deg); }
-  100% { transform: translateY(0px) rotate(360deg); }
 }
 
 /* HEADER */
@@ -132,7 +112,28 @@ body {
   box-shadow: 0 0 15px rgba(255,215,0,0.5);
 }
 
-/* SIGN-UP BOX */
+/* FLOATING GOLD SHAPES */
+.float-shape {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  background: rgba(255,215,0,0.2);
+  border-radius: 50%;
+  filter: blur(50px);
+  animation: float 8s infinite ease-in-out alternate;
+  z-index: 0;
+}
+
+.shape1 { top: 10%; left: 10%; }
+.shape2 { bottom: 10%; right: 15%; animation-duration: 10s; }
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-50px) rotate(180deg); }
+  100% { transform: translateY(0px) rotate(360deg); }
+}
+
+/* SIGNUP BOX */
 .signup-box {
   position: relative;
   background: rgba(255,255,255,0.1);
@@ -140,11 +141,27 @@ body {
   border-radius: 25px;
   border: 2px solid rgba(255,215,0,0.5);
   box-shadow: 0 0 40px rgba(255,215,0,0.7);
-  width: 380px;
-  padding: 50px 40px;
+  width: 420px;
+  padding: 40px 35px;
   text-align: center;
   z-index: 1;
   animation: popUp 1s ease forwards;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.signup-box::-webkit-scrollbar {
+  width: 5px;
+}
+
+.signup-box::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+
+.signup-box::-webkit-scrollbar-thumb {
+  background: #ffd54f;
+  border-radius: 10px;
 }
 
 @keyframes popUp {
@@ -157,7 +174,7 @@ body {
   font-size: 32px;
   font-weight: 700;
   text-shadow: 0 0 20px rgba(255,215,0,0.9);
-  margin-bottom: 35px;
+  margin-bottom: 20px;
 }
 
 /* MESSAGES */
@@ -180,26 +197,33 @@ body {
   color: #fff;
 }
 
+.message.warning {
+  background: rgba(255, 152, 0, 0.3);
+  border: 1px solid #ff9800;
+  color: #fff;
+}
+
 /* INPUT FIELDS */
 .input-field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
 }
 
 .input-field label {
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 6px;
   text-shadow: 0 0 5px rgba(0,0,0,0.5);
+  text-align: left;
 }
 
 .input-field input {
-  padding: 15px;
+  padding: 12px 15px;
   border-radius: 12px;
   border: none;
   outline: none;
-  font-size: 15px;
+  font-size: 14px;
   background: rgba(255,255,255,0.2);
   color: white;
   box-shadow: 0 0 12px rgba(0,0,0,0.3);
@@ -214,13 +238,20 @@ body {
   background: rgba(255,255,255,0.3);
   box-shadow: 0 0 20px #ffd54f, 0 0 30px rgba(255,215,0,0.5);
   border: 1px solid #ffd54f;
-  transform: scale(1.03);
+  transform: scale(1.02);
+}
+
+.input-field small {
+  color: rgba(255,255,255,0.6);
+  font-size: 10px;
+  margin-top: 4px;
+  text-align: left;
 }
 
 /* BUTTON */
 .btn {
   width: 100%;
-  padding: 16px;
+  padding: 14px;
   font-size: 16px;
   font-weight: bold;
   border-radius: 15px;
@@ -230,6 +261,7 @@ body {
   color: black;
   box-shadow: 0 0 20px rgba(255,215,0,0.8);
   transition: all 0.3s ease;
+  margin-top: 10px;
 }
 
 .btn:hover {
@@ -240,6 +272,7 @@ body {
 /* EXTRA LINKS */
 .extra-links {
   margin-top: 20px;
+  text-align: center;
 }
 
 .extra-links a {
@@ -253,9 +286,37 @@ body {
   text-shadow: 0 0 10px gold;
 }
 
+.verify-note {
+  background: rgba(255,215,0,0.15);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 12px;
+  color: #ffd966;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.terms {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 15px;
+}
+
+.terms a {
+  color: #ffd54f;
+  text-decoration: none;
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
+
 /* RESPONSIVE */
 @media (max-width: 450px) {
-  .signup-box { width: 90%; padding: 35px 25px; }
+  .signup-box { width: 90%; padding: 30px 20px; }
   .nav-links { flex-direction: column; gap: 12px; }
 }
 </style>
@@ -281,21 +342,21 @@ body {
       <li><a href="{% url 'flight' %}">Flight</a></li>
       <li><a href="{% url 'package' %}">Package</a></li>
       <li><a href="{% url 'reviews' %}">Reviews</a></li>
-      <li><a href="{% url 'admin_page' %}">Admin</a></li>
+
       {% if user.is_authenticated %}
         <li style="color:gold;">Welcome {{ user.username }}</li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
       {% else %}
-        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'user_login' %}">Login</a></li>
       {% endif %}
     </ul>
   </header>
 
-  <!-- SIGN-UP BOX -->
+  <!-- SIGNUP BOX -->
   <div class="signup-box">
     <h2>Create Account</h2>
 
-    <!-- DISPLAY MESSAGES -->
+    <!-- SHOW MESSAGES -->
     {% if messages %}
       {% for message in messages %}
         <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
@@ -304,8 +365,19 @@ body {
       {% endfor %}
     {% endif %}
 
-    <form method="POST">
+    <form method="POST" action="{% url 'user_signup' %}">
       {% csrf_token %}
+
+      <div class="input-field">
+        <label>Full Name</label>
+        <input type="text" name="full_name" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="input-field">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <small>We'll send a verification link to this email</small>
+      </div>
 
       <div class="input-field">
         <label>Username</label>
@@ -314,22 +386,40 @@ body {
 
       <div class="input-field">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Create password" required>
+        <input type="password" name="password" placeholder="Create a strong password" required>
+        <small>Minimum 6 characters</small>
       </div>
 
       <div class="input-field">
         <label>Confirm Password</label>
-        <input type="password" name="confirm_password" placeholder="Confirm password" required>
+        <input type="password" name="confirm_password" placeholder="Confirm your password" required>
       </div>
 
-      <button type="submit" class="btn">Sign Up</button>
+      <button type="submit" class="btn">Sign Up & Verify Email</button>
     </form>
 
     <div class="extra-links">
-      <p><a href="{% url 'login' %}">Already have an account? Login</a></p>
+      <a href="{% url 'user_login' %}">Already have an account? Login</a>
+    </div>
+
+    <div class="terms">
+      By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
     </div>
   </div>
 
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+<script>
+  // Show success message if verification email was sent
+  if (window.location.search.includes('verification_sent=1')) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'message success';
+    msgDiv.innerHTML = '<i class="fas fa-envelope"></i> ✅ Verification email sent! Please check your inbox and spam folder.';
+    const formEl = document.querySelector('.signup-box form');
+    if (formEl) formEl.insertAdjacentElement('beforebegin', msgDiv);
+  }
+</script>
 </body>
 </html>
